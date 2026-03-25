@@ -71,7 +71,7 @@ ElectricPopTheme(
 | Error | `#b02500` / container: `#f95630` |
 | Outline | `#757778` / variant: `#abadae` |
 
-Dark scheme is the inverse, derived from the same seed colors.
+**Dark scheme:** Derived from the same seed colors but must be verified against the Stitch designs screen-by-screen. Each component doc has a dedicated dark variant (e.g., "Hero Pulse Card Doc (Dark)", "Action Buttons Doc (Dark)"). During implementation, the dark palette must be extracted from these dark screens rather than relying solely on Material3's auto-generated dark scheme — Stitch may have manual overrides for contrast or vibrancy that differ from algorithmic inversion.
 
 ### 4.3 Typography
 
@@ -92,7 +92,7 @@ Fonts bundled as resources in the library.
 | `lg` | 2rem (32px) | Secondary containers |
 | `md` | 1rem (16px) | Inputs, code blocks |
 
-All shapes use continuous curvature (squircle), not geometric rounded rectangles.
+All shapes use continuous curvature (squircle), not geometric rounded rectangles. **Implementation note:** Compose's built-in `RoundedCornerShape` uses geometric arcs. A custom `Shape` implementation or a third-party library (e.g., `smoothCorners` / `squircle-shape`) is required to achieve true continuous curvature. This must be evaluated during Phase 01 repo setup to choose the right approach before any component work begins.
 
 ### 4.5 Spacing
 
@@ -161,6 +161,8 @@ These rules are baked into every component. They are not optional.
 | 2 | **PopBarChart** | Comparative bars. 24-48px stroke. Primary + tertiary. Active bar scales 1.02x. |
 | 3 | **PopDonutChart** | Circular gauge. 110px radius. Primary for filled, surface for remaining. Center text. |
 
+**Implementation note:** Chart specs are intentionally high-level. During implementation, implementors must reference the Stitch design screens ("Analytics & Charts with Sample Data" light + dark variants) for detailed axis labeling, grid treatment (no traditional gridlines per the design rules), animation curves, tooltip behavior, and data point interaction states.
+
 ### 6.4 Extensibility Note
 
 This inventory covers the initial 30 components. Additional components may be identified through further review of the Stitch designs. The architecture supports adding new components at any tier without breaking changes.
@@ -198,11 +200,13 @@ Separate `demo/` module (not published to Maven Central):
 6. Demo app as component catalog with theme switching
 
 ### Phase 03: Implementation
-1. Theme system (light + dark)
-2. Foundation components (20)
-3. Composite components (7)
-4. Chart components (3)
-5. Each component built via Pixy agent workflow with PR per component
+**Prerequisites:** Phase 01 and 02 must be fully complete. The repo must be in a state where the end-to-end workflow works: library builds, demo app builds, tests run, CI passes, and the Pixy agent pipeline is functional.
+
+1. Theme system (light + dark) — extract both palettes from Stitch, verify dark scheme against dark variant screens
+2. Foundation components (20) — each via Pixy agent workflow with PR per component
+3. Composite components (7) — each via Pixy agent workflow with PR per component
+4. Chart components (3) — each via Pixy agent workflow with PR per component
+5. No manual component implementation — all component work flows through Pixy (plan → implement → review → fix loop)
 
 ### Phase 04: Execution Tracking
 1. Plans written to `.execution-history/` directory
