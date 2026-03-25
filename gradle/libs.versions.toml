@@ -1,0 +1,21 @@
+[versions]
+kotlin = "2.3.20"
+compose-multiplatform = "1.10.3"
+agp = "9.1.0"
+maven-publish = "0.36.0"
+squircle-shape = "5.2.0"
+roborazzi = "1.59.0"
+
+[libraries]
+squircle-shape = { module = "com.stoyanvuchev:squircle-shape", version.ref = "squircle-shape" }
+roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
