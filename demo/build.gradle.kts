@@ -7,10 +7,8 @@ plugins {
 
 kotlin {
     androidTarget {
-        compilations.all {
-            compilerOptions {
-                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
-            }
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
 
@@ -29,15 +27,15 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":library"))
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
+            implementation("org.jetbrains.compose.runtime:runtime:1.10.3")
+            implementation("org.jetbrains.compose.foundation:foundation:1.10.3")
+            implementation("org.jetbrains.compose.material3:material3:1.9.0")
+            implementation("org.jetbrains.compose.ui:ui:1.10.3")
+            implementation("org.jetbrains.compose.components:components-resources:1.10.3")
         }
         val desktopMain by getting {
             dependencies {
-                implementation(compose.desktop.currentOs)
+                implementation("org.jetbrains.compose.desktop:desktop-jvm-linux-x64:1.10.3")
             }
         }
     }

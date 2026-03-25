@@ -8,10 +8,8 @@ plugins {
 
 kotlin {
     androidTarget {
-        compilations.all {
-            compilerOptions {
-                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
-            }
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
         publishLibraryVariants("release")
     }
@@ -30,11 +28,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
+            implementation("org.jetbrains.compose.runtime:runtime:1.10.3")
+            implementation("org.jetbrains.compose.foundation:foundation:1.10.3")
+            implementation("org.jetbrains.compose.material3:material3:1.9.0")
+            implementation("org.jetbrains.compose.ui:ui:1.10.3")
+            implementation("org.jetbrains.compose.components:components-resources:1.10.3")
             implementation(libs.squircle.shape)
         }
         commonTest.dependencies {
@@ -42,7 +40,7 @@ kotlin {
         }
         val desktopMain by getting {
             dependencies {
-                implementation(compose.desktop.common)
+                implementation("org.jetbrains.compose.desktop:desktop:1.10.3")
             }
         }
     }
