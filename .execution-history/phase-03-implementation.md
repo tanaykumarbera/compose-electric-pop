@@ -11,7 +11,7 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 ## Wave 1: Core Foundation
 | ID | Component | Status |
 |----|-----------|--------|
-| 1 | PopPill | [PENDING] |
+| 1 | PopPill | [DONE] |
 | 2 | PopIcon | [PENDING] |
 | 3 | PopSurface | [PENDING] |
 | 4 | PopBadge | [PENDING] |
