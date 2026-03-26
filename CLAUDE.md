@@ -61,8 +61,11 @@ Every component follows this exact workflow:
 
 ### 4. Test
 - Path: `library/src/commonTest/kotlin/com/electricpop/{tier}/{ComponentName}Test.kt`
-- Test all variants and states
-- Test with both light and dark color schemes where relevant
+- Compose UI tests (runComposeUiTest) are NOT available — do NOT use them
+- Tests MUST exercise the component's actual code, NOT Kotlin stdlib
+- For components with logic (parsing, formatting, state machines): unit-test that logic
+- For purely visual components: write a minimal placeholder test documenting that visual validation is via demo app
+- NEVER write tests that only call stdlib functions (e.g., String.uppercase()) — these will be rejected
 - Run: `./gradlew :library:desktopTest`
 
 ### 5. Demo Page

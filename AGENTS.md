@@ -58,130 +58,61 @@ Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pul
 
 ---
 
-## Agent Hierarchy
+## Agent System
 
-### Pixy (Orchestrator) — model: opus
+Agents are defined as custom Claude Code agents in `.claude/agents/`. Each agent is a markdown file with YAML frontmatter defining its model, tools, and behavior.
 
-The brain. Takes a component name, orchestrates the full build cycle. **Does NOT write code.**
+### Agent Files
 
-#### How to Invoke Pixy
+| Agent | File | Model | Role |
+|-------|------|-------|------|
+| Pixy | `.claude/agents/pixy.md` | opus | Orchestrator — dispatches planner, implementor, reviewer |
+| Planner | `.claude/agents/pixy-planner.md` | opus | Creates implementation plans with Stitch design reference |
+| Implementor | `.claude/agents/pixy-implementor.md` | sonnet | Writes code, tests, demos; runs builds; commits |
+| Reviewer | `.claude/agents/pixy-reviewer.md` | opus | Reviews against plan, design rules, and test quality |
+
+### How to Invoke Pixy
+
+To build a component, dispatch the `pixy` agent with the component name and details:
 
 ```
 Agent(
-    subagent_type="general-purpose",
-    model="opus",
+    subagent_type="pixy",
     prompt="""
-You are Pixy, the Electric Pop orchestrator agent.
+Build the {COMPONENT_NAME} component for Electric Pop.
 
-## Your Task
-Build the {COMPONENT_NAME} component for the Electric Pop UI library.
+Component details from inventory:
+- Tier: {foundation/composite/chart}
+- Variants: {list from component table below}
+- Key notes: {from component table below}
+- Dependencies: {for composites, list foundation components}
 
-## Context
-- Read CLAUDE.md for project rules and SOP
-- Read the spec at docs/superpowers/specs/2026-03-25-electric-pop-design.md
-- Component details: {PASTE COMPONENT ROW FROM TABLE ABOVE}
-- Stitch design reference: https://stitch.withgoogle.com/projects/7983075619754946215
-  - Use mcp__stitch__get_screen to fetch the relevant screen for visual details
-
-## Your Workflow
-You are an orchestrator. You DO NOT write code. You delegate to subagents.
-
-### Step 1: Plan
-Dispatch a Planner agent (model: opus) to create a detailed implementation plan.
-The planner must:
-- Fetch the Stitch design screen(s) for this component (light + dark variants)
-- Define exact file paths, function signatures, parameters
-- List all variants and states
-- Include test cases and demo page specification
-- Return a complete plan as text
-
-### Step 2: Implement
-Dispatch an Implementor agent (model: sonnet) with the plan from Step 1.
-The implementor must:
-- Create the component file in library/src/commonMain/kotlin/com/electricpop/{tier}/
-- Create the test file in library/src/commonTest/kotlin/com/electricpop/{tier}/
-- Create the demo page in demo/src/commonMain/kotlin/com/electricpop/demo/components/
-- Update CatalogScreen.kt to register the component
-- Run ./gradlew :library:desktopTest to verify tests pass
-- Run ./gradlew :library:compileKotlinDesktop :demo:compileKotlinDesktop to verify builds
-- Commit with message: feat({tier}): add {ComponentName} with variants
-- Report: DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
-
-### Step 3: Review
-Dispatch a Reviewer agent (model: opus) to review the implementation.
-The reviewer must check:
-- All variants implemented per spec
-- 7 design rules followed (no hardcoded colors, no borders, squircle shapes, etc.)
-- Tests cover all variants
-- Demo page shows all variants
-- Light + dark theme both work (check that colors come from MaterialTheme)
-- No code duplication (composites must use foundation components)
-Return: APPROVED | ISSUES_FOUND with specific fixes needed
-
-### Step 4: Fix Loop (if needed)
-If reviewer found issues:
-- Dispatch Implementor with specific fix instructions
-- Re-dispatch Reviewer to verify fixes
-- Max 3 iterations. If still failing, STOP and report to human.
-
-### Step 5: Summary
-After approval, report:
-- Component name and tier
-- Files created/modified
-- Test results
-- Any concerns or notes for the human
-
-## Error Handling
-- If Implementor reports BLOCKED: assess and either provide context or escalate to human
-- If Implementor reports NEEDS_CONTEXT: fetch the needed info and re-dispatch
-- If same error appears twice: STOP, do not loop blindly
-- If Reviewer rejects 3 times: STOP, summarize issues for human
-
-## IMPORTANT
-- Never write code yourself — always delegate
-- Never skip the review step
-- Always fetch Stitch designs for visual reference
-- All colors must come from MaterialTheme.colorScheme, all typography from MaterialTheme.typography
-- Shapes from MaterialTheme.shapes or PopShapeFull
-- Spacing from ElectricPopTheme.spacing
+Build order context: This is component #{N} in wave {W}. Previously completed: {list}.
 """
 )
 ```
 
-### Planner — model: opus
+Pixy will then:
+1. Read project context (CLAUDE.md, spec, AGENTS.md)
+2. Dispatch `pixy-planner` to create an implementation plan
+3. Dispatch `pixy-implementor` to execute the plan
+4. Dispatch `pixy-reviewer` to validate the implementation
+5. Loop fixes if needed (max 3 iterations)
+6. Report summary
 
-Creates detailed step-by-step implementation plans for a single component.
+### Key Design Decisions
 
-**Input:** Component name, spec reference, Stitch screen data
-**Output:** Complete plan with file paths, code structure, test cases, demo spec
-**Must include:** All variants, light + dark theme support, demo page, tests
+**Why custom agents instead of inline prompts:**
+- Each agent has scoped tools (reviewer can't write, planner can access Stitch MCP)
+- Agent definitions are version-controlled and reusable
+- Models are locked per role (opus for planning/review, sonnet for implementation)
+- Max turns prevent runaway agents
 
-### Implementor — model: sonnet
-
-Executes implementation plans. Writes code, runs tests, fixes build errors.
-
-**Input:** Plan from Planner
-**Output:** Working code committed to branch
-**Rules:**
-- Follow CLAUDE.md SOP exactly
-- Run tests after each step
-- Stop if same error appears twice
-- Report status: DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
-
-### Reviewer — model: opus
-
-Reviews implementation against plan and design spec.
-
-**Input:** Implementation diff, plan, design spec
-**Output:** APPROVED | ISSUES_FOUND (with specific fixes)
-**Checks:**
-- All variants implemented
-- 7 design rules followed
-- Tests cover all variants and states
-- Demo page shows all variants
-- Light + dark theme both work
-- No hardcoded colors/sizes — must use theme tokens
-- Composites must compose from foundation components
+**Test quality enforcement:**
+- Planner must define what IS and ISN'T testable for each component
+- Implementor has explicit rules against stdlib-only tests
+- Reviewer has an "acid test": would tests pass if component file were deleted?
+- This prevents the garbage tests we saw in the initial pipeline test
 
 ---
 
