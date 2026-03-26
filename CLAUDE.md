@@ -1,0 +1,112 @@
+# Electric Pop — Project Instructions
+
+## Overview
+
+Electric Pop is a Compose Multiplatform UI component library implementing the "Kinetic Pulse" design system. Single Gradle module, package-level separation.
+
+- **Repo:** github.com/tanaykumarbera/compose-electric-pop
+- **Design source:** [Stitch project 7983075619754946215](https://stitch.withgoogle.com/projects/7983075619754946215)
+- **Spec:** `docs/superpowers/specs/2026-03-25-electric-pop-design.md`
+- **Plan:** `docs/superpowers/plans/2026-03-25-electric-pop-implementation.md`
+- **Targets:** Android (API 24+), iOS (arm64 + simulatorArm64), Desktop (JVM)
+- **Stack:** Kotlin 2.3.20, Compose Multiplatform 1.10.3, AGP 8.7.3
+
+## Project Structure
+
+```
+library/src/commonMain/kotlin/com/electricpop/
+├── theme/        → ElectricPopTheme, Color, Typography, Shape, Spacing
+├── foundation/   → 20 basic components (PopButton, PopTextField, etc.)
+├── composite/    → 7 composite components (PopFeatureCard, PopDataRow, etc.)
+└── chart/        → 3 chart components (PopLineChart, PopBarChart, PopDonutChart)
+
+demo/src/commonMain/kotlin/com/electricpop/demo/
+├── App.kt           → Root app with theme toggle
+├── CatalogScreen.kt → Component catalog list
+└── components/      → Per-component demo pages
+```
+
+## Build Commands
+
+```bash
+./gradlew build                              # Build everything
+./gradlew :library:build                     # Library only
+./gradlew :demo:build                        # Demo only
+./gradlew :library:allTests                  # All tests
+./gradlew :library:desktopTest               # Desktop tests (fastest)
+./gradlew :demo:run                          # Run desktop demo
+```
+
+## Component Creation SOP
+
+Every component follows this exact workflow:
+
+### 1. Understand
+- Read spec section 6 for the component's variants and design notes
+- Reference Stitch designs for visual details (light + dark screens)
+- Check which foundation components a composite depends on
+
+### 2. Create Component File
+- Path: `library/src/commonMain/kotlin/com/electricpop/{tier}/{ComponentName}.kt`
+- One file per component, one composable function per variant
+- Package: `com.electricpop.{tier}` (foundation, composite, or chart)
+
+### 3. Coding Rules
+- **MUST** read colors from `MaterialTheme.colorScheme`, NEVER hardcode hex values
+- **MUST** read typography from `MaterialTheme.typography`, NEVER hardcode TextStyles
+- **MUST** use `ElectricPopTheme.spacing` for spacing values
+- **MUST** use shapes from `MaterialTheme.shapes` or `PopShapeFull`
+- **MUST** follow all 7 design rules (see below)
+- Composites **MUST** compose from foundation components, not duplicate their code
+
+### 4. Test
+- Path: `library/src/commonTest/kotlin/com/electricpop/{tier}/{ComponentName}Test.kt`
+- Test all variants and states
+- Test with both light and dark color schemes where relevant
+- Run: `./gradlew :library:desktopTest`
+
+### 5. Demo Page
+- Path: `demo/src/commonMain/kotlin/com/electricpop/demo/components/{ComponentName}Demo.kt`
+- Show ALL variants with sample data
+- Register in `CatalogScreen.kt` → add entry to `catalogEntries` list
+- Verify light + dark themes both render correctly
+
+### 6. Commit
+- Format: `feat(foundation): add PopComponentName with variants`
+- One component per commit/PR
+- Branch name: `feat/pop-{component-name-kebab}`
+
+## 7 Design Rules (Non-Negotiable)
+
+Every component must enforce these. Violation = review rejection.
+
+1. **No-Line Rule** — No 1px borders. Use tonal surface shifts (`surfaceContainer` → `surfaceContainerLow`) and spacing
+2. **Tonal Shadows** — Shadow color matches background, 10% darker, 32px blur, 0 offset. No grey `elevation` shadows
+3. **Ghost Border** — Only for accessibility: `outlineVariant` at 15% opacity
+4. **Neon Glow** — Primary CTAs get 15-20% opacity color spread. Use `Modifier.shadow()` with primary color
+5. **Kinetic Interactions** — Hover: `Modifier.scale(1.05f)` with 200ms ease. Active: `scale(0.95f)`
+6. **Squircle Radii** — Use `ElectricPopShapes` (backed by squircle-shape library), not `RoundedCornerShape`
+7. **Typography Impact** — Headlines: uppercase text via `.uppercase()`, use `headlineLarge` / `displayLarge` styles
+
+## Component Inventory
+
+### Foundation (20)
+PopButton, PopTextField, PopRadioGroup, PopSwitch, PopSlider, PopChip, PopIcon, PopSurface, PopBadge, PopPill, PopIconRow, PopSectionHeader, PopTitleBar, PopDisplayText, PopCodeBlock, PopIconListItem, PopTable, PopStepList, PopBottomBar, PopDropdown
+
+### Composite (7)
+PopFeatureCard, PopCarouselCard, PopDashboardCard, PopDataRow, PopActionCard, PopBannerCard, PopMetricCard
+
+### Chart (3)
+PopLineChart, PopBarChart, PopDonutChart
+
+## Key Dependencies
+
+- `sv.lib.squircleshape.SquircleShape` — for squircle corner shapes (NOT `com.stoyanvuchev`)
+- `compose.material3` — Material3 theming
+- `compose.foundation` — layout primitives
+- `compose.ui` — core UI
+
+## Preferences
+- Single module library — R8 handles tree-shaking
+- Generic component names (Pop* prefix, no domain-specific naming)
+- Keep things simple — no over-engineering
