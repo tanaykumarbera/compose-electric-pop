@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Pop — Compose Multiplatform UI Library</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;900&family=Manrope:wght@400;600;800&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Manrope', sans-serif; background: #0C0F10; color: #F5F6F7; }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
+        h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(3rem, 8vw, 6rem); text-transform: uppercase; letter-spacing: -0.02em; color: #CAFD00; }
+        .subtitle { font-size: 1.25rem; color: #9B9D9E; margin-top: 1rem; max-width: 600px; }
+        .badge { display: inline-block; background: #CAFD00; color: #4A5E00; padding: 0.5rem 1.5rem; border-radius: 9999px; font-weight: 800; margin-top: 2rem; text-decoration: none; }
+        .badge:hover { transform: scale(1.05); transition: transform 0.2s; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; padding: 4rem 2rem; max-width: 960px; margin: 0 auto; }
+        .card { background: #1a1d1e; border-radius: 2rem; padding: 2rem; }
+        .card h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #CAFD00; margin-bottom: 0.5rem; }
+        .card p { color: #9B9D9E; line-height: 1.6; }
+        .platforms { color: #595C5D; text-align: center; padding: 2rem; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Electric Pop</h1>
+        <p class="subtitle">A high-energy Compose Multiplatform UI component library. Bold typography, kinetic interactions, and a neon-saturated design system.</p>
+        <a class="badge" href="https://github.com/tanaykumarbera/compose-electric-pop/wiki">View Components &rarr;</a>
+    </div>
+    <div class="features">
+        <div class="card">
+            <h3>30 Components</h3>
+            <p>Foundation elements, composite cards, and data visualization — all themed with the Kinetic Pulse aesthetic.</p>
+        </div>
+        <div class="card">
+            <h3>Light + Dark</h3>
+            <p>Full light and dark color schemes derived from Electric Lime, Neon Magenta, and Cyber Cyan.</p>
+        </div>
+        <div class="card">
+            <h3>Multiplatform</h3>
+            <p>Android, iOS, and Desktop JVM. Single dependency, one API surface.</p>
+        </div>
+    </div>
+    <p class="platforms">Android (API 24+) &middot; iOS &middot; Desktop JVM &middot; Compose Multiplatform</p>
+</body>
+</html>
