@@ -3,11 +3,13 @@ package com.electricpop.demo
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.electricpop.foundation.PopIcon
+import com.electricpop.foundation.PopIcons
+import com.electricpop.foundation.PopIconSize
 import com.electricpop.theme.ElectricPopTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App() {
     var isDark by remember { mutableStateOf(false) }
@@ -16,30 +18,35 @@ fun App() {
     ElectricPopTheme(darkTheme = isDark) {
         Scaffold(
             topBar = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    if (selectedEntry != null) {
-                        TextButton(onClick = { selectedEntry = null }) {
-                            Text("< Back")
-                        }
-                        Spacer(Modifier.width(8.dp))
+                TopAppBar(
+                    title = {
                         Text(
-                            selectedEntry!!.name,
+                            text = selectedEntry?.name ?: "Electric Pop",
                             style = MaterialTheme.typography.titleMedium,
                         )
-                    }
-                    Spacer(Modifier.weight(1f))
-                    Text(
-                        if (isDark) "Dark" else "Light",
-                        style = MaterialTheme.typography.labelMedium,
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    Switch(checked = isDark, onCheckedChange = { isDark = it })
-                }
+                    },
+                    navigationIcon = {
+                        if (selectedEntry != null) {
+                            IconButton(onClick = { selectedEntry = null }) {
+                                PopIcon(
+                                    imageVector = PopIcons.ArrowBack,
+                                    contentDescription = "Back",
+                                    size = PopIconSize.Medium,
+                                )
+                            }
+                        }
+                    },
+                    actions = {
+                        Text(
+                            if (isDark) "Dark" else "Light",
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+                        Switch(checked = isDark, onCheckedChange = { isDark = it })
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                )
             },
         ) { padding ->
             Box(Modifier.padding(padding)) {
@@ -51,5 +58,10 @@ fun App() {
                 }
             }
         }
+    }
+
+    // Handle system back
+    BackHandler(enabled = selectedEntry != null) {
+        selectedEntry = null
     }
 }

@@ -2,7 +2,7 @@
 name: pixy-reviewer
 description: Reviews Electric Pop component implementations against the plan and design rules. Only invoked by the pixy orchestrator.
 model: opus
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob, Bash, mcp__stitch__get_screen, mcp__stitch__list_screens
 maxTurns: 20
 ---
 
@@ -120,7 +120,42 @@ For EACH rule, verify:
 
 Run these commands yourself to verify.
 
-### I. Commit Hygiene
+### I. Stitch Design Comparison (**CRITICAL**)
+
+Compare the component's visual output against the original Stitch design:
+
+1. **Fetch the relevant Stitch screen(s):**
+   - Call `mcp__stitch__list_screens` with projectId `7983075619754946215`
+   - Identify which screen(s) show this component (check titles — component names map to Stitch names: PopPill→pills on cards, PopButton→"Action Buttons Doc", PopSurface→"Surface & Depth" section, etc.)
+   - Call `mcp__stitch__get_screen` to get the screenshot URL
+
+2. **Download at full resolution:**
+   - Append `=s0` to the Google Photos URL to get original size (e.g., `https://lh3.googleusercontent.com/aida/...=s0`)
+   - Download both light AND dark variants if they exist
+   - For very tall images (>4000px), crop relevant sections using Python/Pillow before viewing:
+     ```python
+     from PIL import Image
+     img = Image.open("/tmp/stitch_screen.png")
+     crop = img.crop((0, y_start, img.width, y_end))
+     crop.save("/tmp/stitch_crop.jpg", "JPEG", quality=85)
+     ```
+
+3. **Compare against golden screenshots:**
+   - Read the component's golden screenshots from `library/src/desktopTest/snapshots/`
+   - Compare visually: colors, spacing, typography weight, shape, shadow, layout
+   - Note any discrepancies
+
+4. **Check for these common mismatches:**
+   - [ ] Colors match Stitch (especially container vs. on-container)
+   - [ ] Typography weight/style matches (bold enough? italic where needed?)
+   - [ ] Padding/spacing proportions match Stitch
+   - [ ] Shape (squircle vs rounded) matches
+   - [ ] Shadow/glow presence and intensity match
+   - [ ] Component looks correct in BOTH light and dark themes
+
+If you cannot fetch Stitch screens (MCP unavailable), note it as a caveat but don't block approval.
+
+### J. Commit Hygiene
 - [ ] Component changes are committed (check `git log -1` for the commit)
 - [ ] `git status` shows no uncommitted changes related to this component
 - [ ] No build artifacts, caches, or IDE files are tracked (check for `.kotlin/`, `build/`, etc.)
@@ -140,6 +175,7 @@ Run these commands yourself to verify.
 - Hardcoded spacing in non-trivial cases
 - Poor test coverage of extractable logic
 - Catalog registration issues
+- Visual mismatch with Stitch design (wrong colors, spacing, shadows)
 
 **Minor** (note for future):
 - Code style preferences

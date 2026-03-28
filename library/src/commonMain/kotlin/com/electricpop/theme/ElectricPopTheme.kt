@@ -13,7 +13,7 @@ import androidx.compose.material3.Typography
 fun ElectricPopTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     colorScheme: ColorScheme? = null,
-    typography: Typography = ElectricPopTypography,
+    typography: Typography = ElectricPopTypography(),
     shapes: Shapes = ElectricPopShapes,
     spacing: ElectricPopSpacing = ElectricPopSpacing(),
     content: @Composable () -> Unit,

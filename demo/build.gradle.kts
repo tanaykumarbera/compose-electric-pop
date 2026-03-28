@@ -33,6 +33,11 @@ kotlin {
             implementation("org.jetbrains.compose.ui:ui:1.10.3")
             implementation("org.jetbrains.compose.components:components-resources:1.10.3")
         }
+        val androidMain by getting {
+            dependencies {
+                implementation("androidx.activity:activity-compose:1.9.3")
+            }
+        }
         val desktopMain by getting {
             dependencies {
                 implementation("org.jetbrains.compose.desktop:desktop-jvm-linux-x64:1.10.3")
@@ -43,12 +48,12 @@ kotlin {
 
 android {
     namespace = "com.electricpop.demo"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.electricpop.demo"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
     }
@@ -57,10 +62,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
 }
 
 compose.desktop {
     application {
         mainClass = "com.electricpop.demo.MainKt"
     }
+}
+
+// AGP 8.7.3 lint can't read Kotlin 2.3.20 metadata — disable all lint tasks for demo
+tasks.matching { it.name.contains("lint", ignoreCase = true) }.configureEach {
+    enabled = false
 }

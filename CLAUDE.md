@@ -8,8 +8,10 @@ Electric Pop is a Compose Multiplatform UI component library implementing the "K
 - **Design source:** [Stitch project 7983075619754946215](https://stitch.withgoogle.com/projects/7983075619754946215)
 - **Spec:** `docs/superpowers/specs/2026-03-25-electric-pop-design.md`
 - **Plan:** `docs/superpowers/plans/2026-03-25-electric-pop-implementation.md`
-- **Targets:** Android (API 24+), iOS (arm64 + simulatorArm64), Desktop (JVM)
+- **Targets:** Android (API 24+, compileSdk 36), iOS (arm64 + simulatorArm64), Desktop (JVM)
 - **Stack:** Kotlin 2.3.20, Compose Multiplatform 1.10.3, AGP 8.7.3
+- **Fonts:** Space Grotesk (headlines) + Manrope (body/labels) — bundled as Compose resources
+- **Icons:** Built-in `PopIcons` object — no material-icons-core dependency
 
 ## Project Structure
 
@@ -60,6 +62,8 @@ Every component follows this exact workflow:
 - **MUST** use shapes from `MaterialTheme.shapes` or `PopShapeFull`
 - **MUST** follow all 7 design rules (see below)
 - Composites **MUST** compose from foundation components, not duplicate their code
+- **MUST** use `PopIcons.*` for icons in demos/tests — NEVER add `material-icons-core` as a dependency
+- Typography is loaded via `ElectricPopTypography()` (composable function, not a val) — fonts are bundled resources
 
 ### 4. Test
 - Path: `library/src/commonTest/kotlin/com/electricpop/{tier}/{ComponentName}Test.kt`
@@ -114,12 +118,23 @@ PopLineChart, PopBarChart, PopDonutChart
 
 ## Key Dependencies
 
-- `sv.lib.squircleshape.SquircleShape` — for squircle corner shapes (NOT `com.stoyanvuchev`)
+- `sv.lib.squircleshape.SquircleShape` — for squircle corner shapes (NOT `com.stoyanvuchev`). Requires compileSdk 36.
 - `compose.material3` — Material3 theming
 - `compose.foundation` — layout primitives
 - `compose.ui` — core UI
+- **NO** `material-icons-core` — library provides `PopIcons` (Star, Check, Info, Warning, Heart, Home, Search, Settings, Add, Close, ArrowUp, ArrowDown, ArrowBack, Person, TrendUp, TrendDown)
+
+## Stitch Design Reference
+
+When comparing implementations against Stitch designs:
+- Stitch project ID: `7983075619754946215`
+- Append `=s0` to Google Photos screenshot URLs for full resolution
+- For tall images (>4000px), crop sections before viewing
+- Always compare BOTH light and dark theme variants
+- The reviewer agent fetches Stitch screenshots automatically during review
 
 ## Preferences
 - Single module library — R8 handles tree-shaking
 - Generic component names (Pop* prefix, no domain-specific naming)
 - Keep things simple — no over-engineering
+- Escalate blockers after 2-3 failed attempts — don't loop endlessly

@@ -90,30 +90,55 @@ val ElectricPopLightColorScheme = lightColorScheme(
     surfaceTint = ElectricLime,
 )
 
-// Dark scheme — placeholder, must be verified against Stitch dark variant screens
-// TODO(Phase 03): Extract exact dark values from Stitch dark screens
+// Dark surface hierarchy — extracted from Stitch dark variant screens
+val PopSurfaceDark = Color(0xFF0C0F10)
+val PopSurfaceBrightDark = Color(0xFF1A1D1E)
+val PopSurfaceDimDark = Color(0xFF040405)
+val PopSurfaceContainerDark = Color(0xFF1A1D1E)
+val PopSurfaceContainerHighDark = Color(0xFF252829)
+val PopSurfaceContainerHighestDark = Color(0xFF2F3233)
+val PopSurfaceContainerLowDark = Color(0xFF141718)
+val PopSurfaceContainerLowestDark = Color(0xFF0C0F10)
+val PopOnSurfaceDark = Color(0xFFE0E3E4)
+val PopOnSurfaceVariantDark = Color(0xFF9B9D9E)
+val PopOutlineDark = Color(0xFF4B4E4E)
+val PopOutlineVariantDark = Color(0xFF3A3D3E)
+
+// Dark scheme — derived from Stitch dark variant screens
+// Primary (lime) stays vivid, containers are muted
 val ElectricPopDarkColorScheme = darkColorScheme(
-    primary = ElectricLimeContainer,
-    onPrimary = OnElectricLimeContainer,
-    primaryContainer = ElectricLime,
-    onPrimaryContainer = OnElectricLime,
-    secondary = NeonMagentaContainer,
-    onSecondary = OnNeonMagentaContainer,
-    secondaryContainer = NeonMagenta,
-    onSecondaryContainer = OnNeonMagenta,
-    tertiary = CyberCyanContainer,
-    onTertiary = OnCyberCyanContainer,
-    tertiaryContainer = CyberCyan,
-    onTertiaryContainer = OnCyberCyan,
-    error = PopErrorContainer,
-    onError = OnPopErrorContainer,
-    errorContainer = PopError,
-    onErrorContainer = OnPopError,
-    surface = PopInverseSurface,
-    onSurface = PopInverseOnSurface,
-    outline = PopOutlineVariant,
-    outlineVariant = PopOutline,
+    primary = ElectricLimeContainer,          // #CAFD00 — lime as headline/accent color
+    onPrimary = Color(0xFF1C2600),            // dark text on lime
+    primaryContainer = Color(0xFF3C4917),     // muted lime for containers
+    onPrimaryContainer = ElectricLimeContainer, // #CAFD00 text on dark lime
+    secondary = Color(0xFFFFB1EE),            // lighter magenta for dark
+    onSecondary = Color(0xFF5C005C),          // dark text on light magenta
+    secondaryContainer = Color(0xFF7A007A),   // deep magenta containers
+    onSecondaryContainer = NeonMagentaContainer, // light pink text
+    tertiary = CyberCyanContainer,            // #00FFFF — cyan stays vivid
+    onTertiary = Color(0xFF003333),           // dark text on cyan
+    tertiaryContainer = Color(0xFF004D4D),    // deep teal containers
+    onTertiaryContainer = CyberCyanContainer, // vivid cyan text
+    error = Color(0xFFFF897A),                // lighter red for dark
+    onError = Color(0xFF3D0700),
+    errorContainer = Color(0xFF7A1A00),
+    onErrorContainer = Color(0xFFFFDAD4),
+    background = PopSurfaceDark,
+    onBackground = PopOnSurfaceDark,
+    surface = PopSurfaceDark,
+    onSurface = PopOnSurfaceDark,
+    onSurfaceVariant = PopOnSurfaceVariantDark,
+    surfaceBright = PopSurfaceBrightDark,
+    surfaceDim = PopSurfaceDimDark,
+    surfaceContainer = PopSurfaceContainerDark,
+    surfaceContainerHigh = PopSurfaceContainerHighDark,
+    surfaceContainerHighest = PopSurfaceContainerHighestDark,
+    surfaceContainerLow = PopSurfaceContainerLowDark,
+    surfaceContainerLowest = PopSurfaceContainerLowestDark,
+    outline = PopOutlineDark,
+    outlineVariant = PopOutlineVariantDark,
     inverseSurface = PopSurface,
     inverseOnSurface = PopOnSurface,
     inversePrimary = ElectricLime,
+    surfaceTint = ElectricLimeContainer,
 )

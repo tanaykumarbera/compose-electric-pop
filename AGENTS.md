@@ -114,6 +114,21 @@ Pixy will then:
 - Reviewer has an "acid test": would tests pass if component file were deleted?
 - This prevents the garbage tests we saw in the initial pipeline test
 
+**Icons — PopIcons (not material-icons-core):**
+- The library provides `PopIcons` in `com.electricpop.foundation` with 16 built-in `ImageVector` icons
+- All demos, tests, and screenshot tests MUST use `PopIcons.*` (e.g., `PopIcons.Star`, `PopIcons.Check`)
+- NEVER add `material-icons-core` or `material-icons-extended` as a dependency
+- Available icons: Star, Check, Close, Info, Warning, Heart, Home, Search, Settings, Add, ArrowUp, ArrowDown, ArrowBack, Person, TrendUp, TrendDown
+
+**Stitch design comparison:**
+- Reviewer agent now fetches Stitch screenshots at full resolution and compares against component output
+- Append `=s0` to Google Photos URLs for original size
+- Stitch project ID: `7983075619754946215`
+
+**Android build notes:**
+- `compileSdk = 36` required (squircle-shape dependency)
+- Demo lint is disabled (AGP 8.7.3 / Kotlin 2.3.20 incompatibility)
+
 ---
 
 ## Recommended Component Build Order
