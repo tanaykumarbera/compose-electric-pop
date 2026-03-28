@@ -98,6 +98,25 @@ IMPORTANT: Tests must exercise the COMPONENT'S actual code.
   `@Test fun visualValidationViaDemo() { /* No extractable logic — validated via demo app */ }`
 - NEVER write tests that only call Kotlin stdlib functions (String.uppercase, etc.)
 
+## Screenshot Test Specification
+
+Screenshot tests go in `library/src/desktopTest/kotlin/com/electricpop/{tier}/{ComponentName}ScreenshotTest.kt`.
+Uses Roborazzi with `runDesktopComposeUiTest` and `captureRoboImage` (import from `io.github.takahirom.roborazzi`).
+
+### Required screenshots:
+1. All variants in light theme → `src/desktopTest/snapshots/{ComponentName}_allVariants_light.png`
+2. All variants in dark theme → `src/desktopTest/snapshots/{ComponentName}_allVariants_dark.png`
+{Add more screenshots for specific states if the component has interactive states}
+
+### Layout guidance:
+- Use `runDesktopComposeUiTest(width = {W}, height = {H})` — adjust dimensions to fit all variants
+- Wrap in `ElectricPopTheme(darkTheme = true/false)`
+- Render variants in a `Column` or `FlowRow` with spacing
+- Use realistic sample data
+
+### Record command: `./gradlew :library:recordRoborazziDesktop`
+### Verify command: `./gradlew :library:verifyRoborazziDesktop`
+
 ## Demo Page Specification
 
 ### Sections to show:

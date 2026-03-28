@@ -68,20 +68,74 @@ Understand every file, function, parameter, and test case before writing anythin
 - Add/uncomment the entry in the correct wave section
 - Add the import for the demo composable
 
-### 7. Build and test
+### 7. Create screenshot tests
+- Path: `library/src/desktopTest/kotlin/com/electricpop/{tier}/{ComponentName}ScreenshotTest.kt`
+- Uses Roborazzi with `runDesktopComposeUiTest` and `captureRoboImage`
+- MUST capture at minimum: one light theme screenshot and one dark theme screenshot
+- Show ALL variants in the screenshot (render them in a Column/FlowRow)
+- Use realistic sample data (same as demo)
+- File path pattern: `src/desktopTest/snapshots/{ComponentName}_{variant}_{light|dark}.png`
+
+Example screenshot test structure:
+```kotlin
+package com.electricpop.{tier}
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.runDesktopComposeUiTest
+import androidx.compose.ui.unit.dp
+import com.electricpop.theme.ElectricPopTheme
+import io.github.takahirom.roborazzi.captureRoboImage
+import kotlin.test.Test
+
+class {ComponentName}ScreenshotTest {
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun allVariants_light() = runDesktopComposeUiTest(width = 400, height = 600) {
+        setContent {
+            ElectricPopTheme(darkTheme = false) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // Render all variants here
+                }
+            }
+        }
+        onRoot().captureRoboImage(filePath = "src/desktopTest/snapshots/{ComponentName}_allVariants_light.png")
+    }
+
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun allVariants_dark() = runDesktopComposeUiTest(width = 400, height = 600) {
+        setContent {
+            ElectricPopTheme(darkTheme = true) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // Same variants in dark theme
+                }
+            }
+        }
+        onRoot().captureRoboImage(filePath = "src/desktopTest/snapshots/{ComponentName}_allVariants_dark.png")
+    }
+}
+```
+
+### 8. Build, test, and record screenshots
 Run these commands in sequence:
 ```bash
 ./gradlew :library:desktopTest
+./gradlew :library:recordRoborazziDesktop
 ./gradlew :library:compileKotlinDesktop :demo:compileKotlinDesktop
 ```
 
 If tests fail: read the error, fix the issue, rerun. Max 2 retry attempts on the same error.
 If build fails: read the error, fix the issue, rerun. Max 2 retry attempts.
 
-### 8. Commit
+### 9. Commit
 ```bash
 git add library/src/commonMain/kotlin/com/electricpop/{tier}/{ComponentName}.kt
 git add library/src/commonTest/kotlin/com/electricpop/{tier}/{ComponentName}Test.kt
+git add library/src/desktopTest/kotlin/com/electricpop/{tier}/{ComponentName}ScreenshotTest.kt
+git add library/src/desktopTest/snapshots/{ComponentName}_*.png
 git add demo/src/commonMain/kotlin/com/electricpop/demo/components/{ComponentName}Demo.kt
 git add demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt
 git commit -m "feat({tier}): add {ComponentName} with variants"

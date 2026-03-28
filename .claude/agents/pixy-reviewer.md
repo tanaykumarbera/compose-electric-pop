@@ -79,12 +79,20 @@ For EACH rule, verify:
 - [ ] Spacing read from `ElectricPopTheme.spacing.*`
 
 ### D. Test Quality (**CRITICAL**)
-- [ ] Test file exists
+- [ ] Unit test file exists at `library/src/commonTest/...`
 - [ ] Tests exercise the COMPONENT'S code, not Kotlin stdlib
 - [ ] If component has extractable logic → logic is tested with real function calls
 - [ ] If component is purely visual → exactly one placeholder test documenting this
 - [ ] NO tests that only call stdlib functions (String.uppercase, listOf, etc.) without touching component code
 - **Acid test:** Would every test in this file STILL PASS if the component source file were deleted? If yes → FAIL. Tests must depend on the component.
+
+### D2. Screenshot Tests (**CRITICAL**)
+- [ ] Screenshot test file exists at `library/src/desktopTest/kotlin/com/electricpop/{tier}/{ComponentName}ScreenshotTest.kt`
+- [ ] Uses `runDesktopComposeUiTest` + `captureRoboImage` (import from `io.github.takahirom.roborazzi`)
+- [ ] Has at minimum light AND dark theme screenshots
+- [ ] Shows ALL variants in the screenshots
+- [ ] Golden images exist at `library/src/desktopTest/snapshots/{ComponentName}_*.png`
+- [ ] `./gradlew :library:verifyRoborazziDesktop` passes
 
 ### E. Demo Page
 - [ ] Demo file exists at correct path
@@ -107,6 +115,7 @@ For EACH rule, verify:
 
 ### H. Build Verification
 - [ ] `./gradlew :library:desktopTest` — tests pass
+- [ ] `./gradlew :library:verifyRoborazziDesktop` — screenshot tests pass
 - [ ] `./gradlew :library:compileKotlinDesktop :demo:compileKotlinDesktop` — builds compile
 
 Run these commands yourself to verify.

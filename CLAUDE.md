@@ -34,6 +34,8 @@ demo/src/commonMain/kotlin/com/electricpop/demo/
 ./gradlew :demo:build                        # Demo only
 ./gradlew :library:allTests                  # All tests
 ./gradlew :library:desktopTest               # Desktop tests (fastest)
+./gradlew :library:recordRoborazziDesktop    # Record golden screenshots
+./gradlew :library:verifyRoborazziDesktop    # Verify screenshots match goldens
 ./gradlew :demo:run                          # Run desktop demo
 ```
 
@@ -61,12 +63,20 @@ Every component follows this exact workflow:
 
 ### 4. Test
 - Path: `library/src/commonTest/kotlin/com/electricpop/{tier}/{ComponentName}Test.kt`
-- Compose UI tests (runComposeUiTest) are NOT available — do NOT use them
+- Compose UI tests (runComposeUiTest) are NOT available in commonTest — do NOT use them there
 - Tests MUST exercise the component's actual code, NOT Kotlin stdlib
 - For components with logic (parsing, formatting, state machines): unit-test that logic
 - For purely visual components: write a minimal placeholder test documenting that visual validation is via demo app
 - NEVER write tests that only call stdlib functions (e.g., String.uppercase()) — these will be rejected
 - Run: `./gradlew :library:desktopTest`
+
+### 4b. Screenshot Test
+- Path: `library/src/desktopTest/kotlin/com/electricpop/{tier}/{ComponentName}ScreenshotTest.kt`
+- Uses Roborazzi: `runDesktopComposeUiTest` + `captureRoboImage` (import `io.github.takahirom.roborazzi`)
+- MUST capture light AND dark theme screenshots showing ALL variants
+- Golden images: `library/src/desktopTest/snapshots/{ComponentName}_*.png`
+- Record: `./gradlew :library:recordRoborazziDesktop`
+- Verify: `./gradlew :library:verifyRoborazziDesktop`
 
 ### 5. Demo Page
 - Path: `demo/src/commonMain/kotlin/com/electricpop/demo/components/{ComponentName}Demo.kt`

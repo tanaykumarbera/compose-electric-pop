@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.android.library)
     alias(libs.plugins.maven.publish)
+    alias(libs.plugins.roborazzi)
 }
 
 kotlin {
@@ -41,6 +42,14 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation("org.jetbrains.compose.desktop:desktop:1.10.3")
+            }
+        }
+        val desktopTest by getting {
+            dependencies {
+                implementation(libs.roborazzi.compose.desktop)
+                implementation(compose.desktop.currentOs)
+                implementation("org.jetbrains.compose.ui:ui-test:1.10.3")
+                implementation("org.jetbrains.compose.ui:ui-test-junit4:1.10.3")
             }
         }
     }
