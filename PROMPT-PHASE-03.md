@@ -121,9 +121,49 @@ Each component produces:
 - `demo/.../components/{Component}Demo.kt` — Demo page
 - Updated `CatalogScreen.kt` — Registration
 
+## Branching Strategy
+
+Each component gets its own feature branch and PR:
+
+1. **Before starting a component**, create a feature branch from the current HEAD:
+   ```bash
+   git checkout -b feat/pop-{component-name-kebab}
+   ```
+   The first component branches off `main`. Each subsequent component branches off the
+   previous component's branch (not `main`), since PRs are merged in order.
+
+2. **After Pixy completes and the component is committed**, push and create a PR:
+   ```bash
+   git push -u origin feat/pop-{component-name-kebab}
+   gh pr create --base {previous-branch-or-main} \
+     --title "feat({tier}): add {ComponentName} with variants" \
+     --body "$(cat <<'EOF'
+   ## Summary
+   - Add {ComponentName} component ({tier}) with {variant list}
+   - Unit tests, screenshot tests (light + dark), demo page
+   - Registered in CatalogScreen
+
+   ## Test plan
+   - [ ] `./gradlew :library:desktopTest` passes
+   - [ ] `./gradlew :library:verifyRoborazziDesktop` passes
+   - [ ] Demo page shows all variants in both themes
+   EOF
+   )"
+   ```
+
+3. **Then start the next component** by branching off this branch:
+   ```bash
+   git checkout -b feat/pop-{next-component-name-kebab}
+   ```
+
+This creates a chain: `main` ← `feat/pop-surface` ← `feat/pop-badge` ← ...
+PRs are merged in order, so each PR's base is the previous component's branch.
+
 ## Rules
 
 - **One component at a time** — wait for Pixy to finish before starting the next
+- **Branch per component** — each component gets `feat/pop-{name}` branch and a PR
+- **Chain branches** — each new branch starts from the previous component's branch
 - **Stop at wave boundaries** — report progress and let user decide
 - **Never skip screenshot tests** — every component needs light + dark goldens
 - **If Pixy fails twice on the same component** — stop and report to user, don't loop

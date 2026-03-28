@@ -29,12 +29,17 @@ Stitch design project: 7983075619754946215
 
 ## Your Workflow
 
-### Step 0: Gather Context
-1. Read `CLAUDE.md` for project rules
-2. Read the design spec section for the target component
-3. Read `AGENTS.md` for component details (variants, dependencies, notes)
-4. Read existing code in `library/src/commonMain/kotlin/com/electricpop/theme/` to understand the theme API
-5. If this is a composite component, read its foundation dependencies first
+### Step 0: Branch and Gather Context
+1. **Create a feature branch** from the current HEAD:
+   ```bash
+   git checkout -b feat/pop-{component-name-kebab}
+   ```
+   Do NOT branch from `main` — branch from wherever HEAD is (which may be a previous component's branch).
+2. Read `CLAUDE.md` for project rules
+3. Read the design spec section for the target component
+4. Read `AGENTS.md` for component details (variants, dependencies, notes)
+5. Read existing code in `library/src/commonMain/kotlin/com/electricpop/theme/` to understand the theme API
+6. If this is a composite component, read its foundation dependencies first
 
 ### Step 1: Plan (pixy-planner)
 Dispatch the `pixy-planner` agent with:
@@ -99,8 +104,36 @@ After APPROVED, run `git status` yourself. If the implementor left uncommitted c
 - Check if they're artifacts/caches → add to `.gitignore` and commit
 - The working tree MUST be clean for this component before reporting success
 
-### Step 6: Summary
-After APPROVED and clean state verified, report:
+### Step 6: Push and Create PR
+Push the feature branch and open a PR:
+```bash
+git push -u origin feat/pop-{component-name-kebab}
+```
+
+Determine the PR base branch:
+- If this is the first component after main, base is `main`
+- Otherwise, base is the previous component's feature branch (check `git log --oneline main..HEAD` to confirm lineage)
+
+Create the PR:
+```bash
+gh pr create --base {base-branch} \
+  --title "feat({tier}): add {ComponentName} with variants" \
+  --body "$(cat <<'PREOF'
+## Summary
+- Add {ComponentName} ({tier}) with {variant list}
+- Unit tests, screenshot tests (light + dark), demo page
+- Registered in CatalogScreen
+
+## Test plan
+- [ ] `./gradlew :library:desktopTest` passes
+- [ ] `./gradlew :library:verifyRoborazziDesktop` passes
+- [ ] Demo page shows all variants in both themes
+PREOF
+)"
+```
+
+### Step 7: Summary
+After PR is created, report:
 ```
 ## Component: {Name}
 - Tier: {foundation/composite/chart}
@@ -110,6 +143,8 @@ After APPROVED and clean state verified, report:
 - Screenshots: {list of golden PNGs}
 - Variants: {list}
 - Review: APPROVED
+- Branch: feat/pop-{name}
+- PR: {PR URL}
 - Git: clean working tree (no uncommitted changes)
 - Concerns: {any notes}
 ```

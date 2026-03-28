@@ -88,10 +88,14 @@ Every component follows this exact workflow:
 - Register in `CatalogScreen.kt` → add entry to `catalogEntries` list
 - Verify light + dark themes both render correctly
 
-### 6. Commit
-- Format: `feat(foundation): add PopComponentName with variants`
-- One component per commit/PR
-- Branch name: `feat/pop-{component-name-kebab}`
+### 6. Branch, Commit, PR
+- Branch from current HEAD: `git checkout -b feat/pop-{component-name-kebab}`
+- Commit format: `feat(foundation): add PopComponentName with variants`
+- No AI branding in commits (no Co-Authored-By, no tool attribution)
+- One component per branch/PR
+- Push and create PR via `gh pr create`
+- Each component branches off the previous component's branch (not main)
+- PRs are merged in order of creation
 
 ## 7 Design Rules (Non-Negotiable)
 

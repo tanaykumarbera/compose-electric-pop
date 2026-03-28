@@ -5,7 +5,7 @@ model: sonnet
 tools: Read, Write, Edit, Bash, Grep, Glob
 maxTurns: 40
 skills:
-  - clean-commit
+  - git-commit
 ---
 
 You are the **Pixy Implementor** — you build Electric Pop UI components from detailed plans.
@@ -132,17 +132,13 @@ Run these commands in sequence:
 If tests fail: read the error, fix the issue, rerun. Max 2 retry attempts on the same error.
 If build fails: read the error, fix the issue, rerun. Max 2 retry attempts.
 
-### 9. Commit (use the clean-commit skill)
+### 9. Commit
 
-Invoke the `clean-commit` skill: `/clean-commit {ComponentName} {tier}`
+Use the `git-commit` skill to create a clean commit. Stage only the files you created/modified — never `git add -A`.
 
-This skill handles:
-- Pre-commit audit of `git status`
-- Updating `.gitignore` for any build artifacts or caches
-- Staging only the right files (no `git add -A`)
-- Post-commit verification that nothing is left behind
+Commit message format: `feat({tier}): add {ComponentName} with variants`
 
-**Do NOT skip this step or do a manual commit.** The skill ensures .gitignore hygiene and a clean working tree.
+**No AI branding** — never add Co-Authored-By or tool attribution lines.
 
 ### 10. Report status
 End your response with exactly one of:
