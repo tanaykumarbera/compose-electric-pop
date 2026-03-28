@@ -156,5 +156,73 @@ fun PopIconDemo() {
                 Text(text = "TrendDown", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
+
+        // Section: New Icons (from Stitch designs)
+        Text(
+            text = "STITCH DESIGN ICONS",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(spacing.md),
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(spacing.xxs),
+            ) {
+                PopIcon(imageVector = PopIcons.Bolt, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                Text(text = "Bolt", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(spacing.xxs),
+            ) {
+                PopIcon(imageVector = PopIcons.Sparkle, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                Text(text = "Sparkle", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(spacing.xxs),
+            ) {
+                PopIcon(imageVector = PopIcons.ArrowForward, contentDescription = null)
+                Text(text = "ArrowForward", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(spacing.xxs),
+            ) {
+                PopIcon(imageVector = PopIcons.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                Text(text = "CheckCircle", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(spacing.xxs),
+            ) {
+                PopIcon(imageVector = PopIcons.Layers, contentDescription = null)
+                Text(text = "Layers", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(spacing.xxs),
+            ) {
+                PopIcon(imageVector = PopIcons.Puzzle, contentDescription = null)
+                Text(text = "Puzzle", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(spacing.xxs),
+            ) {
+                PopIcon(imageVector = PopIcons.Tokens, contentDescription = null)
+                Text(text = "Tokens", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(spacing.xxs),
+            ) {
+                PopIcon(imageVector = PopIcons.Menu, contentDescription = null)
+                Text(text = "Menu", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
     }
 }

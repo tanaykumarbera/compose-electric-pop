@@ -118,7 +118,7 @@ Pixy will then:
 - The library provides `PopIcons` in `com.electricpop.foundation` with 16 built-in `ImageVector` icons
 - All demos, tests, and screenshot tests MUST use `PopIcons.*` (e.g., `PopIcons.Star`, `PopIcons.Check`)
 - NEVER add `material-icons-core` or `material-icons-extended` as a dependency
-- Available icons: Star, Check, Close, Info, Warning, Heart, Home, Search, Settings, Add, ArrowUp, ArrowDown, ArrowBack, Person, TrendUp, TrendDown
+- Available icons: Star, Check, Close, Info, Warning, Heart, Home, Search, Settings, Add, ArrowUp, ArrowDown, ArrowBack, ArrowForward, Person, TrendUp, TrendDown, Bolt, Sparkle, CheckCircle, Layers, Puzzle, Tokens, Menu
 
 **Stitch design comparison:**
 - Reviewer agent now fetches Stitch screenshots at full resolution and compares against component output

@@ -18,39 +18,10 @@ class PopIconScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_light() = runDesktopComposeUiTest(width = 500, height = 400) {
+    fun allVariants_light() = runDesktopComposeUiTest(width = 600, height = 500) {
         setContent {
             ElectricPopTheme(darkTheme = false) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, size = PopIconSize.Small)
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, size = PopIconSize.Medium)
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, size = PopIconSize.Large)
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                        PopIcon(imageVector = PopIcons.Heart, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                        PopIcon(imageVector = PopIcons.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
-                        PopIcon(imageVector = PopIcons.Heart, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
-                        PopIcon(imageVector = PopIcons.Check, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, tint = MaterialTheme.colorScheme.tertiary)
-                        PopIcon(imageVector = PopIcons.Heart, contentDescription = null, tint = MaterialTheme.colorScheme.tertiary)
-                        PopIcon(imageVector = PopIcons.Check, contentDescription = null, tint = MaterialTheme.colorScheme.tertiary)
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, tint = MaterialTheme.colorScheme.error)
-                        PopIcon(imageVector = PopIcons.Heart, contentDescription = null, tint = MaterialTheme.colorScheme.error)
-                        PopIcon(imageVector = PopIcons.Check, contentDescription = null, tint = MaterialTheme.colorScheme.error)
-                    }
-                }
+                AllIconsGrid()
             }
         }
         onRoot().captureRoboImage(filePath = "src/desktopTest/snapshots/PopIcon_allVariants_light.png")
@@ -58,41 +29,69 @@ class PopIconScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_dark() = runDesktopComposeUiTest(width = 500, height = 400) {
+    fun allVariants_dark() = runDesktopComposeUiTest(width = 600, height = 500) {
         setContent {
             ElectricPopTheme(darkTheme = true) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, size = PopIconSize.Small)
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, size = PopIconSize.Medium)
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, size = PopIconSize.Large)
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                        PopIcon(imageVector = PopIcons.Heart, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                        PopIcon(imageVector = PopIcons.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
-                        PopIcon(imageVector = PopIcons.Heart, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
-                        PopIcon(imageVector = PopIcons.Check, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, tint = MaterialTheme.colorScheme.tertiary)
-                        PopIcon(imageVector = PopIcons.Heart, contentDescription = null, tint = MaterialTheme.colorScheme.tertiary)
-                        PopIcon(imageVector = PopIcons.Check, contentDescription = null, tint = MaterialTheme.colorScheme.tertiary)
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                        PopIcon(imageVector = PopIcons.Star, contentDescription = null, tint = MaterialTheme.colorScheme.error)
-                        PopIcon(imageVector = PopIcons.Heart, contentDescription = null, tint = MaterialTheme.colorScheme.error)
-                        PopIcon(imageVector = PopIcons.Check, contentDescription = null, tint = MaterialTheme.colorScheme.error)
-                    }
-                }
+                AllIconsGrid()
             }
         }
         onRoot().captureRoboImage(filePath = "src/desktopTest/snapshots/PopIcon_allVariants_dark.png")
+    }
+}
+
+@androidx.compose.runtime.Composable
+private fun AllIconsGrid() {
+    val cs = androidx.compose.material3.MaterialTheme.colorScheme
+    Column(
+        modifier = Modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        // Row 1: Sizes
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            PopIcon(imageVector = PopIcons.Star, contentDescription = null, size = PopIconSize.Small)
+            PopIcon(imageVector = PopIcons.Star, contentDescription = null, size = PopIconSize.Medium)
+            PopIcon(imageVector = PopIcons.Star, contentDescription = null, size = PopIconSize.Large)
+        }
+        // Row 2: Original icons (default tint)
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            PopIcon(imageVector = PopIcons.Star, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Heart, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Home, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Search, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Settings, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Add, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Close, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Check, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Person, contentDescription = null)
+        }
+        // Row 3: Info, Warning, arrows
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            PopIcon(imageVector = PopIcons.Info, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Warning, contentDescription = null)
+            PopIcon(imageVector = PopIcons.ArrowUp, contentDescription = null)
+            PopIcon(imageVector = PopIcons.ArrowDown, contentDescription = null)
+            PopIcon(imageVector = PopIcons.ArrowBack, contentDescription = null)
+            PopIcon(imageVector = PopIcons.ArrowForward, contentDescription = null)
+            PopIcon(imageVector = PopIcons.TrendUp, contentDescription = null, tint = cs.primary)
+            PopIcon(imageVector = PopIcons.TrendDown, contentDescription = null, tint = cs.error)
+        }
+        // Row 4: New Stitch design icons
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            PopIcon(imageVector = PopIcons.Bolt, contentDescription = null, tint = cs.primary)
+            PopIcon(imageVector = PopIcons.Sparkle, contentDescription = null, tint = cs.primary)
+            PopIcon(imageVector = PopIcons.CheckCircle, contentDescription = null, tint = cs.primary)
+            PopIcon(imageVector = PopIcons.Layers, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Puzzle, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Tokens, contentDescription = null)
+            PopIcon(imageVector = PopIcons.Menu, contentDescription = null)
+        }
+        // Row 5: Theme tints on key icons
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            PopIcon(imageVector = PopIcons.Bolt, contentDescription = null, tint = cs.secondary)
+            PopIcon(imageVector = PopIcons.CheckCircle, contentDescription = null, tint = cs.tertiary)
+            PopIcon(imageVector = PopIcons.Warning, contentDescription = null, tint = cs.error)
+            PopIcon(imageVector = PopIcons.Sparkle, contentDescription = null, tint = cs.tertiary)
+            PopIcon(imageVector = PopIcons.Layers, contentDescription = null, tint = cs.secondary)
+        }
     }
 }

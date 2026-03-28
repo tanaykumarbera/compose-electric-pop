@@ -122,7 +122,7 @@ PopLineChart, PopBarChart, PopDonutChart
 - `compose.material3` — Material3 theming
 - `compose.foundation` — layout primitives
 - `compose.ui` — core UI
-- **NO** `material-icons-core` — library provides `PopIcons` (Star, Check, Info, Warning, Heart, Home, Search, Settings, Add, Close, ArrowUp, ArrowDown, ArrowBack, Person, TrendUp, TrendDown)
+- **NO** `material-icons-core` — library provides `PopIcons` (Star, Check, Close, Info, Warning, Heart, Home, Search, Settings, Add, ArrowUp, ArrowDown, ArrowBack, ArrowForward, Person, TrendUp, TrendDown, Bolt, Sparkle, CheckCircle, Layers, Puzzle, Tokens, Menu)
 
 ## Stitch Design Reference
 
