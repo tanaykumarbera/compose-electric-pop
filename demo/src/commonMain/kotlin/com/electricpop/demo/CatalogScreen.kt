@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.electricpop.demo.components.PopIconDemo
 import com.electricpop.demo.components.PopPillDemo
 
 data class CatalogEntry(
@@ -23,7 +24,7 @@ data class CatalogEntry(
 val catalogEntries = listOf<CatalogEntry>(
     // Wave 1: Core Foundation
     CatalogEntry("PopPill", "Foundation") { PopPillDemo() },
-    // CatalogEntry("PopIcon", "Foundation") { PopIconDemo() },
+    CatalogEntry("PopIcon", "Foundation") { PopIconDemo() },
     // CatalogEntry("PopSurface", "Foundation") { PopSurfaceDemo() },
     // CatalogEntry("PopBadge", "Foundation") { PopBadgeDemo() },
 
