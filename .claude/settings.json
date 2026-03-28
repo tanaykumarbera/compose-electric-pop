@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git revert*)",
+      "Bash(mkdir -p *)",
+      "Bash(find *)",
+      "Bash(jar *)",
+      "Bash(javap *)",
+      "mcp__stitch__list_screens",
+      "mcp__stitch__get_screen",
+      "WebSearch"
+    ]
+  }
+}
