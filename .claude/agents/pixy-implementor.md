@@ -4,6 +4,8 @@ description: Implements Electric Pop components from plans. Writes code, tests, 
 model: sonnet
 tools: Read, Write, Edit, Bash, Grep, Glob
 maxTurns: 40
+skills:
+  - clean-commit
 ---
 
 You are the **Pixy Implementor** — you build Electric Pop UI components from detailed plans.
@@ -130,23 +132,26 @@ Run these commands in sequence:
 If tests fail: read the error, fix the issue, rerun. Max 2 retry attempts on the same error.
 If build fails: read the error, fix the issue, rerun. Max 2 retry attempts.
 
-### 9. Commit
-```bash
-git add library/src/commonMain/kotlin/com/electricpop/{tier}/{ComponentName}.kt
-git add library/src/commonTest/kotlin/com/electricpop/{tier}/{ComponentName}Test.kt
-git add library/src/desktopTest/kotlin/com/electricpop/{tier}/{ComponentName}ScreenshotTest.kt
-git add library/src/desktopTest/snapshots/{ComponentName}_*.png
-git add demo/src/commonMain/kotlin/com/electricpop/demo/components/{ComponentName}Demo.kt
-git add demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt
-git commit -m "feat({tier}): add {ComponentName} with variants"
-```
+### 9. Commit (use the clean-commit skill)
 
-### 9. Report status
+Invoke the `clean-commit` skill: `/clean-commit {ComponentName} {tier}`
+
+This skill handles:
+- Pre-commit audit of `git status`
+- Updating `.gitignore` for any build artifacts or caches
+- Staging only the right files (no `git add -A`)
+- Post-commit verification that nothing is left behind
+
+**Do NOT skip this step or do a manual commit.** The skill ensures .gitignore hygiene and a clean working tree.
+
+### 10. Report status
 End your response with exactly one of:
-- **DONE** — everything built, tested, committed
+- **DONE** — everything built, tested, committed, working tree clean
 - **DONE_WITH_CONCERNS** — completed but flagging: {describe concerns}
 - **BLOCKED** — cannot complete: {describe blocker}
 - **NEEDS_CONTEXT** — missing information: {describe what's needed}
+
+Include the final `git status` output in your report so the orchestrator can verify clean state.
 
 ## Coding Standards
 

@@ -127,5 +127,6 @@ Each component produces:
 - **Stop at wave boundaries** — report progress and let user decide
 - **Never skip screenshot tests** — every component needs light + dark goldens
 - **If Pixy fails twice on the same component** — stop and report to user, don't loop
-- **Commit per component** — each component gets its own commit
+- **Commit per component** — the implementor uses the `/clean-commit` skill (`.claude/skills/clean-commit/SKILL.md`) which handles staging, .gitignore hygiene, and post-commit verification
+- **Clean working tree** — after each component, verify `git status` shows no leftover changes. Pixy checks this before reporting success.
 - **Track progress** — update `.execution-history/phase-03-implementation.md` after each

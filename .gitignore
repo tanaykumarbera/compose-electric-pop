@@ -1,8 +1,18 @@
+# Gradle
 .gradle/
 build/
 local.properties
+
+# IDE
 *.iml
 .idea/
 .DS_Store
+
+# Kotlin
+.kotlin/
+
+# Profiling
 *.hprof
+
+# Superpowers
 .superpowers/

@@ -93,16 +93,24 @@ Returns: APPROVED | ISSUES_FOUND with specific fix list
 - After fixes, re-dispatch `pixy-reviewer`
 - Max 3 iterations. If still failing after 3, STOP and report all unresolved issues to human.
 
-### Step 5: Summary
-After APPROVED, report:
+### Step 5: Verify Clean State
+After APPROVED, run `git status` yourself. If the implementor left uncommitted changes:
+- Check if they're component-related (missed files) → ask implementor to fix
+- Check if they're artifacts/caches → add to `.gitignore` and commit
+- The working tree MUST be clean for this component before reporting success
+
+### Step 6: Summary
+After APPROVED and clean state verified, report:
 ```
 ## Component: {Name}
 - Tier: {foundation/composite/chart}
 - Files created: {list}
 - Files modified: {list}
 - Tests: {count} passing
+- Screenshots: {list of golden PNGs}
 - Variants: {list}
 - Review: APPROVED
+- Git: clean working tree (no uncommitted changes)
 - Concerns: {any notes}
 ```
 

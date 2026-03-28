@@ -120,6 +120,12 @@ For EACH rule, verify:
 
 Run these commands yourself to verify.
 
+### I. Commit Hygiene
+- [ ] Component changes are committed (check `git log -1` for the commit)
+- [ ] `git status` shows no uncommitted changes related to this component
+- [ ] No build artifacts, caches, or IDE files are tracked (check for `.kotlin/`, `build/`, etc.)
+- [ ] `.gitignore` covers all artifact patterns present in the repo
+
 ## Severity Guide
 
 **Critical** (blocks approval):
