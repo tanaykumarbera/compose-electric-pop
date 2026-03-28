@@ -5,8 +5,9 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 ## Pre-Component Setup
 | ID | Step | Status |
 |----|------|--------|
-| P1 | Extract dark color scheme from Stitch dark screens | [PENDING] |
-| P2 | Bundle Space Grotesk + Manrope fonts as compose resources | [PENDING] |
+| P1 | Extract dark color scheme from Stitch dark screens | [DONE] |
+| P2 | Bundle Space Grotesk + Manrope fonts as compose resources | [DONE] |
+| P3 | Replace hand-coded PopIcons with Material Symbols vector resources | [DONE] |
 
 ## Wave 1: Core Foundation
 | ID | Component | Status |

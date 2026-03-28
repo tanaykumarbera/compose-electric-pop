@@ -7,12 +7,11 @@ You are orchestrating the build of Electric Pop UI components using the Pixy age
 Read these files first to understand the project:
 - `CLAUDE.md` — Project rules, SOP, 7 design rules, build commands
 - `AGENTS.md` — Component inventory, agent system, build order
-- `.execution-history/execution-summary-phase-1-2.md` — What was built, lessons learned
 - `.execution-history/phase-03-implementation.md` — Progress tracker (check what's already DONE)
 
 ## Your Job
 
-Build components **one at a time**, in wave order, using the Pixy agent pipeline.
+Build components **one at a time**, in wave order, using the Pixy agent pipeline. Check the progress tracker to find the **next PENDING component** and start from there.
 
 ### Per-Component Steps
 
@@ -37,8 +36,7 @@ Build order context: Wave {W}, component #{N}. Previously completed: {list of DO
 **If `subagent_type="pixy"` is not available** (error: "Agent type 'pixy' not found"), STOP immediately and tell the user:
 - The custom agents in `.claude/agents/` are not being discovered
 - Ask them to verify the files exist: `ls .claude/agents/pixy*.md`
-- Suggest checking Claude Code agent discovery docs: https://code.claude.com/docs/en/sub-agents
-- Do NOT attempt a workaround or inline the agent prompts — the scoped tools and model locking in the agent definitions are critical for quality
+- Do NOT attempt a workaround or inline the agent prompts
 
 2. **Check the result** — Pixy should report APPROVED with a summary. If it reports issues, assess whether to retry or stop.
 
@@ -51,16 +49,18 @@ Build order context: Wave {W}, component #{N}. Previously completed: {list of DO
 After completing each wave, **STOP** and report to the user:
 - How many components were built
 - Any concerns or patterns noticed
-- Token usage estimate for the next wave
 
 This lets the user decide whether to continue in this session or start fresh.
 
 ## Build Order
 
-### Wave 1: Core Foundation (3 remaining — PopPill is DONE)
+Check `.execution-history/phase-03-implementation.md` for current status. Resume from the first PENDING component.
+
+### Wave 1: Core Foundation
 | # | Component | Tier | Variants | Notes |
 |---|-----------|------|----------|-------|
-| 2 | PopIcon | foundation | Material Symbols wrapper | Outlined FILL:0 |
+| 1 | PopPill | foundation | Color presets | DONE |
+| 2 | PopIcon | foundation | Material Symbols wrapper | DONE |
 | 3 | PopSurface | foundation | Themed container | Squircle, tonal shadow |
 | 4 | PopBadge | foundation | Directional + value | Semantic green/red |
 
@@ -111,7 +111,7 @@ This lets the user decide whether to continue in this session or start fresh.
 Pixy orchestrates three sub-agents:
 1. **Planner** (opus) — Creates implementation plan, fetches Stitch designs
 2. **Implementor** (sonnet) — Writes component, unit tests, screenshot tests, demo page; runs builds; commits
-3. **Reviewer** (opus) — Validates against plan, design rules, test quality, screenshots
+3. **Reviewer** (opus) — Validates against plan, design rules, test quality, screenshots, Stitch design comparison, and on-device vision check
 
 Each component produces:
 - `library/src/commonMain/.../foundation/{Component}.kt` — Component code
@@ -127,6 +127,7 @@ Each component produces:
 - **Stop at wave boundaries** — report progress and let user decide
 - **Never skip screenshot tests** — every component needs light + dark goldens
 - **If Pixy fails twice on the same component** — stop and report to user, don't loop
-- **Commit per component** — the implementor uses the `/clean-commit` skill (`.claude/skills/clean-commit/SKILL.md`) which handles staging, .gitignore hygiene, and post-commit verification
-- **Clean working tree** — after each component, verify `git status` shows no leftover changes. Pixy checks this before reporting success.
+- **Commit per component** — use the `git-commit` skill for clean commits with no AI branding
+- **Clean working tree** — after each component, verify `git status` shows no leftover changes
 - **Track progress** — update `.execution-history/phase-03-implementation.md` after each
+- **PopIcons for icons** — use `PopIcons.*` (vector resources), never add material-icons-core

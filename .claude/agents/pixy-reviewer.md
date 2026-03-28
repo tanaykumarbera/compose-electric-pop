@@ -155,7 +155,40 @@ Compare the component's visual output against the original Stitch design:
 
 If you cannot fetch Stitch screens (MCP unavailable), note it as a caveat but don't block approval.
 
-### J. Commit Hygiene
+### J. On-Device Vision Check
+
+If a physical device or emulator is connected, verify the component renders correctly on-device:
+
+1. **Install the demo app:**
+   ```bash
+   ./gradlew :demo:installDebug
+   ```
+
+2. **Navigate to the component demo page:**
+   - Launch the app: `adb shell am start -n com.electricpop.demo/.MainActivity`
+   - Dump UI hierarchy: `adb shell uiautomator dump /sdcard/ui_dump.xml && adb pull /sdcard/ui_dump.xml /tmp/ui_dump.xml`
+   - Parse the XML to find the component entry by text, extract bounds center coordinates
+   - Tap: `adb shell input tap <cx> <cy>`
+   - Wait for navigation: `sleep 1`
+
+3. **Capture and inspect both themes:**
+   - Capture light theme: `adb shell screencap -p /sdcard/review_light.png && adb pull /sdcard/review_light.png /tmp/review_light.png`
+   - Read the screenshot and verify all variants are visible and correctly rendered
+   - Toggle to dark theme (find and tap the theme toggle switch)
+   - Capture dark theme: `adb shell screencap -p /sdcard/review_dark.png && adb pull /sdcard/review_dark.png /tmp/review_dark.png`
+   - Read and verify dark theme rendering
+
+4. **Compare against Stitch design screenshots** (from Section I):
+   - Colors match in both themes
+   - Typography, spacing, and shapes look correct on actual device
+   - No layout overflow or clipping issues
+   - Component is usable at device resolution
+
+5. **Navigate back:** `adb shell input keyevent KEYCODE_BACK`
+
+If no device is connected (`adb devices` returns empty), skip this check and note it as a caveat.
+
+### K. Commit Hygiene
 - [ ] Component changes are committed (check `git log -1` for the commit)
 - [ ] `git status` shows no uncommitted changes related to this component
 - [ ] No build artifacts, caches, or IDE files are tracked (check for `.kotlin/`, `build/`, etc.)
