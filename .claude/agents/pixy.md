@@ -105,7 +105,7 @@ After APPROVED, run `git status` yourself. If the implementor left uncommitted c
 - The working tree MUST be clean for this component before reporting success
 
 ### Step 6: Push and Create PR
-Push the feature branch and open a PR:
+Push the feature branch:
 ```bash
 git push -u origin feat/pop-{component-name-kebab}
 ```
@@ -114,23 +114,26 @@ Determine the PR base branch:
 - If this is the first component after main, base is `main`
 - Otherwise, base is the previous component's feature branch (check `git log --oneline main..HEAD` to confirm lineage)
 
-Create the PR:
-```bash
-gh pr create --base {base-branch} \
-  --title "feat({tier}): add {ComponentName} with variants" \
-  --body "$(cat <<'PREOF'
-## Summary
-- Add {ComponentName} ({tier}) with {variant list}
-- Unit tests, screenshot tests (light + dark), demo page
-- Registered in CatalogScreen
+Create the PR using the GitHub MCP server (use whichever GitHub MCP tools are available):
+- **owner:** `tanaykumarbera`
+- **repo:** `compose-electric-pop`
+- **title:** `feat({tier}): add {ComponentName} with variants`
+- **head:** `feat/pop-{component-name-kebab}`
+- **base:** `{base-branch}`
+- **body:**
+  ```
+  ## Summary
+  - Add {ComponentName} ({tier}) with {variant list}
+  - Unit tests, screenshot tests (light + dark), demo page
+  - Registered in CatalogScreen
 
-## Test plan
-- [ ] `./gradlew :library:desktopTest` passes
-- [ ] `./gradlew :library:verifyRoborazziDesktop` passes
-- [ ] Demo page shows all variants in both themes
-PREOF
-)"
-```
+  ## Test plan
+  - [ ] `./gradlew :library:desktopTest` passes
+  - [ ] `./gradlew :library:verifyRoborazziDesktop` passes
+  - [ ] Demo page shows all variants in both themes
+  ```
+
+If GitHub MCP is unavailable, skip PR creation — just push the branch. The user will create the PR manually.
 
 ### Step 7: Summary
 After PR is created, report:

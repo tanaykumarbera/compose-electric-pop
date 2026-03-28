@@ -93,7 +93,7 @@ Every component follows this exact workflow:
 - Commit format: `feat(foundation): add PopComponentName with variants`
 - No AI branding in commits (no Co-Authored-By, no tool attribution)
 - One component per branch/PR
-- Push and create PR via `gh pr create`
+- Push and create PR via GitHub MCP (if unavailable, just push the branch)
 - Each component branches off the previous component's branch (not main)
 - PRs are merged in order of creation
 

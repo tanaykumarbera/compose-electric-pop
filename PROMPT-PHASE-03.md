@@ -135,21 +135,14 @@ Each component gets its own feature branch and PR:
 2. **After Pixy completes and the component is committed**, push and create a PR:
    ```bash
    git push -u origin feat/pop-{component-name-kebab}
-   gh pr create --base {previous-branch-or-main} \
-     --title "feat({tier}): add {ComponentName} with variants" \
-     --body "$(cat <<'EOF'
-   ## Summary
-   - Add {ComponentName} component ({tier}) with {variant list}
-   - Unit tests, screenshot tests (light + dark), demo page
-   - Registered in CatalogScreen
-
-   ## Test plan
-   - [ ] `./gradlew :library:desktopTest` passes
-   - [ ] `./gradlew :library:verifyRoborazziDesktop` passes
-   - [ ] Demo page shows all variants in both themes
-   EOF
-   )"
    ```
+   Then create a PR using the GitHub MCP server (use whichever GitHub MCP tools are available):
+   - **owner:** `tanaykumarbera`, **repo:** `compose-electric-pop`
+   - **head:** `feat/pop-{component-name-kebab}`
+   - **base:** `{previous-branch-or-main}`
+   - **title/body:** component summary + test plan checklist
+
+   If GitHub MCP is unavailable, skip PR creation — just push the branch.
 
 3. **Then start the next component** by branching off this branch:
    ```bash
