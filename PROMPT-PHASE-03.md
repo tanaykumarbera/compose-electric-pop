@@ -1,0 +1,141 @@
+# Electric Pop — Phase 03: Component Implementation
+
+You are orchestrating the build of Electric Pop UI components using the Pixy agent pipeline.
+
+## Context
+
+Read these files first to understand the project:
+- `CLAUDE.md` — Project rules, SOP, 7 design rules, build commands
+- `AGENTS.md` — Component inventory, agent system, build order
+- `.execution-history/execution-summary-phase-1-2.md` — What was built, lessons learned
+- `.execution-history/phase-03-implementation.md` — Progress tracker (check what's already DONE)
+
+## Your Job
+
+Build components **one at a time**, in wave order, using the Pixy agent pipeline.
+
+### Per-Component Steps
+
+For each component:
+
+1. **Dispatch Pixy** as a foreground agent (wait for completion):
+```
+Agent(
+    subagent_type="pixy",
+    prompt="Build the {COMPONENT_NAME} component for Electric Pop.
+
+Component details from inventory:
+- Tier: {foundation/composite/chart}
+- Variants: {copy from AGENTS.md component table}
+- Key notes: {copy from AGENTS.md component table}
+- Dependencies: {for composites, list foundation components}
+
+Build order context: Wave {W}, component #{N}. Previously completed: {list of DONE components}."
+)
+```
+
+**If `subagent_type="pixy"` is not available**, use this fallback:
+```
+Agent(
+    subagent_type="general-purpose",
+    model="opus",
+    prompt="You are Pixy, the Electric Pop orchestrator.
+Read .claude/agents/pixy.md for your full instructions, then execute them.
+When dispatching sub-agents, read .claude/agents/pixy-planner.md, pixy-implementor.md, pixy-reviewer.md
+and include their system prompt content in each dispatch (use subagent_type='general-purpose'
+with the appropriate model: opus for planner/reviewer, sonnet for implementor).
+
+Build the {COMPONENT_NAME} component.
+{same details as above}"
+)
+```
+
+2. **Check the result** — Pixy should report APPROVED with a summary. If it reports issues, assess whether to retry or stop.
+
+3. **Update progress** — Mark the component as DONE in `.execution-history/phase-03-implementation.md`.
+
+4. **Move to the next component** in wave order.
+
+### Wave Boundaries
+
+After completing each wave, **STOP** and report to the user:
+- How many components were built
+- Any concerns or patterns noticed
+- Token usage estimate for the next wave
+
+This lets the user decide whether to continue in this session or start fresh.
+
+## Build Order
+
+### Wave 1: Core Foundation (3 remaining — PopPill is DONE)
+| # | Component | Tier | Variants | Notes |
+|---|-----------|------|----------|-------|
+| 2 | PopIcon | foundation | Material Symbols wrapper | Outlined FILL:0 |
+| 3 | PopSurface | foundation | Themed container | Squircle, tonal shadow |
+| 4 | PopBadge | foundation | Directional + value | Semantic green/red |
+
+### Wave 2: Input Foundation (7 components)
+| # | Component | Tier | Variants | Notes |
+|---|-----------|------|----------|-------|
+| 5 | PopButton | foundation | Primary, Secondary, Ghost x XL/Large/Small; Icon | Neon glow on primary, kinetic hover/active |
+| 6 | PopTextField | foundation | Standard, Password, Error | Left accent bar on focus, no bottom line |
+| 7 | PopSwitch | foundation | On/Off toggle | secondary_container fill |
+| 8 | PopSlider | foundation | Range with value | 24px thumb |
+| 9 | PopRadioGroup | foundation | Tonal shift radio options | No dividers |
+| 10 | PopChip | foundation | Primary/Secondary/Tertiary container colors | Pill shape |
+| 11 | PopDropdown | foundation | Selector + expand icon | Primary accent |
+
+### Wave 3: Layout Foundation (9 components)
+| # | Component | Tier | Variants | Notes |
+|---|-----------|------|----------|-------|
+| 12 | PopIconRow | foundation | Dynamic 1-N icons | Horizontal cluster |
+| 13 | PopSectionHeader | foundation | Accent label + title + line | Numbered variant |
+| 14 | PopTitleBar | foundation | Title + inline PopPill | Headline italic |
+| 15 | PopDisplayText | foundation | Large text + fractional | Directional coloring |
+| 16 | PopIconListItem | foundation | Icon + description | For guidelines/lists |
+| 17 | PopStepList | foundation | Numbered items + icons | 01/02/03 entries |
+| 18 | PopTable | foundation | Label-value rows | Alternating tonal, colored variants |
+| 19 | PopCodeBlock | foundation | Pre-formatted code | Monospace, copy header |
+| 20 | PopBottomBar | foundation | Icons, Icons+text, active | Glassmorphic, backdrop-blur |
+
+### Wave 4: Composites (7 components)
+| # | Component | Tier | Composes | Notes |
+|---|-----------|------|----------|-------|
+| 21 | PopDataRow | composite | PopIcon, PopDisplayText | Icon + label + value |
+| 22 | PopMetricCard | composite | PopBadge, PopDisplayText, PopSurface | Metric display |
+| 23 | PopFeatureCard | composite | PopDisplayText, PopBadge, PopIconRow, PopSurface | Hero spotlight card |
+| 24 | PopDashboardCard | composite | PopSectionHeader, PopPill, PopDataRow, PopSurface | Data overview |
+| 25 | PopCarouselCard | composite | PopIcon, PopChip, PopDisplayText, PopSurface | Horizontal scroll cards |
+| 26 | PopActionCard | composite | PopDropdown, PopDisplayText, PopButton, PopTextField | Input + actions |
+| 27 | PopBannerCard | composite | PopSurface + headline overlay | Big image + text |
+
+### Wave 5: Charts (3 components)
+| # | Component | Tier | Notes |
+|---|-----------|------|-------|
+| 28 | PopLineChart | chart | Trend line, glow on active points |
+| 29 | PopBarChart | chart | Comparative bars, active scales 1.02x |
+| 30 | PopDonutChart | chart | Circular gauge, center text |
+
+## What Pixy Does Per Component
+
+Pixy orchestrates three sub-agents:
+1. **Planner** (opus) — Creates implementation plan, fetches Stitch designs
+2. **Implementor** (sonnet) — Writes component, unit tests, screenshot tests, demo page; runs builds; commits
+3. **Reviewer** (opus) — Validates against plan, design rules, test quality, screenshots
+
+Each component produces:
+- `library/src/commonMain/.../foundation/{Component}.kt` — Component code
+- `library/src/commonTest/.../foundation/{Component}Test.kt` — Unit tests
+- `library/src/desktopTest/.../foundation/{Component}ScreenshotTest.kt` — Screenshot tests
+- `library/src/desktopTest/snapshots/{Component}_*.png` — Golden images
+- `demo/.../components/{Component}Demo.kt` — Demo page
+- Updated `CatalogScreen.kt` — Registration
+
+## Rules
+
+- **One component at a time** — wait for Pixy to finish before starting the next
+- **Stop at wave boundaries** — report progress and let user decide
+- **Never skip screenshot tests** — every component needs light + dark goldens
+- **If Pixy fails twice on the same component** — stop and report to user, don't loop
+- **Commit per component** — each component gets its own commit
+- **Track progress** — update `.execution-history/phase-03-implementation.md` after each
