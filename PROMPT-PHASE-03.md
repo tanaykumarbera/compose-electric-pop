@@ -34,21 +34,11 @@ Build order context: Wave {W}, component #{N}. Previously completed: {list of DO
 )
 ```
 
-**If `subagent_type="pixy"` is not available**, use this fallback:
-```
-Agent(
-    subagent_type="general-purpose",
-    model="opus",
-    prompt="You are Pixy, the Electric Pop orchestrator.
-Read .claude/agents/pixy.md for your full instructions, then execute them.
-When dispatching sub-agents, read .claude/agents/pixy-planner.md, pixy-implementor.md, pixy-reviewer.md
-and include their system prompt content in each dispatch (use subagent_type='general-purpose'
-with the appropriate model: opus for planner/reviewer, sonnet for implementor).
-
-Build the {COMPONENT_NAME} component.
-{same details as above}"
-)
-```
+**If `subagent_type="pixy"` is not available** (error: "Agent type 'pixy' not found"), STOP immediately and tell the user:
+- The custom agents in `.claude/agents/` are not being discovered
+- Ask them to verify the files exist: `ls .claude/agents/pixy*.md`
+- Suggest checking Claude Code agent discovery docs: https://code.claude.com/docs/en/sub-agents
+- Do NOT attempt a workaround or inline the agent prompts — the scoped tools and model locking in the agent definitions are critical for quality
 
 2. **Check the result** — Pixy should report APPROVED with a summary. If it reports issues, assess whether to retry or stop.
 
