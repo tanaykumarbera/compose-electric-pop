@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.electricpop.demo.components.PopIconDemo
 import com.electricpop.demo.components.PopPillDemo
+import com.electricpop.demo.components.PopSurfaceDemo
 
 data class CatalogEntry(
     val name: String,
@@ -25,7 +26,7 @@ val catalogEntries = listOf<CatalogEntry>(
     // Wave 1: Core Foundation
     CatalogEntry("PopPill", "Foundation") { PopPillDemo() },
     CatalogEntry("PopIcon", "Foundation") { PopIconDemo() },
-    // CatalogEntry("PopSurface", "Foundation") { PopSurfaceDemo() },
+    CatalogEntry("PopSurface", "Foundation") { PopSurfaceDemo() },
     // CatalogEntry("PopBadge", "Foundation") { PopBadgeDemo() },
 
     // Wave 2: Input Foundation
