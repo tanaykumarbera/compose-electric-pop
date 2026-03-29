@@ -125,6 +125,13 @@ Pixy will then:
 - Append `=s0` to Google Photos URLs for original size
 - Stitch project ID: `7983075619754946215`
 
+**Branching and base branch resolution:**
+- Each component gets its own `feat/pop-{name}` branch, chained off the previous component's branch
+- PRs are merged in order; once merged, the base branch is **deleted from origin**
+- When creating a PR, always check `git ls-remote --heads origin` first to confirm the intended base branch still exists on the remote
+- If the base branch has been deleted (merged to main), use `main` as the PR base instead — this is expected behaviour, not an error
+- Example: if `feat/pop-surface` was merged and deleted, `feat/pop-badge` PR should target `main`
+
 **Android build notes:**
 - `compileSdk = 36` required (squircle-shape dependency)
 - Demo lint is disabled (AGP 8.7.3 / Kotlin 2.3.20 incompatibility)
