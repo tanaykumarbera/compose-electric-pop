@@ -14,8 +14,8 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 |----|-----------|--------|
 | 1 | PopPill | [DONE] |
 | 2 | PopIcon | [DONE] |
-| 3 | PopSurface | [PENDING] |
-| 4 | PopBadge | [PENDING] |
+| 3 | PopSurface | [DONE] |
+| 4 | PopBadge | [DONE] |
 
 ## Wave 2: Input Foundation
 | ID | Component | Status |
