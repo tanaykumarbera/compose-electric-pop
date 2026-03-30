@@ -16,3 +16,6 @@ local.properties
 
 # Superpowers
 .superpowers/
+
+# Claude Code session data
+.claude/projects/
