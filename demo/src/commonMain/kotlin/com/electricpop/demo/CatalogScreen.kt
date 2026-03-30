@@ -14,6 +14,7 @@ import com.electricpop.demo.components.PopPillDemo
 import com.electricpop.demo.components.PopSurfaceDemo
 import com.electricpop.demo.components.PopBadgeDemo
 import com.electricpop.demo.components.PopButtonDemo
+import com.electricpop.demo.components.PopTextFieldDemo
 
 data class CatalogEntry(
     val name: String,
@@ -33,7 +34,7 @@ val catalogEntries = listOf<CatalogEntry>(
 
     // Wave 2: Input Foundation
     CatalogEntry("PopButton", "Foundation") { PopButtonDemo() },
-    // CatalogEntry("PopTextField", "Foundation") { PopTextFieldDemo() },
+    CatalogEntry("PopTextField", "Foundation") { PopTextFieldDemo() },
     // CatalogEntry("PopSwitch", "Foundation") { PopSwitchDemo() },
     // CatalogEntry("PopSlider", "Foundation") { PopSliderDemo() },
     // CatalogEntry("PopRadioGroup", "Foundation") { PopRadioGroupDemo() },
