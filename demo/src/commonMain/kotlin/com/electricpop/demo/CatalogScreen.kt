@@ -13,6 +13,7 @@ import com.electricpop.demo.components.PopIconDemo
 import com.electricpop.demo.components.PopPillDemo
 import com.electricpop.demo.components.PopSurfaceDemo
 import com.electricpop.demo.components.PopBadgeDemo
+import com.electricpop.demo.components.PopButtonDemo
 
 data class CatalogEntry(
     val name: String,
@@ -31,7 +32,7 @@ val catalogEntries = listOf<CatalogEntry>(
     CatalogEntry("PopBadge", "Foundation") { PopBadgeDemo() },
 
     // Wave 2: Input Foundation
-    // CatalogEntry("PopButton", "Foundation") { PopButtonDemo() },
+    CatalogEntry("PopButton", "Foundation") { PopButtonDemo() },
     // CatalogEntry("PopTextField", "Foundation") { PopTextFieldDemo() },
     // CatalogEntry("PopSwitch", "Foundation") { PopSwitchDemo() },
     // CatalogEntry("PopSlider", "Foundation") { PopSliderDemo() },
