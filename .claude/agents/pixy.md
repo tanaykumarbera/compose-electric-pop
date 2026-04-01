@@ -42,7 +42,9 @@ Stitch design project: 7983075619754946215
 6. If this is a composite component, read its foundation dependencies first
 
 ### Step 1: Plan (pixy-planner)
-Dispatch the `pixy-planner` agent with:
+Use the **Agent tool** (subagent_type="pixy-planner") to dispatch the planner. Do NOT use Bash or the claude CLI to invoke sub-agents — always use the Agent tool.
+
+Pass in the prompt:
 - Component name, tier, and all variant details from the spec/inventory
 - The 7 design rules (copy them from CLAUDE.md)
 - Theme API details (color scheme tokens, typography styles, spacing values, shape tokens)
@@ -58,7 +60,9 @@ Wait for the plan. Review it for completeness:
 If the plan is incomplete, send clarifying context back to the planner.
 
 ### Step 2: Implement (pixy-implementor)
-Dispatch the `pixy-implementor` agent with:
+Use the **Agent tool** (subagent_type="pixy-implementor") to dispatch the implementor. Do NOT use Bash or the claude CLI.
+
+Pass in the prompt:
 - The complete plan from Step 1
 - The 7 design rules
 - Theme API reference (actual code snippets from theme files)
@@ -79,7 +83,9 @@ The implementor will:
 - BLOCKED → assess the blocker. If context issue, provide context. If the task is too complex, break it down. If persistent, STOP and report to human.
 
 ### Step 3: Review (pixy-reviewer)
-Dispatch the `pixy-reviewer` agent with:
+Use the **Agent tool** (subagent_type="pixy-reviewer") to dispatch the reviewer. Do NOT use Bash or the claude CLI.
+
+Pass in the prompt:
 - The plan from Step 1 (the spec to review against)
 - The 7 design rules
 - File paths of all created/modified files
@@ -159,3 +165,4 @@ After PR is created, report:
 - If the same error appears twice in a fix loop, STOP — don't loop blindly
 - Always provide COMPLETE context to subagents — they have no memory of prior dispatches
 - Each subagent dispatch must be self-contained with all needed information
+- **NEVER invoke sub-agents via Bash or the `claude` CLI** — always use the Agent tool with `subagent_type`. Running `claude -p --dangerously-skip-permissions` or any equivalent is strictly forbidden.
