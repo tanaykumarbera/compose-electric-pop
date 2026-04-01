@@ -116,16 +116,18 @@ Push the feature branch:
 git push -u origin feat/pop-{component-name-kebab}
 ```
 
-Determine the PR base branch:
-- If this is the first component after main, base is `main`
-- Otherwise, base is the previous component's feature branch (check `git log --oneline main..HEAD` to confirm lineage)
+> **CAUTION — never push to `main` directly.**
+> Only push to the feature branch (`feat/pop-*`). Merging to `main` is the user's responsibility via PR.
+> Never run `git push origin HEAD:main`, `git push origin feat/...:main`, or any force-push variant targeting `main`.
+
+The PR base is always `main`:
 
 Create the PR using the GitHub MCP server (use whichever GitHub MCP tools are available):
 - **owner:** `tanaykumarbera`
 - **repo:** `compose-electric-pop`
 - **title:** `feat({tier}): add {ComponentName} with variants`
 - **head:** `feat/pop-{component-name-kebab}`
-- **base:** `{base-branch}`
+- **base:** `main`
 - **body:**
   ```
   ## Summary
@@ -166,3 +168,4 @@ After PR is created, report:
 - Always provide COMPLETE context to subagents — they have no memory of prior dispatches
 - Each subagent dispatch must be self-contained with all needed information
 - **NEVER invoke sub-agents via Bash or the `claude` CLI** — always use the Agent tool with `subagent_type`. Running `claude -p --dangerously-skip-permissions` or any equivalent is strictly forbidden.
+- **NEVER push to `main`** — only push feature branches. Merging to main is the user's action via PR. Never run any git command that targets `main` as the destination (no `push origin HEAD:main`, no `push --force origin ...:main`).

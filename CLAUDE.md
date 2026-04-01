@@ -93,7 +93,7 @@ Every component follows this exact workflow:
 - Commit format: `feat(foundation): add PopComponentName with variants`
 - No AI branding in commits (no Co-Authored-By, no tool attribution)
 - One component per branch/PR
-- Push and create PR via GitHub MCP (if unavailable, just push the branch)
+- Push the **feature branch** only — never push to `main`. Merging to main is the user's action via PR.
 - Branch from the previous component's branch (for code continuity), but **all PRs target `main` directly**
 - Never set a feature branch as a PR's base
 
