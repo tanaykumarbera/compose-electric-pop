@@ -2,7 +2,7 @@
 name: pixy-planner
 description: Creates detailed implementation plans for Electric Pop components. Only invoked by the pixy orchestrator.
 model: opus
-tools: Read, Grep, Glob, Bash, mcp__stitch__get_screen, mcp__stitch__list_screens
+tools: Read, Grep, Glob, Bash, "mcp__stitch__*", "mcp__github__get_*", "mcp__github__list_*", "mcp__github__search_*"
 maxTurns: 25
 ---
 

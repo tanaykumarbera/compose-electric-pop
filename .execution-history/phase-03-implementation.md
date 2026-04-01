@@ -31,7 +31,7 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 ## Wave 3: Layout Foundation
 | ID | Component | Status |
 |----|-----------|--------|
-| 12 | PopIconRow | [PENDING] |
+| 12 | PopIconRow | [DONE] |
 | 13 | PopSectionHeader | [PENDING] |
 | 14 | PopTitleBar | [PENDING] |
 | 15 | PopDisplayText | [PENDING] |
