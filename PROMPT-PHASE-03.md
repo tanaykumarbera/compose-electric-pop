@@ -142,6 +142,12 @@ Each component gets its own feature branch and PR:
    - **base:** `{previous-branch-or-main}`
    - **title/body:** component summary + test plan checklist
 
+   **Before creating the PR**, verify the intended base branch still exists on the remote:
+   ```bash
+   git ls-remote --heads origin feat/pop-{previous-component}
+   ```
+   If it returns nothing, the branch was merged and deleted — use `main` as the base instead.
+
    If GitHub MCP is unavailable, skip PR creation — just push the branch.
 
 3. **Then start the next component** by branching off this branch:
@@ -151,6 +157,7 @@ Each component gets its own feature branch and PR:
 
 This creates a chain: `main` ← `feat/pop-surface` ← `feat/pop-badge` ← ...
 PRs are merged in order, so each PR's base is the previous component's branch.
+**Note:** once a PR is merged, its branch is deleted from origin — so the next PR's base will appear to be missing. That's expected; use `main` in that case.
 
 ## Rules
 

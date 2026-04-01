@@ -108,9 +108,9 @@ val PopOutlineVariantDark = Color(0xFF3A3D3E)
 // Primary (lime) stays vivid, containers are muted
 val ElectricPopDarkColorScheme = darkColorScheme(
     primary = ElectricLimeContainer,          // #CAFD00 — lime as headline/accent color
-    onPrimary = Color(0xFF1C2600),            // dark text on lime
+    onPrimary = OnElectricLimeContainer,      // #4A5E00 — olive green on lime (matches light)
     primaryContainer = ElectricLimeContainer, // #CAFD00 — neon lime stays vivid in dark
-    onPrimaryContainer = Color(0xFF1C2600),   // dark text on vivid lime
+    onPrimaryContainer = OnElectricLimeContainer, // #4A5E00 — same lime container as light → same on-color
     secondary = Color(0xFFFFB1EE),            // lighter magenta for dark
     onSecondary = Color(0xFF5C005C),          // dark text on light magenta
     secondaryContainer = Color(0xFF7A007A),   // deep magenta containers

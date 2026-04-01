@@ -20,13 +20,13 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 ## Wave 2: Input Foundation
 | ID | Component | Status |
 |----|-----------|--------|
-| 5 | PopButton | [PENDING] |
-| 6 | PopTextField | [PENDING] |
-| 7 | PopSwitch | [PENDING] |
-| 8 | PopSlider | [PENDING] |
-| 9 | PopRadioGroup | [PENDING] |
-| 10 | PopChip | [PENDING] |
-| 11 | PopDropdown | [PENDING] |
+| 5 | PopButton | [DONE] |
+| 6 | PopTextField | [DONE] |
+| 7 | PopSwitch | [DONE] |
+| 8 | PopSlider | [DONE] |
+| 9 | PopRadioGroup | [DONE] |
+| 10 | PopChip | [DONE] |
+| 11 | PopDropdown | [DONE] |
 
 ## Wave 3: Layout Foundation
 | ID | Component | Status |

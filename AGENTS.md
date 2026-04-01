@@ -1,5 +1,7 @@
 # Electric Pop — Agent Guide
 
+> **TL;DR for fresh sessions:** To build a component, dispatch `pixy-planner` → `pixy-implementor` → `pixy-reviewer` directly via the Agent tool. Do NOT use the `pixy` orchestrator — it causes multi-level nesting failures. See "How to Build a Component" below.
+
 ## Project Context
 
 Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pulse" design system.
@@ -71,34 +73,48 @@ Agents are defined as custom Claude Code agents in `.claude/agents/`. Each agent
 | Implementor | `.claude/agents/pixy-implementor.md` | sonnet | Writes code, tests, demos; runs builds; commits |
 | Reviewer | `.claude/agents/pixy-reviewer.md` | opus | Reviews against plan, design rules, and test quality |
 
-### How to Invoke Pixy
+### How to Build a Component
 
-To build a component, dispatch the `pixy` agent with the component name and details:
+The main Claude session acts as the orchestrator. Dispatch the three subagents directly — **do NOT use the `pixy` orchestrator agent**. Multi-level agent nesting (main → pixy → subagents) causes pixy to fall back to spawning `claude` CLI subprocesses instead of using the Agent tool.
+
+**Correct pattern (2-level nesting):**
 
 ```
-Agent(
-    subagent_type="pixy",
-    prompt="""
-Build the {COMPONENT_NAME} component for Electric Pop.
+Step 1 — Plan:
+Agent(subagent_type="pixy-planner", prompt="""
+  Component: {NAME}, Tier: {foundation/composite/chart}
+  Variants: {list}, Key notes: {notes}
+  7 design rules: [copy from CLAUDE.md]
+  Theme API: [colors, typography, spacing, shapes]
+  Stitch project ID: 7983075619754946215
+  For composites: foundation component code they depend on
+""")
 
-Component details from inventory:
-- Tier: {foundation/composite/chart}
-- Variants: {list from component table below}
-- Key notes: {from component table below}
-- Dependencies: {for composites, list foundation components}
+Step 2 — Implement (using the plan from Step 1):
+Agent(subagent_type="pixy-implementor", prompt="""
+  [Full plan from Step 1]
+  Branch: create feat/pop-{name} from current HEAD
+  Build commands, commit format, reference files to read
+""")
 
-Build order context: This is component #{N} in wave {W}. Previously completed: {list}.
-"""
-)
+Step 3 — Review:
+Agent(subagent_type="pixy-reviewer", prompt="""
+  [Plan from Step 1 as the spec]
+  Files created: [list from Step 2]
+  7 design rules
+  Stitch project ID for visual comparison
+  NOTE: crop Stitch images >4000px before reading
+""")
+
+Step 4 — Fix loop (if ISSUES_FOUND):
+  Re-dispatch pixy-implementor with reviewer's fix list
+  Then re-dispatch pixy-reviewer. Max 3 iterations.
+
+Step 5 — After APPROVED:
+  git push + create PR via GitHub MCP
+  PR base = previous component's branch (or main if merged/deleted)
+  Update .execution-history/phase-03-implementation.md
 ```
-
-Pixy will then:
-1. Read project context (CLAUDE.md, spec, AGENTS.md)
-2. Dispatch `pixy-planner` to create an implementation plan
-3. Dispatch `pixy-implementor` to execute the plan
-4. Dispatch `pixy-reviewer` to validate the implementation
-5. Loop fixes if needed (max 3 iterations)
-6. Report summary
 
 ### Key Design Decisions
 
@@ -142,13 +158,13 @@ Pixy will then:
 
 Build in dependency order — foundations first, then composites that depend on them.
 
-### Wave 1: Core Foundation (no dependencies)
-1. PopPill (simplest — good for testing the pipeline)
-2. PopIcon
-3. PopSurface
-4. PopBadge
+### Wave 1: Core Foundation — **COMPLETE** (all merged to main)
+1. PopPill ✓
+2. PopIcon ✓
+3. PopSurface ✓
+4. PopBadge ✓ (PR #2 open, branch: feat/pop-badge)
 
-### Wave 2: Input Foundation
+### Wave 2: Input Foundation — **NEXT** (start from feat/pop-badge)
 5. PopButton
 6. PopTextField
 7. PopSwitch
