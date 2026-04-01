@@ -1,5 +1,10 @@
 # Electric Pop — Agent Guide
 
+> **TL;DR for fresh sessions:**
+> - **Recommended:** Run `claude --agent pixy` to start the session *as* pixy (2-level nesting: pixy → sub-agents). Then reference `@PROMPT-PHASE-03.md`.
+> - **Alternative:** Start a plain `claude` session and dispatch `pixy-planner` → `pixy-implementor` → `pixy-reviewer` directly via the Agent tool — without going through pixy as an intermediate.
+> - **Never do:** main session → `Agent(pixy)` → sub-agents. This 3-level nesting causes pixy to fall back to CLI subprocess dispatch instead of using the Agent tool.
+
 ## Project Context
 
 Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pulse" design system.

@@ -1,6 +1,18 @@
 # Electric Pop — Phase 03: Component Implementation
 
-You are orchestrating the build of Electric Pop UI components using the Pixy agent pipeline.
+## How to Start This Session
+
+**Recommended:** Start Claude as the pixy orchestrator directly:
+```bash
+claude --agent pixy
+```
+Then paste this file's contents (or `@PROMPT-PHASE-03.md`) as your first message. Pixy will read the project context and resume from the next PENDING component.
+
+**Why this way:** Running `claude --agent pixy` makes the main session *be* pixy — 2-level nesting (pixy → sub-agents). The broken pattern was main → pixy (via Agent tool) → sub-agents (3 levels), which caused pixy to fall back to CLI subprocess dispatch.
+
+**Alternative (regular Claude session):** If you start a plain `claude` session, use the direct dispatch pattern described in the "Per-Component Steps" section below — dispatch pixy-planner, pixy-implementor, and pixy-reviewer yourself without going through the pixy orchestrator.
+
+---
 
 ## Context
 
@@ -11,74 +23,89 @@ Read these files first to understand the project:
 
 ## Your Job
 
-Build components **one at a time**, in wave order, using the Pixy agent pipeline. Check the progress tracker to find the **next PENDING component** and start from there.
+Build components **one at a time**, in wave order. Check the progress tracker to find the **next PENDING component** and start from there.
 
 ### Per-Component Steps
 
-For each component:
+For each component, run these three sub-agents **in sequence** (wait for each to finish before starting the next):
 
-1. **Dispatch Pixy** as a foreground agent (wait for completion):
+**Step 1 — Plan:**
 ```
-Agent(
-    subagent_type="pixy",
-    prompt="Build the {COMPONENT_NAME} component for Electric Pop.
-
-Component details from inventory:
-- Tier: {foundation/composite/chart}
-- Variants: {copy from AGENTS.md component table}
-- Key notes: {copy from AGENTS.md component table}
-- Dependencies: {for composites, list foundation components}
-
-Build order context: Wave {W}, component #{N}. Previously completed: {list of DONE components}."
-)
+Agent(subagent_type="pixy-planner", prompt="""
+  Component: {NAME}, Tier: {foundation/composite/chart}
+  Variants: {list from AGENTS.md}
+  Key notes: {notes from AGENTS.md}
+  [7 design rules from CLAUDE.md]
+  [Theme API: colors, typography, spacing, shapes]
+  Stitch project ID: 7983075619754946215
+  For composites: paste actual code of foundation dependencies
+""")
 ```
 
-**If `subagent_type="pixy"` is not available** (error: "Agent type 'pixy' not found"), STOP immediately and tell the user:
-- The custom agents in `.claude/agents/` are not being discovered
-- Ask them to verify the files exist: `ls .claude/agents/pixy*.md`
-- Do NOT attempt a workaround or inline the agent prompts
+**Step 2 — Implement** (using the full plan from Step 1):
+```
+Agent(subagent_type="pixy-implementor", prompt="""
+  [Full plan from Step 1]
+  Branch: create feat/pop-{name} from current HEAD (feat/pop-{previous})
+  Build: ./gradlew :library:desktopTest
+  Screenshots: ./gradlew :library:recordRoborazziDesktop then verifyRoborazziDesktop
+  Commit format: feat(foundation): add {ComponentName} with variants
+  No Co-Authored-By or AI attribution in commits
+""")
+```
 
-2. **Check the result** — Pixy should report APPROVED with a summary. If it reports issues, assess whether to retry or stop.
+**Step 3 — Review** (using the plan as spec):
+```
+Agent(subagent_type="pixy-reviewer", prompt="""
+  [Plan from Step 1 as the spec]
+  Files created: [list from Step 2]
+  [7 design rules]
+  Stitch project ID: 7983075619754946215 — fetch BOTH light and dark screens
+  NOTE: crop Stitch images >4000px before reading
+""")
+```
 
-3. **Update progress** — Mark the component as DONE in `.execution-history/phase-03-implementation.md`.
+**Step 4 — Fix loop** (if reviewer returns ISSUES_FOUND):
+- Re-dispatch pixy-implementor with the fix list
+- Re-dispatch pixy-reviewer. Max 3 iterations — stop and report if still failing.
 
-4. **Move to the next component** in wave order.
+**Step 5 — After APPROVED:**
+- Push branch and create PR via GitHub MCP
+  - owner: `tanaykumarbera`, repo: `compose-electric-pop`
+  - Check base branch still exists: `git ls-remote --heads origin feat/pop-{previous}`
+  - If deleted (merged), use `main` as base
+- Update `.execution-history/phase-03-implementation.md` — mark component DONE
+- Branch next component off this branch: `git checkout -b feat/pop-{next}`
 
-### Wave Boundaries
-
-After completing each wave, **STOP** and report to the user:
-- How many components were built
-- Any concerns or patterns noticed
-
-This lets the user decide whether to continue in this session or start fresh.
+---
 
 ## Build Order
 
 Check `.execution-history/phase-03-implementation.md` for current status. Resume from the first PENDING component.
 
-### Wave 1: Core Foundation
-| # | Component | Tier | Variants | Notes |
-|---|-----------|------|----------|-------|
-| 1 | PopPill | foundation | Color presets | DONE |
-| 2 | PopIcon | foundation | Material Symbols wrapper | DONE |
-| 3 | PopSurface | foundation | Themed container | Squircle, tonal shadow |
-| 4 | PopBadge | foundation | Directional + value | Semantic green/red |
+### Wave 1: Core Foundation — DONE
+| # | Component | Status |
+|---|-----------|--------|
+| 1 | PopPill | DONE |
+| 2 | PopIcon | DONE |
+| 3 | PopSurface | DONE |
+| 4 | PopBadge | DONE |
 
-### Wave 2: Input Foundation (7 components)
-| # | Component | Tier | Variants | Notes |
-|---|-----------|------|----------|-------|
-| 5 | PopButton | foundation | Primary, Secondary, Ghost x XL/Large/Small; Icon | Neon glow on primary, kinetic hover/active |
-| 6 | PopTextField | foundation | Standard, Password, Error | Left accent bar on focus, no bottom line |
-| 7 | PopSwitch | foundation | On/Off toggle | secondary_container fill |
-| 8 | PopSlider | foundation | Range with value | 24px thumb |
-| 9 | PopRadioGroup | foundation | Tonal shift radio options | No dividers |
-| 10 | PopChip | foundation | Primary/Secondary/Tertiary container colors | Pill shape |
-| 11 | PopDropdown | foundation | Selector + expand icon | Primary accent |
+### Wave 2: Input Foundation — DONE
+| # | Component | Status |
+|---|-----------|--------|
+| 5 | PopButton | DONE |
+| 6 | PopTextField | DONE |
+| 7 | PopSwitch | DONE |
+| 8 | PopSlider | DONE |
+| 9 | PopRadioGroup | DONE |
+| 10 | PopChip | DONE |
+| 11 | PopDropdown | DONE |
 
-### Wave 3: Layout Foundation (9 components)
+### Wave 3: Layout Foundation — NEXT (start from feat/pop-dropdown)
 | # | Component | Tier | Variants | Notes |
 |---|-----------|------|----------|-------|
-| 12 | PopIconRow | foundation | Dynamic 1-N icons | Horizontal cluster |
+| 12 | PopIconRow | foundation | Dynamic 1-N icons | Horizontal cluster, used by PopFeatureCard |
 | 13 | PopSectionHeader | foundation | Accent label + title + line | Numbered variant |
 | 14 | PopTitleBar | foundation | Title + inline PopPill | Headline italic |
 | 15 | PopDisplayText | foundation | Large text + fractional | Directional coloring |
@@ -106,61 +133,33 @@ Check `.execution-history/phase-03-implementation.md` for current status. Resume
 | 29 | PopBarChart | chart | Comparative bars, active scales 1.02x |
 | 30 | PopDonutChart | chart | Circular gauge, center text |
 
-## What Pixy Does Per Component
+---
 
-Pixy orchestrates three sub-agents:
-1. **Planner** (opus) — Creates implementation plan, fetches Stitch designs
-2. **Implementor** (sonnet) — Writes component, unit tests, screenshot tests, demo page; runs builds; commits
-3. **Reviewer** (opus) — Validates against plan, design rules, test quality, screenshots, Stitch design comparison, and on-device vision check
+## What Each Sub-Agent Does
+
+| Agent | Model | Role |
+|-------|-------|------|
+| pixy-planner | opus | Creates implementation plan, fetches Stitch designs |
+| pixy-implementor | sonnet | Writes component, unit tests, screenshot tests, demo; runs builds; commits |
+| pixy-reviewer | opus | Validates against plan, design rules, test quality, Stitch visual comparison |
 
 Each component produces:
-- `library/src/commonMain/.../foundation/{Component}.kt` — Component code
-- `library/src/commonTest/.../foundation/{Component}Test.kt` — Unit tests
-- `library/src/desktopTest/.../foundation/{Component}ScreenshotTest.kt` — Screenshot tests
-- `library/src/desktopTest/snapshots/{Component}_*.png` — Golden images
-- `demo/.../components/{Component}Demo.kt` — Demo page
-- Updated `CatalogScreen.kt` — Registration
+- `library/src/commonMain/.../foundation/{Component}.kt`
+- `library/src/commonTest/.../foundation/{Component}Test.kt`
+- `library/src/desktopTest/.../foundation/{Component}ScreenshotTest.kt`
+- `library/src/desktopTest/snapshots/{Component}_*.png` — light + dark goldens
+- `demo/.../components/{Component}Demo.kt`
+- Updated `CatalogScreen.kt`
 
-## Branching Strategy
-
-Each component gets its own feature branch and PR:
-
-1. **Before starting a component**, create a feature branch from the current HEAD:
-   ```bash
-   git checkout -b feat/pop-{component-name-kebab}
-   ```
-   The first component branches off `main`. Each subsequent component branches off the
-   previous component's branch (not `main`), since PRs are merged in order.
-
-2. **After Pixy completes and the component is committed**, push and create a PR:
-   ```bash
-   git push -u origin feat/pop-{component-name-kebab}
-   ```
-   Then create a PR using the GitHub MCP server (use whichever GitHub MCP tools are available):
-   - **owner:** `tanaykumarbera`, **repo:** `compose-electric-pop`
-   - **head:** `feat/pop-{component-name-kebab}`
-   - **base:** `{previous-branch-or-main}`
-   - **title/body:** component summary + test plan checklist
-
-   If GitHub MCP is unavailable, skip PR creation — just push the branch.
-
-3. **Then start the next component** by branching off this branch:
-   ```bash
-   git checkout -b feat/pop-{next-component-name-kebab}
-   ```
-
-This creates a chain: `main` ← `feat/pop-surface` ← `feat/pop-badge` ← ...
-PRs are merged in order, so each PR's base is the previous component's branch.
+---
 
 ## Rules
 
-- **One component at a time** — wait for Pixy to finish before starting the next
-- **Branch per component** — each component gets `feat/pop-{name}` branch and a PR
-- **Chain branches** — each new branch starts from the previous component's branch
-- **Stop at wave boundaries** — report progress and let user decide
+- **One component at a time** — wait for all three agents to finish before starting the next
+- **Branch per component** — each component gets `feat/pop-{name}` branch chained off the previous
 - **Never skip screenshot tests** — every component needs light + dark goldens
-- **If Pixy fails twice on the same component** — stop and report to user, don't loop
-- **Commit per component** — use the `git-commit` skill for clean commits with no AI branding
-- **Clean working tree** — after each component, verify `git status` shows no leftover changes
-- **Track progress** — update `.execution-history/phase-03-implementation.md` after each
-- **PopIcons for icons** — use `PopIcons.*` (vector resources), never add material-icons-core
+- **Stop at wave boundaries** — report progress and let user decide whether to continue
+- **If a component fails after 3 reviewer iterations** — stop and report, don't loop
+- **Clean working tree** — after each component, `git status` must be clean
+- **No AI attribution** — no Co-Authored-By or tool branding in commits
+- **PopIcons for icons** — use `PopIcons.*`, never add material-icons-core
