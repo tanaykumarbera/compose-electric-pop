@@ -94,8 +94,8 @@ Every component follows this exact workflow:
 - No AI branding in commits (no Co-Authored-By, no tool attribution)
 - One component per branch/PR
 - Push and create PR via GitHub MCP (if unavailable, just push the branch)
-- Each component branches off the previous component's branch (not main)
-- PRs are merged in order of creation
+- Branch from the previous component's branch (for code continuity), but **all PRs target `main` directly**
+- Never set a feature branch as a PR's base
 
 ## 7 Design Rules (Non-Negotiable)
 
