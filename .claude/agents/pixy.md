@@ -2,7 +2,7 @@
 name: pixy
 description: Electric Pop orchestrator. Use when building any component from the Electric Pop design system. Dispatches planner, implementor, and reviewer subagents in sequence to build one component end-to-end.
 model: opus
-tools: Agent, Read, Grep, Glob, Bash
+tools: Agent, Read, Grep, Glob, Bash, mcp__github__create_pull_request
 maxTurns: 50
 ---
 
