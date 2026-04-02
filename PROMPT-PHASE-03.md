@@ -20,6 +20,7 @@ Read these files first to understand the project:
 - `CLAUDE.md` — Project rules, SOP, 7 design rules, build commands
 - `AGENTS.md` — Component inventory, agent system, build order
 - `.execution-history/phase-03-implementation.md` — Progress tracker (check what's already DONE)
+- `.execution-history/resume-context.md` — If this file exists, read it FIRST. It contains pending actions from a previous session (e.g., PRs not yet created). Complete those actions before starting new components, then delete the file.
 
 ## Your Job
 
