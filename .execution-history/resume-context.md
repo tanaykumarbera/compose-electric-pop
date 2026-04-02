@@ -1,42 +1,33 @@
 # Resume Context — Phase 03
 
 ## Current State (as of session end)
-- **Branch:** `feat/pop-section-header` (pushed to origin)
-- **Last completed:** PopSectionHeader (#13) — DONE, code committed, branch pushed
-- **PR needed:** PopSectionHeader PR was NOT created (GitHub MCP was unavailable)
-- **Next component:** PopTitleBar (#14)
+- **Branch:** `feat/pop-title-bar` (pushed to origin)
+- **Last completed:** PopTitleBar (#14) — DONE, code committed, branch pushed
+- **PRs needed:**
+  1. PopSectionHeader PR — branch `feat/pop-section-header` pushed, PR NOT created yet
+  2. PopTitleBar PR — branch `feat/pop-title-bar` pushed, PR NOT created yet (gh CLI unavailable, no GitHub MCP)
+- **Next component:** PopDisplayText (#15)
 
 ## Before Continuing — Do These First
 
-### 1. Create PopSectionHeader PR
-Use `mcp__github__create_pull_request` (should work now after settings fix):
-- owner: `tanaykumarbera`
-- repo: `compose-electric-pop`
+### 1. Create PopSectionHeader PR (if not already done)
 - title: `feat(foundation): add PopSectionHeader with accent label and numbered variants`
 - head: `feat/pop-section-header`
 - base: `main`
-- body:
-  ```
-  ## Summary
-  - Add PopSectionHeader (foundation) with accent label, title, accent bar, numbered variant, custom accent colors
-  - Unit tests for formatSectionNumber logic
-  - Screenshot tests (light + dark) covering all 6 variant combinations
-  - Demo page registered in CatalogScreen
 
-  ## Test plan
-  - [ ] `./gradlew :library:desktopTest` passes
-  - [ ] `./gradlew :library:verifyRoborazziDesktop` passes
-  - [ ] Demo page shows all variants in both themes
-  ```
+### 2. Create PopTitleBar PR
+- title: `feat(foundation): add PopTitleBar with title + inline pill variants`
+- head: `feat/pop-title-bar`
+- base: `main`
 
-### 2. Branch for PopTitleBar
+### 3. Branch for PopDisplayText
 ```bash
-git checkout -b feat/pop-title-bar
+git checkout -b feat/pop-display-text
 ```
-Branch from current HEAD (which is `feat/pop-section-header`).
+Branch from current HEAD (which is `feat/pop-title-bar`).
 
-### 3. Continue with PopTitleBar (#14)
+### 4. Continue with PopDisplayText (#15)
 Then proceed with the normal pixy workflow: plan → implement → review → push → PR.
 
 ## Delete This File
-Once you've resumed and created the PR, delete this file — it's temporary.
+Once you've resumed, created the PRs, and continued, delete this file.
