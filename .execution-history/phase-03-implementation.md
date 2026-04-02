@@ -32,7 +32,7 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 | ID | Component | Status |
 |----|-----------|--------|
 | 12 | PopIconRow | [DONE] |
-| 13 | PopSectionHeader | [PENDING] |
+| 13 | PopSectionHeader | [DONE] |
 | 14 | PopTitleBar | [PENDING] |
 | 15 | PopDisplayText | [PENDING] |
 | 16 | PopIconListItem | [PENDING] |
