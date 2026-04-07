@@ -24,9 +24,11 @@ Send Telegram notifications at these milestones — the user is NOT watching the
 
 | Event | What to send |
 |-------|-------------|
+| **Any PR created** | PR URL, branch, short summary of changes. Applies to component PRs, doc PRs, ad-hoc fix PRs — all of them. |
 | Component APPROVED + PR raised | Message with component name, PR URL, variant list. Attach the light golden screenshot as a file. |
 | BLOCKED (after 3 fix attempts) | Message describing which component, what step failed, what error |
 | Wave complete | Short summary: wave name, components built, PRs raised |
+| Decision needed from user | Short question with context so user can reply from Telegram |
 
 **How to send:**
 - Text: use `mcp__plugin_telegram_telegram__reply` with `chat_id: 1402731017`

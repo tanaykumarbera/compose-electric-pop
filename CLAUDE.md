@@ -163,3 +163,15 @@ MCP tools are **deferred** — listed by name in `<system-reminder>` tags but th
 - Generic component names (Pop* prefix, no domain-specific naming)
 - Keep things simple — no over-engineering
 - Escalate blockers after 2-3 failed attempts — don't loop endlessly
+
+## Telegram Notifications
+
+**chat_id: 1402731017** — the user monitors progress via Telegram, not the terminal.
+
+**Always notify Telegram when:**
+- Any PR is created (component PRs, doc PRs, ad-hoc fix PRs — all of them)
+- A wave or checkpoint is completed
+- A decision or next-step question is needed from the user
+- A blocker is hit after 2-3 failed attempts
+
+**Do NOT notify for:** intermediate build results, sub-step progress, planner/reviewer dispatches.
