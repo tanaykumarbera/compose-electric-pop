@@ -20,6 +20,9 @@ local.properties
 # Claude Code session data
 .claude/projects/
 
+# Misplaced screenshot artifacts (from incorrect relative paths during recording)
+library/library/
+
 # Session artifacts
 exec.log.md
 user-requirements.md
