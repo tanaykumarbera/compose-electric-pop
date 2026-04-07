@@ -137,8 +137,41 @@ When comparing implementations against Stitch designs:
 - Always compare BOTH light and dark theme variants
 - The reviewer agent fetches Stitch screenshots automatically during review
 
+## MCP Tools (Important — read carefully)
+
+GitHub and Stitch operations use MCP plugins — **never** use `gh` CLI (not installed), raw `curl`, or `claude` CLI commands for GitHub API.
+
+- **GitHub:** `mcp__plugin_github_github__*` — PRs, issues, commits, code search.
+- **Stitch:** `mcp__stitch__*` — design screens, project data.
+- **Context7:** `mcp__plugin_context7_context7__*` — library/framework documentation lookup.
+
+### How to use MCP tools
+
+MCP tools are **deferred** — listed by name in `<system-reminder>` tags but their schemas must be loaded before you can call them. To load them:
+
+1. Call the **`ToolSearch` tool** (it's a built-in tool, like `Read` or `Bash` — invoke it directly, NOT via the `claude` CLI)
+2. Example: `ToolSearch(query="select:mcp__plugin_github_github__list_pull_requests", max_results=1)`
+3. This returns the tool's full schema, after which you can call it normally
+
+**Common mistakes to avoid:**
+- Do NOT run `claude tools list`, `claude tools search`, `claude mcp list`, or any `claude` CLI subprocess — these do not work from within a session
+- Do NOT use `Bash` to invoke MCP tools — call them directly as tool calls after loading via `ToolSearch`
+- Do NOT fall back to `gh` CLI (not installed) or `curl` with GitHub API
+
 ## Preferences
 - Single module library — R8 handles tree-shaking
 - Generic component names (Pop* prefix, no domain-specific naming)
 - Keep things simple — no over-engineering
 - Escalate blockers after 2-3 failed attempts — don't loop endlessly
+
+## Telegram Notifications
+
+**chat_id: 1402731017** — the user monitors progress via Telegram, not the terminal.
+
+**Always notify Telegram when:**
+- Any PR is created (component PRs, doc PRs, ad-hoc fix PRs — all of them)
+- A wave or checkpoint is completed
+- A decision or next-step question is needed from the user
+- A blocker is hit after 2-3 failed attempts
+
+**Do NOT notify for:** intermediate build results, sub-step progress, planner/reviewer dispatches.

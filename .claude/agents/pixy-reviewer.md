@@ -2,7 +2,10 @@
 name: pixy-reviewer
 description: Reviews Electric Pop component implementations against the plan and design rules. Only invoked by the pixy orchestrator.
 model: opus
-tools: Read, Grep, Glob, Bash, "mcp__stitch__*", "mcp__github__get_*", "mcp__github__list_*", "mcp__github__search_*"
+tools: Read, Grep, Glob, Bash, "mcp__stitch__*", "mcp__plugin_github_github__get_*", "mcp__plugin_github_github__list_*", "mcp__plugin_github_github__search_*"
+mcpServers:
+  - stitch
+  - plugin:github:github
 maxTurns: 20
 ---
 
