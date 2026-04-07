@@ -1,9 +1,9 @@
 # Electric Pop — Agent Guide
 
 > **TL;DR for fresh sessions:**
-> - **Recommended:** Run `claude --agent pixy` to start the session *as* pixy (2-level nesting: pixy → sub-agents). Then reference `@PROMPT-PHASE-03.md`.
-> - **Alternative:** Start a plain `claude` session and dispatch `pixy-planner` → `pixy-implementor` → `pixy-reviewer` directly via the Agent tool — without going through pixy as an intermediate.
-> - **Never do:** main session → `Agent(pixy)` → sub-agents. This 3-level nesting causes pixy to fall back to CLI subprocess dispatch instead of using the Agent tool.
+> - **To build a component:** Use `/build-component <ComponentName>` in a normal `claude` session. The skill orchestrates planner → implementor → reviewer subagents and handles Telegram/GitHub/Stitch MCP from the main session.
+> - **For ad-hoc tasks:** Dispatch `pixy-planner`, `pixy-implementor`, or `pixy-reviewer` directly via the Agent tool as needed.
+> - **Avoid:** Running `claude --agent pixy` or `Agent(pixy)` — MCP tools don't propagate reliably to agent sessions (known Claude Code bug, anthropics/claude-code#30280).
 
 ## Project Context
 
@@ -65,53 +65,37 @@ Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pul
 
 ## Agent System
 
-Agents are defined as custom Claude Code agents in `.claude/agents/`. Each agent is a markdown file with YAML frontmatter defining its model, tools, and behavior.
+### Building Components: `/build-component` Skill
 
-### Agent Files
-
-| Agent | File | Model | Role |
-|-------|------|-------|------|
-| Pixy | `.claude/agents/pixy.md` | opus | Orchestrator — dispatches planner, implementor, reviewer |
-| Planner | `.claude/agents/pixy-planner.md` | opus | Creates implementation plans with Stitch design reference |
-| Implementor | `.claude/agents/pixy-implementor.md` | sonnet | Writes code, tests, demos; runs builds; commits |
-| Reviewer | `.claude/agents/pixy-reviewer.md` | opus | Reviews against plan, design rules, and test quality |
-
-### How to Invoke Pixy
-
-To build a component, dispatch the `pixy` agent with the component name and details:
+**To build a component end-to-end, use the `/build-component` skill.** This runs the full plan → implement → review pipeline from the main session, where MCP tools (Telegram, GitHub, Stitch) work reliably.
 
 ```
-Agent(
-    subagent_type="pixy",
-    prompt="""
-Build the {COMPONENT_NAME} component for Electric Pop.
-
-Component details from inventory:
-- Tier: {foundation/composite/chart}
-- Variants: {list from component table below}
-- Key notes: {from component table below}
-- Dependencies: {for composites, list foundation components}
-
-Build order context: This is component #{N} in wave {W}. Previously completed: {list}.
-"""
-)
+/build-component PopCodeBlock foundation "Pre-formatted code block with monospace font and copy header"
 ```
 
-Pixy will then:
-1. Read project context (CLAUDE.md, spec, AGENTS.md)
-2. Dispatch `pixy-planner` to create an implementation plan
-3. Dispatch `pixy-implementor` to execute the plan
-4. Dispatch `pixy-reviewer` to validate the implementation
-5. Loop fixes if needed (max 3 iterations)
-6. Report summary
+The skill orchestrates `pixy-planner` → `pixy-implementor` → `pixy-reviewer` as subagents, handles Telegram notifications, and creates the PR.
+
+### Subagents (independently usable)
+
+Each subagent can also be dispatched directly via the Agent tool for ad-hoc tasks:
+
+| Agent | File | Model | Role | When to use independently |
+|-------|------|-------|------|--------------------------|
+| Planner | `.claude/agents/pixy-planner.md` | opus | Creates implementation plans with Stitch design reference | Planning a component or change without building it yet |
+| Implementor | `.claude/agents/pixy-implementor.md` | sonnet | Writes code, tests, demos; runs builds; commits | Executing a known plan or making targeted code changes |
+| Reviewer | `.claude/agents/pixy-reviewer.md` | opus | Reviews against plan, design rules, and test quality | Reviewing existing code against spec/design rules |
+
+**Note:** The `pixy.md` agent file is retained for reference but the `/build-component` skill is the preferred orchestration path. The skill runs in the main session where all MCP tools are available, avoiding the known issue where subagents cannot discover deferred MCP tools via ToolSearch.
 
 ### Key Design Decisions
 
-**Why custom agents instead of inline prompts:**
-- Each agent has scoped tools (reviewer can't write, planner can access Stitch MCP)
+**Why `/build-component` skill + subagents:**
+- The skill runs in the main session where MCP tools (Telegram, GitHub, Stitch) are reliably available
+- Each subagent has scoped tools (reviewer can't write, planner can access Stitch MCP)
 - Agent definitions are version-controlled and reusable
 - Models are locked per role (opus for planning/review, sonnet for implementation)
 - Max turns prevent runaway agents
+- Subagents can be used independently for ad-hoc tasks (planning, reviewing, fixing)
 
 **Test quality enforcement:**
 - Planner must define what IS and ISN'T testable for each component
