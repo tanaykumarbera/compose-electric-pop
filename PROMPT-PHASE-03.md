@@ -14,6 +14,11 @@ Then paste this file's contents (or `@PROMPT-PHASE-03.md`) as your first message
 
 ---
 
+## Pending Actions from Previous Session
+
+1. **Create PR for PopDisplayText** — branch `feat/pop-display-text` is pushed but PR was not created (MCP tools were unavailable). Create PR targeting `main` before starting the next component.
+2. **Send Telegram notification** for PopDisplayText completion.
+
 ## Context
 
 Read these files first to understand the project:
@@ -21,6 +26,18 @@ Read these files first to understand the project:
 - `AGENTS.md` — Component inventory, agent system, build order
 - `.execution-history/phase-03-implementation.md` — Progress tracker (check what's already DONE)
 - `.execution-history/resume-context.md` — If this file exists, read it FIRST. It contains pending actions from a previous session (e.g., PRs not yet created). Complete those actions before starting new components, then delete the file.
+
+## MCP Tool Discovery (Important)
+
+MCP tools (GitHub, Stitch, Telegram) are **deferred** — their schemas must be loaded before calling them. At session start, run these ToolSearch calls to activate them:
+
+```
+ToolSearch(query="select:mcp__plugin_github_github__create_pull_request", max_results=1)
+ToolSearch(query="select:mcp__plugin_telegram_telegram__reply", max_results=1)
+ToolSearch(query="select:mcp__stitch__list_screens", max_results=1)
+```
+
+Without this step, MCP tool calls will fail with "No such tool available" even though the servers are connected.
 
 ## Your Job
 
@@ -103,13 +120,13 @@ Check `.execution-history/phase-03-implementation.md` for current status. Resume
 | 10 | PopChip | DONE |
 | 11 | PopDropdown | DONE |
 
-### Wave 3: Layout Foundation — NEXT (start from feat/pop-dropdown)
+### Wave 3: Layout Foundation — IN PROGRESS (start from feat/pop-display-text)
 | # | Component | Tier | Variants | Notes |
 |---|-----------|------|----------|-------|
 | 12 | PopIconRow | foundation | Dynamic 1-N icons | Horizontal cluster, used by PopFeatureCard |
 | 13 | PopSectionHeader | foundation | Accent label + title + line | Numbered variant |
 | 14 | PopTitleBar | foundation | Title + inline PopPill | Headline italic |
-| 15 | PopDisplayText | foundation | Large text + fractional | Directional coloring |
+| 15 | PopDisplayText | foundation | Large text + fractional | Directional coloring — DONE |
 | 16 | PopIconListItem | foundation | Icon + description | For guidelines/lists |
 | 17 | PopStepList | foundation | Numbered items + icons | 01/02/03 entries |
 | 18 | PopTable | foundation | Label-value rows | Alternating tonal, colored variants |
