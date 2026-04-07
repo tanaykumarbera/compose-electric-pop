@@ -41,6 +41,17 @@ demo/src/commonMain/kotlin/com/electricpop/demo/
 ./gradlew :demo:run                          # Run desktop demo
 ```
 
+## Component Workflow
+
+**To build a component end-to-end**, use the `/build-component` skill. It orchestrates planning, implementation, and review via subagents, handles Telegram notifications, and creates the PR — all from the main session where MCP tools work reliably.
+
+**Subagents can also be used independently:**
+- `pixy-planner` — for creating implementation plans (has Stitch + GitHub MCP)
+- `pixy-implementor` — for writing code, tests, demos (file tools only)
+- `pixy-reviewer` — for reviewing implementations (has Stitch + GitHub MCP)
+
+See `AGENTS.md` for full agent details and component inventory.
+
 ## Component Creation SOP
 
 Every component follows this exact workflow:
