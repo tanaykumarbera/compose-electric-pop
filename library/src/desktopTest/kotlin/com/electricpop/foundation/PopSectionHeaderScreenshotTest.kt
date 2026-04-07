@@ -19,7 +19,7 @@ class PopSectionHeaderScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_light() = runDesktopComposeUiTest(width = 600, height = 700) {
+    fun allVariants_light() = runDesktopComposeUiTest(width = 700, height = 900) {
         setContent {
             ElectricPopTheme(darkTheme = false) {
                 AllVariantsColumn()
@@ -30,7 +30,7 @@ class PopSectionHeaderScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_dark() = runDesktopComposeUiTest(width = 600, height = 700) {
+    fun allVariants_dark() = runDesktopComposeUiTest(width = 700, height = 900) {
         setContent {
             ElectricPopTheme(darkTheme = true) {
                 AllVariantsColumn()
@@ -45,30 +45,41 @@ private fun AllVariantsColumn() {
     val cs = MaterialTheme.colorScheme
     Column(
         modifier = Modifier.padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp),
+        verticalArrangement = Arrangement.spacedBy(32.dp),
     ) {
-        // 1. Title only
+        // 1. Highlight + titleAccent (full variant — closest to Stitch design)
+        Text("Highlight + TitleAccent", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
+        PopSectionHeader(
+            title = "Stash Hub",
+            highlight = "Component Guide",
+            titleAccent = "Card",
+        )
+
+        // 2. Highlight only
+        Text("Highlight only", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
+        PopSectionHeader(
+            title = "Live Ledger",
+            highlight = "Feature Set",
+        )
+
+        // 3. Title only
         Text("Title only", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
         PopSectionHeader(title = "Performance")
 
-        // 2. Label + Title
-        Text("Label + Title", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopSectionHeader(title = "System Status", label = "Overview")
+        // 4. Title + description
+        Text("Title + description", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
+        PopSectionHeader(
+            title = "Analytics",
+            description = "Track your metrics in real time with live data feeds and customisable dashboards.",
+        )
 
-        // 3. Numbered
-        Text("Numbered", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopSectionHeader(title = "Getting Started", number = 1)
-
-        // 4. Numbered with Label
-        Text("Numbered with Label", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopSectionHeader(title = "Configuration", label = "Setup Guide", number = 2)
-
-        // 5. Secondary accent
-        Text("Secondary accent", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopSectionHeader(title = "Highlights", label = "Featured", accentColor = cs.secondary)
-
-        // 6. Tertiary accent
-        Text("Tertiary accent", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopSectionHeader(title = "Analytics", label = "Data", accentColor = cs.tertiary)
+        // 5. Custom titleAccentColor
+        Text("Custom accent color", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
+        PopSectionHeader(
+            title = "System",
+            highlight = "Status",
+            titleAccent = "Active",
+            titleAccentColor = cs.secondary,
+        )
     }
 }
