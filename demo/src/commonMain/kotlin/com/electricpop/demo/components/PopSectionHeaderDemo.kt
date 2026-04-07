@@ -23,9 +23,32 @@ fun PopSectionHeaderDemo() {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(spacing.lg),
-        verticalArrangement = Arrangement.spacedBy(spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(spacing.xl),
     ) {
-        // Title only
+        // Full variant — highlight pill + titleAccent (closest to Stitch "Stash Hub Card Doc")
+        Text(
+            text = "HIGHLIGHT + TITLE ACCENT",
+            style = MaterialTheme.typography.labelLarge,
+            color = cs.onSurfaceVariant,
+        )
+        PopSectionHeader(
+            title = "Stash Hub",
+            highlight = "Component Guide",
+            titleAccent = "Card",
+        )
+
+        // Highlight pill only (no titleAccent)
+        Text(
+            text = "HIGHLIGHT ONLY",
+            style = MaterialTheme.typography.labelLarge,
+            color = cs.onSurfaceVariant,
+        )
+        PopSectionHeader(
+            title = "Live Ledger",
+            highlight = "Feature Set",
+        )
+
+        // Title only — no pill, no accent
         Text(
             text = "TITLE ONLY",
             style = MaterialTheme.typography.labelLarge,
@@ -33,52 +56,41 @@ fun PopSectionHeaderDemo() {
         )
         PopSectionHeader(title = "Performance")
 
-        // Label + Title
+        // Title + description
         Text(
-            text = "LABEL + TITLE",
+            text = "TITLE + DESCRIPTION",
             style = MaterialTheme.typography.labelLarge,
             color = cs.onSurfaceVariant,
         )
-        PopSectionHeader(title = "System Status", label = "Overview")
+        PopSectionHeader(
+            title = "Analytics",
+            description = "Track your metrics in real time with live data feeds and customisable dashboards.",
+        )
 
-        // Numbered: 01
+        // Full variant with description
         Text(
-            text = "NUMBERED (01)",
+            text = "FULL VARIANT + DESCRIPTION",
             style = MaterialTheme.typography.labelLarge,
             color = cs.onSurfaceVariant,
         )
-        PopSectionHeader(title = "Getting Started", number = 1)
+        PopSectionHeader(
+            title = "Stash Hub",
+            highlight = "Overview",
+            titleAccent = "Pro",
+            description = "Everything you need to manage your portfolio, in one place.",
+        )
 
-        // Numbered: 02
+        // Custom titleAccentColor (secondary = magenta)
         Text(
-            text = "NUMBERED WITH LABEL (02)",
+            text = "CUSTOM ACCENT COLOR (SECONDARY)",
             style = MaterialTheme.typography.labelLarge,
             color = cs.onSurfaceVariant,
         )
-        PopSectionHeader(title = "Configuration", label = "Setup Guide", number = 2)
-
-        // Numbered: 03
-        Text(
-            text = "NUMBERED (03)",
-            style = MaterialTheme.typography.labelLarge,
-            color = cs.onSurfaceVariant,
+        PopSectionHeader(
+            title = "System",
+            highlight = "Status",
+            titleAccent = "Active",
+            titleAccentColor = cs.secondary,
         )
-        PopSectionHeader(title = "Advanced Topics", number = 3)
-
-        // Secondary accent
-        Text(
-            text = "SECONDARY ACCENT",
-            style = MaterialTheme.typography.labelLarge,
-            color = cs.onSurfaceVariant,
-        )
-        PopSectionHeader(title = "Highlights", label = "Featured", accentColor = cs.secondary)
-
-        // Tertiary accent
-        Text(
-            text = "TERTIARY ACCENT",
-            style = MaterialTheme.typography.labelLarge,
-            color = cs.onSurfaceVariant,
-        )
-        PopSectionHeader(title = "Analytics", label = "Data", accentColor = cs.tertiary)
     }
 }

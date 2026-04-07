@@ -2,6 +2,7 @@ package com.electricpop.foundation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,7 +20,7 @@ class PopTitleBarScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_light() = runDesktopComposeUiTest(width = 700, height = 700) {
+    fun allVariants_light() = runDesktopComposeUiTest(width = 700, height = 400) {
         setContent {
             ElectricPopTheme(darkTheme = false) {
                 AllVariantsColumn()
@@ -30,7 +31,7 @@ class PopTitleBarScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_dark() = runDesktopComposeUiTest(width = 700, height = 700) {
+    fun allVariants_dark() = runDesktopComposeUiTest(width = 700, height = 400) {
         setContent {
             ElectricPopTheme(darkTheme = true) {
                 AllVariantsColumn()
@@ -44,39 +45,19 @@ class PopTitleBarScreenshotTest {
 private fun AllVariantsColumn() {
     val cs = MaterialTheme.colorScheme
     Column(
-        modifier = Modifier.padding(24.dp),
+        modifier = Modifier.padding(24.dp).fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
         // 1. Title only
         Text("Title only", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
         PopTitleBar(title = "Dashboard")
 
-        // 2. Title + Primary pill
-        Text("Title + Primary pill", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopTitleBar(title = "Transactions", pill = "Live")
+        // 2. Title + status (matches Stitch "LIVE PREVIEW / SYSTEM ACTIVE")
+        Text("Title + Status", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
+        PopTitleBar(title = "Live Preview", status = "System Active")
 
-        // 3. Title + Secondary pill
-        Text("Title + Secondary pill", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopTitleBar(title = "Analytics", pill = "Beta", pillColor = PopPillColor.Secondary)
-
-        // 4. Title + Tertiary pill
-        Text("Title + Tertiary pill", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopTitleBar(title = "Portfolio", pill = "New", pillColor = PopPillColor.Tertiary)
-
-        // 5. Title + Error pill
-        Text("Title + Error pill", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopTitleBar(title = "Alerts", pill = "Critical", pillColor = PopPillColor.Error)
-
-        // 6. Title + Neutral pill
-        Text("Title + Neutral pill", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopTitleBar(title = "Settings", pill = "v2.0", pillColor = PopPillColor.Neutral)
-
-        // 7. Medium style
-        Text("Medium style", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopTitleBar(title = "Reports", pill = "Weekly", style = PopTitleBarStyle.Medium)
-
-        // 8. Small style
-        Text("Small style", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-        PopTitleBar(title = "Activity", pill = "Today", style = PopTitleBarStyle.Small)
+        // 3. Another status example
+        Text("Title + Status (variant)", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
+        PopTitleBar(title = "Transactions", status = "Live")
     }
 }

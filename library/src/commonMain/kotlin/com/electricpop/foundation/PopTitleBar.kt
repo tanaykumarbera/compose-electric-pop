@@ -1,119 +1,108 @@
 package com.electricpop.foundation
 
+import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.unit.dp
 import com.electricpop.theme.ElectricPopTheme
 
 /**
- * Size variants for [PopTitleBar].
+ * A page-level title bar matching the "Live Ledger Cards Doc" Stitch design.
  *
- * Controls the typography style used to render the title text.
- */
-enum class PopTitleBarStyle {
-    /** Uses headlineLarge (32sp, Black Italic) */
-    Large,
-    /** Uses headlineMedium (28sp, Bold) */
-    Medium,
-    /** Uses headlineSmall (24sp, Bold) */
-    Small,
-}
-
-/**
- * Resolves the [TextStyle] for this [PopTitleBarStyle] from the current theme.
- */
-@Composable
-internal fun PopTitleBarStyle.toTextStyle(): TextStyle {
-    return when (this) {
-        PopTitleBarStyle.Large -> MaterialTheme.typography.headlineLarge
-        PopTitleBarStyle.Medium -> MaterialTheme.typography.headlineMedium
-        PopTitleBarStyle.Small -> MaterialTheme.typography.headlineSmall
-    }
-}
-
-/**
- * A page-level title bar that renders an uppercase headline with an optional status pill.
+ * Renders a full-width horizontal row:
+ * - Left: title in headlineMedium italic uppercase.
+ * - Right (optional): pulsing status dot + uppercase status label.
  *
- * Uses a preset [PopPillColor] for the pill. Follows Rule 7 (Typography Impact) by
- * rendering the title in uppercase using headline typography.
+ * Follows all 7 design rules:
+ * - Typography Impact (Rule 7): title in uppercase with headlineMedium + italic.
+ * - Kinetic Interactions (Rule 5): status dot uses infinite alpha animation for a pulse effect.
+ * - No pill, no border, no elevation.
  *
  * @param title The title text. Rendered uppercase.
  * @param modifier Optional [Modifier] applied to the outer row.
- * @param pill Optional pill label. When non-null, a [PopPill] is rendered beside the title.
- * @param pillColor Preset color from [PopPillColor] for the pill badge.
- * @param style Size variant that controls the headline typography level.
+ * @param status Optional right-side status label (e.g., "SYSTEM ACTIVE"). When non-null,
+ *   a pulsing dot and the status text are shown on the right side.
  */
 @Composable
 fun PopTitleBar(
     title: String,
     modifier: Modifier = Modifier,
-    pill: String? = null,
-    pillColor: PopPillColor = PopPillColor.Primary,
-    style: PopTitleBarStyle = PopTitleBarStyle.Large,
+    status: String? = null,
 ) {
     val spacing = ElectricPopTheme.spacing
+    val cs = MaterialTheme.colorScheme
+
     Row(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spacing.sm),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
+        // Title — headlineMedium with italic override, uppercase
         Text(
             text = title.uppercase(),
-            style = style.toTextStyle(),
-            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.headlineMedium.copy(fontStyle = FontStyle.Italic),
+            color = cs.onSurface,
         )
-        if (pill != null) {
-            PopPill(label = pill, color = pillColor)
+
+        // Optional status section
+        if (status != null) {
+            StatusRow(label = status)
         }
     }
 }
 
-/**
- * A page-level title bar with custom pill colors.
- *
- * This overload allows specifying arbitrary container and content colors for the pill
- * instead of using a [PopPillColor] preset. Follows Rule 7 (Typography Impact) by
- * rendering the title in uppercase using headline typography.
- *
- * @param title The title text. Rendered uppercase.
- * @param modifier Optional [Modifier] applied to the outer row.
- * @param pill Optional pill label. When non-null, a [PopPill] is rendered beside the title.
- * @param pillContainerColor Background color of the pill.
- * @param pillContentColor Text color inside the pill.
- * @param style Size variant that controls the headline typography level.
- */
 @Composable
-fun PopTitleBar(
-    title: String,
-    modifier: Modifier = Modifier,
-    pill: String? = null,
-    pillContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    pillContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    style: PopTitleBarStyle = PopTitleBarStyle.Large,
-) {
+private fun StatusRow(label: String) {
     val spacing = ElectricPopTheme.spacing
+    val cs = MaterialTheme.colorScheme
+
+    // Pulsing alpha animation for the dot
+    val infiniteTransition = rememberInfiniteTransition(label = "pulse")
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0.2f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = EaseInOut),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "dotAlpha",
+    )
+
     Row(
-        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spacing.sm),
+        horizontalArrangement = Arrangement.spacedBy(spacing.xs),
     ) {
-        Text(
-            text = title.uppercase(),
-            style = style.toTextStyle(),
-            color = MaterialTheme.colorScheme.onSurface,
+        // Pulsing dot — 8dp circle in secondary color
+        Box(
+            modifier = Modifier
+                .size(8.dp)
+                .alpha(alpha)
+                .background(color = cs.secondary, shape = CircleShape),
         )
-        if (pill != null) {
-            PopPill(
-                label = pill,
-                containerColor = pillContainerColor,
-                contentColor = pillContentColor,
-            )
-        }
+
+        // Status label — labelSmall, uppercase, 60% opacity
+        Text(
+            text = label.uppercase(),
+            style = MaterialTheme.typography.labelSmall,
+            color = cs.onSurface.copy(alpha = 0.6f),
+        )
     }
 }
