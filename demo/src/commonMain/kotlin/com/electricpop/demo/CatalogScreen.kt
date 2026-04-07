@@ -23,6 +23,7 @@ import com.electricpop.demo.components.PopDropdownDemo
 import com.electricpop.demo.components.PopIconRowDemo
 import com.electricpop.demo.components.PopSectionHeaderDemo
 import com.electricpop.demo.components.PopTitleBarDemo
+import com.electricpop.demo.components.PopDisplayTextDemo
 
 data class CatalogEntry(
     val name: String,
@@ -53,7 +54,7 @@ val catalogEntries = listOf<CatalogEntry>(
     CatalogEntry("PopIconRow", "Foundation") { PopIconRowDemo() },
     CatalogEntry("PopSectionHeader", "Foundation") { PopSectionHeaderDemo() },
     CatalogEntry("PopTitleBar", "Foundation") { PopTitleBarDemo() },
-    // CatalogEntry("PopDisplayText", "Foundation") { PopDisplayTextDemo() },
+    CatalogEntry("PopDisplayText", "Foundation") { PopDisplayTextDemo() },
     // CatalogEntry("PopIconListItem", "Foundation") { PopIconListItemDemo() },
     // CatalogEntry("PopStepList", "Foundation") { PopStepListDemo() },
     // CatalogEntry("PopTable", "Foundation") { PopTableDemo() },
