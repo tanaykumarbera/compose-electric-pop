@@ -25,6 +25,7 @@ import com.electricpop.demo.components.PopSectionHeaderDemo
 import com.electricpop.demo.components.PopTitleBarDemo
 import com.electricpop.demo.components.PopDisplayTextDemo
 import com.electricpop.demo.components.PopIconListItemDemo
+import com.electricpop.demo.components.PopBottomBarDemo
 import com.electricpop.demo.components.PopStepListDemo
 import com.electricpop.demo.components.PopTableDemo
 
@@ -62,7 +63,7 @@ val catalogEntries = listOf<CatalogEntry>(
     CatalogEntry("PopStepList", "Foundation") { PopStepListDemo() },
     CatalogEntry("PopTable", "Foundation") { PopTableDemo() },
     // CatalogEntry("PopCodeBlock", "Foundation") { PopCodeBlockDemo() },
-    // CatalogEntry("PopBottomBar", "Foundation") { PopBottomBarDemo() },
+    CatalogEntry("PopBottomBar", "Foundation") { PopBottomBarDemo() },
 
     // Wave 4: Composites
     // CatalogEntry("PopDataRow", "Composite") { PopDataRowDemo() },
