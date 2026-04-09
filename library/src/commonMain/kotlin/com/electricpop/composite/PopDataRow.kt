@@ -189,30 +189,24 @@ fun PopDataRow(
 
         Spacer(Modifier.width(spacing.md))
 
-        // Label + chips column
+        // Stacked: [date] / [title] / [chips]
         Column(modifier = Modifier.weight(1f)) {
-            // First line: [subtitle/date] [label]
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(spacing.xs),
-            ) {
-                if (subtitle != null) {
-                    Text(
-                        text = subtitle.uppercase(),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.outline,
-                        letterSpacing = 1.5.sp,
-                    )
-                }
+            if (subtitle != null) {
                 Text(
-                    text = label,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    text = subtitle.uppercase(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.outline,
+                    letterSpacing = 1.5.sp,
                 )
             }
-            // Second line: chips only (wrapping flow)
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = if (subtitle != null) spacing.xxs else 0.dp),
+            )
             if (chips.isNotEmpty()) {
                 FlowRow(
                     modifier = Modifier.padding(top = spacing.xxs),
