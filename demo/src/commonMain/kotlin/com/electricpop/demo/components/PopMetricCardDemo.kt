@@ -15,6 +15,8 @@ import com.electricpop.composite.PopMetricCardStyle
 import com.electricpop.foundation.PopBadgeDirection
 import com.electricpop.foundation.PopDisplayTextDirection
 import com.electricpop.foundation.PopDisplayTextSize
+import com.electricpop.foundation.PopIconItem
+import com.electricpop.foundation.PopIcons
 import com.electricpop.theme.ElectricPopTheme
 
 @Composable
@@ -40,6 +42,11 @@ fun PopMetricCardDemo() {
                 fractionalText = ".42",
                 badgeValue = "+12.4%",
                 badgeDirection = PopBadgeDirection.Up,
+                icons = listOf(
+                    PopIconItem(PopIcons.Bolt, "Speed"),
+                    PopIconItem(PopIcons.Sparkle, "Quality"),
+                    PopIconItem(PopIcons.Layers, "Depth"),
+                ),
                 style = PopMetricCardStyle.Hero,
             )
             PopMetricCard(
