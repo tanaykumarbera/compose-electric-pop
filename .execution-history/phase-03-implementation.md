@@ -35,11 +35,11 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 | 13 | PopSectionHeader | [DONE] — redesigned per Stitch "Stash Hub Card Doc" (PR #14) |
 | 14 | PopTitleBar | [DONE] — redesigned per Stitch "Live Ledger Cards Doc" (PR #14) |
 | 15 | PopDisplayText | [DONE] |
-| 16 | PopIconListItem | [PENDING] |
-| 17 | PopStepList | [PENDING] |
-| 18 | PopTable | [PENDING] |
+| 16 | PopIconListItem | [DONE] |
+| 17 | PopStepList | [DONE] |
+| 18 | PopTable | [DONE] |
 | 19 | PopCodeBlock | [PENDING] |
-| 20 | PopBottomBar | [PENDING] |
+| 20 | PopBottomBar | [DONE] |
 
 ## Wave 4: Composites
 | ID | Component | Status |
