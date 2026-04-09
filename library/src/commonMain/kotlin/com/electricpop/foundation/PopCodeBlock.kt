@@ -132,7 +132,7 @@ private fun PopCodeBlockCopyButton(
             .size(32.dp)
             .graphicsLayer(scaleX = scale, scaleY = scale)
             .clip(PopShapeFull)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .background(tint.copy(alpha = 0.15f))
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
