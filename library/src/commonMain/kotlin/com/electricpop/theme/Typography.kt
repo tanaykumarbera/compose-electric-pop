@@ -54,28 +54,28 @@ fun ElectricPopTypography(): Typography {
     return Typography(
         displayLarge = TextStyle(
             fontFamily = spaceGrotesk,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Black,
             fontStyle = FontStyle.Italic,
             fontSize = 57.sp,
             letterSpacing = (-0.02).sp,
         ),
         displayMedium = TextStyle(
             fontFamily = spaceGrotesk,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Black,
             fontStyle = FontStyle.Italic,
             fontSize = 45.sp,
             letterSpacing = (-0.02).sp,
         ),
         displaySmall = TextStyle(
             fontFamily = spaceGrotesk,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Black,
             fontStyle = FontStyle.Italic,
             fontSize = 36.sp,
             letterSpacing = (-0.02).sp,
         ),
         headlineLarge = TextStyle(
             fontFamily = spaceGrotesk,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Black,
             fontStyle = FontStyle.Italic,
             fontSize = 32.sp,
             letterSpacing = (-0.02).sp,
