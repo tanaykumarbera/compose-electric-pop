@@ -61,7 +61,7 @@ fun PopCodeBlock(
     onCopy: ((String) -> Unit)? = null,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
-    shape: Shape = MaterialTheme.shapes.medium,
+    shape: Shape = MaterialTheme.shapes.small,
 ) {
     val spacing = ElectricPopTheme.spacing
     val showHeader = label != null || onCopy != null
@@ -77,8 +77,7 @@ fun PopCodeBlock(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                    .padding(horizontal = spacing.md, vertical = spacing.sm),
+                    .padding(horizontal = spacing.lg, vertical = spacing.sm),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
@@ -108,7 +107,7 @@ fun PopCodeBlock(
                 .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                 .clipToBounds()
                 .horizontalScroll(rememberScrollState())
-                .padding(spacing.md),
+                .padding(horizontal = spacing.lg, vertical = spacing.md),
         ) {
             SelectionContainer {
                 Text(
