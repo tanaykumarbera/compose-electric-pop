@@ -127,36 +127,55 @@ Run these commands yourself to verify.
 
 Compare the component's visual output against the original Stitch design:
 
-1. **Fetch the relevant Stitch screen(s):**
-   - Call `mcp__stitch__list_screens` with projectId `7983075619754946215`
-   - Identify which screen(s) show this component (check titles — component names map to Stitch names: PopPill→pills on cards, PopButton→"Action Buttons Doc", PopSurface→"Surface & Depth" section, etc.)
-   - Call `mcp__stitch__get_screen` to get the screenshot URL
+1. **Check for planner-downloaded screenshots first:**
+   - The planner saves screenshots to `/tmp/stitch_{ComponentName}_light.png` (and `_dark.png`, and `_crop` variants)
+   - Run `ls /tmp/stitch_{ComponentName}*.png 2>/dev/null` — if they exist, **use them directly**. Do NOT download again.
+   - If they don't exist, fetch and download fresh (steps 2–3 below).
 
-2. **Download at full resolution:**
-   - Append `=s0` to the Google Photos URL to get original size (e.g., `https://lh3.googleusercontent.com/aida/...=s0`)
-   - Download both light AND dark variants if they exist
-   - For very tall images (>4000px), crop relevant sections using Python/Pillow before viewing:
+2. **If not pre-downloaded — fetch the relevant Stitch screen(s):**
+   - Call `mcp__stitch__list_screens` with projectId `7983075619754946215`
+   - Search broadly — the component may appear inside a composite card doc screen (e.g., PopCodeBlock appears in "Hero Pulse Card Doc"), not just a dedicated screen. If you find no obvious match, look at ALL doc screens before concluding "no screen found".
+   - Call `mcp__stitch__get_screen` for both light AND dark variants.
+
+3. **Download at full resolution (if not pre-downloaded):**
+   - Use the `downloadUrl` from the screen response directly. If that fails, try appending `=s0` to the Google Photos URL.
+   - Save as: `/tmp/stitch_{ComponentName}_light.png` and `/tmp/stitch_{ComponentName}_dark.png`
+   - Verify with `file /tmp/stitch_{ComponentName}_light.png` — if it's HTML, the download failed (auth issue); note it.
+   - For images >4000px tall, crop to the relevant section:
      ```python
      from PIL import Image
-     img = Image.open("/tmp/stitch_screen.png")
+     img = Image.open("/tmp/stitch_{ComponentName}_light.png")
      crop = img.crop((0, y_start, img.width, y_end))
-     crop.save("/tmp/stitch_crop.jpg", "JPEG", quality=85)
+     crop.save("/tmp/stitch_{ComponentName}_light_crop.png", "PNG")
      ```
 
-3. **Compare against golden screenshots:**
-   - Read the component's golden screenshots from `library/src/desktopTest/snapshots/`
-   - Compare visually: colors, spacing, typography weight, shape, shadow, layout
-   - Note any discrepancies
+4. **Read the golden screenshots and Stitch screenshots side by side:**
+   - Read both golden PNGs from `library/src/desktopTest/snapshots/{ComponentName}_allVariants_light.png` and `_dark.png`
+   - Read both Stitch screenshots (or crops)
+   - Do a visual comparison on these dimensions:
+     - [ ] Colors match Stitch (container bg, text, accent — especially container vs. on-container)
+     - [ ] Typography weight/style matches (bold enough? italic where needed? monospace where expected?)
+     - [ ] Padding/spacing proportions match Stitch (does content feel tight/loose relative to design?)
+     - [ ] Shape (squircle vs rounded) matches
+     - [ ] Shadow/glow presence and intensity match
+     - [ ] Component looks correct in BOTH light and dark themes
+     - [ ] Internal layout structure matches (header position, icon placement, row ordering)
 
-4. **Check for these common mismatches:**
-   - [ ] Colors match Stitch (especially container vs. on-container)
-   - [ ] Typography weight/style matches (bold enough? italic where needed?)
-   - [ ] Padding/spacing proportions match Stitch
-   - [ ] Shape (squircle vs rounded) matches
-   - [ ] Shadow/glow presence and intensity match
-   - [ ] Component looks correct in BOTH light and dark themes
+If you cannot fetch or download Stitch screens after trying, note it as a caveat but don't block approval.
 
-If you cannot fetch Stitch screens (MCP unavailable), note it as a caveat but don't block approval.
+### I2. Golden Screenshot Anomaly Check (**CRITICAL**)
+
+Even without Stitch comparison, read ALL golden screenshots and check for these rendering anomalies:
+
+- [ ] **Corner bleed** — does any content (text, background fill) visibly bleed outside the component's squircle clip boundary? The shape clip must contain all content.
+- [ ] **Content overflow** — does code text, label text, or icons extend past the component's edge or into corner regions that should be clipped?
+- [ ] **Header/body gap** — is there an unexpected large empty space between the header row and the code content?
+- [ ] **Scroll area clipping** — if the component uses `horizontalScroll`, is the scrollable area itself clipped to the shape? (Compose clips the scroll container but NOT content that draws outside it — verify the padding is inside the clip, not outside.)
+- [ ] **Tonal consistency** — in dark mode, do all surface tokens look correct (not washed out or too dark)?
+- [ ] **Icon alignment** — are icons vertically/horizontally centered in their containers?
+- [ ] **Spacing uniformity** — does padding look consistent on all sides?
+
+Flag any of these as ISSUES_FOUND → Critical if they are visible defects in the golden screenshots.
 
 ### J. On-Device Vision Check
 
