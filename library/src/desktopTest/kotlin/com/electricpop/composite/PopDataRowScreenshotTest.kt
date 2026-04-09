@@ -18,18 +18,19 @@ class PopDataRowScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_light() = runDesktopComposeUiTest(width = 500, height = 520) {
+    fun allVariants_light() = runDesktopComposeUiTest(width = 500, height = 700) {
         setContent {
             ElectricPopTheme(darkTheme = false) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
+                    // Single chip + date prefix
                     PopDataRow(
                         icon = PopIcons.Star,
                         label = "Apple Store",
                         value = "-\$1,299.00",
-                        chip = PopDataRowDefaults.chipTertiary("Tech"),
+                        chips = listOf(PopDataRowDefaults.chipTertiary("Tech")),
                         subtitle = "Oct 24",
                         direction = PopDisplayTextDirection.Negative,
                         isAlternate = false,
@@ -38,7 +39,7 @@ class PopDataRowScreenshotTest {
                         icon = PopIcons.Heart,
                         label = "Gion Sushi",
                         value = "-\$84.50",
-                        chip = PopDataRowDefaults.chipSecondary("Dining"),
+                        chips = listOf(PopDataRowDefaults.chipSecondary("Dining")),
                         subtitle = "Oct 22",
                         direction = PopDisplayTextDirection.Negative,
                         isAlternate = true,
@@ -47,20 +48,29 @@ class PopDataRowScreenshotTest {
                         icon = PopIcons.Bolt,
                         label = "Salary Deposit",
                         value = "+\$4,200.00",
-                        chip = PopDataRowDefaults.chipPrimary("Income"),
+                        chips = listOf(PopDataRowDefaults.chipPrimary("Income")),
                         subtitle = "Oct 20",
                         direction = PopDisplayTextDirection.Positive,
                         isAlternate = false,
                     )
+                    // Multiple chips
                     PopDataRow(
-                        icon = PopIcons.Home,
-                        label = "Utilities Corp",
-                        value = "-\$142.12",
-                        chip = PopDataRowDefaults.chipSurface("Home"),
+                        icon = PopIcons.Heart,
+                        label = "Domino's Pizza",
+                        value = "-\$32.99",
+                        chips = listOf(
+                            PopDataRowDefaults.chipSecondary("Dining"),
+                            PopDataRowDefaults.chipTertiary("Pizza"),
+                            PopDataRowDefaults.chipSurface("Dominos"),
+                            PopDataRowDefaults.chipPrimary("Online"),
+                            PopDataRowDefaults.chipSurface("INR"),
+                            PopDataRowDefaults.chipTertiary("Delivery"),
+                        ),
                         subtitle = "Oct 18",
                         direction = PopDisplayTextDirection.Negative,
                         isAlternate = true,
                     )
+                    // Minimal — no chip, no subtitle
                     PopDataRow(
                         icon = PopIcons.Info,
                         label = "Balance Check",
@@ -78,7 +88,7 @@ class PopDataRowScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_dark() = runDesktopComposeUiTest(width = 500, height = 520) {
+    fun allVariants_dark() = runDesktopComposeUiTest(width = 500, height = 700) {
         setContent {
             ElectricPopTheme(darkTheme = true) {
                 Column(
@@ -89,7 +99,7 @@ class PopDataRowScreenshotTest {
                         icon = PopIcons.Star,
                         label = "Apple Store",
                         value = "-\$1,299.00",
-                        chip = PopDataRowDefaults.chipTertiary("Tech"),
+                        chips = listOf(PopDataRowDefaults.chipTertiary("Tech")),
                         subtitle = "Oct 24",
                         direction = PopDisplayTextDirection.Negative,
                         isAlternate = false,
@@ -98,7 +108,7 @@ class PopDataRowScreenshotTest {
                         icon = PopIcons.Heart,
                         label = "Gion Sushi",
                         value = "-\$84.50",
-                        chip = PopDataRowDefaults.chipSecondary("Dining"),
+                        chips = listOf(PopDataRowDefaults.chipSecondary("Dining")),
                         subtitle = "Oct 22",
                         direction = PopDisplayTextDirection.Negative,
                         isAlternate = true,
@@ -107,20 +117,29 @@ class PopDataRowScreenshotTest {
                         icon = PopIcons.Bolt,
                         label = "Salary Deposit",
                         value = "+\$4,200.00",
-                        chip = PopDataRowDefaults.chipPrimary("Income"),
+                        chips = listOf(PopDataRowDefaults.chipPrimary("Income")),
                         subtitle = "Oct 20",
                         direction = PopDisplayTextDirection.Positive,
                         isAlternate = false,
                     )
+                    // Multiple chips
                     PopDataRow(
-                        icon = PopIcons.Home,
-                        label = "Utilities Corp",
-                        value = "-\$142.12",
-                        chip = PopDataRowDefaults.chipSurface("Home"),
+                        icon = PopIcons.Heart,
+                        label = "Domino's Pizza",
+                        value = "-\$32.99",
+                        chips = listOf(
+                            PopDataRowDefaults.chipSecondary("Dining"),
+                            PopDataRowDefaults.chipTertiary("Pizza"),
+                            PopDataRowDefaults.chipSurface("Dominos"),
+                            PopDataRowDefaults.chipPrimary("Online"),
+                            PopDataRowDefaults.chipSurface("INR"),
+                            PopDataRowDefaults.chipTertiary("Delivery"),
+                        ),
                         subtitle = "Oct 18",
                         direction = PopDisplayTextDirection.Negative,
                         isAlternate = true,
                     )
+                    // Minimal — no chip, no subtitle
                     PopDataRow(
                         icon = PopIcons.Info,
                         label = "Balance Check",

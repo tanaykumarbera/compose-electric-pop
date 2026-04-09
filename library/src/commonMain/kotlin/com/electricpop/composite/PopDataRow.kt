@@ -10,6 +10,8 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -99,13 +102,16 @@ object PopDataRowDefaults {
  * @param modifier Optional [Modifier] applied to the row container.
  * @param iconContainerColor Background color of the circular icon container.
  * @param iconContentColor Tint color of the icon.
- * @param chip Optional [PopDataRowChip] rendered below the label.
- * @param subtitle Optional subtitle text rendered below the label (rendered uppercase).
+ * @param chips Optional list of [PopDataRowChip] rendered on the second line below the label.
+ *   Supports multiple chips (e.g., category + tags). Rendered in a wrapping flow row.
+ * @param subtitle Optional prefix text shown on the first line before [label] (e.g., a date "Oct 24").
+ *   Rendered uppercase with wide letter spacing.
  * @param direction Semantic direction for the value color. Ignored if [valueColor] is non-null.
  * @param valueColor Explicit color override for the value text.
  * @param isAlternate If true, uses `surfaceContainerLowest` instead of `surfaceContainerLow`.
  * @param onClick Optional click handler. Enables kinetic hover/press scale animation when set.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PopDataRow(
     icon: ImageVector,
@@ -114,7 +120,7 @@ fun PopDataRow(
     modifier: Modifier = Modifier,
     iconContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     iconContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    chip: PopDataRowChip? = null,
+    chips: List<PopDataRowChip> = emptyList(),
     subtitle: String? = null,
     direction: PopDisplayTextDirection = PopDisplayTextDirection.Neutral,
     valueColor: Color? = null,
@@ -183,22 +189,37 @@ fun PopDataRow(
 
         Spacer(Modifier.width(spacing.md))
 
-        // Label + chip/subtitle column
+        // Label + chips column
         Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            if (chip != null || subtitle != null) {
-                Row(
+            // First line: [subtitle/date] [label]
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(spacing.xs),
+            ) {
+                if (subtitle != null) {
+                    Text(
+                        text = subtitle.uppercase(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.outline,
+                        letterSpacing = 1.5.sp,
+                    )
+                }
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            // Second line: chips only (wrapping flow)
+            if (chips.isNotEmpty()) {
+                FlowRow(
                     modifier = Modifier.padding(top = spacing.xxs),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(spacing.xs),
+                    horizontalArrangement = Arrangement.spacedBy(spacing.xxs),
+                    verticalArrangement = Arrangement.spacedBy(spacing.xxs),
                 ) {
-                    if (chip != null) {
+                    chips.forEach { chip ->
                         Text(
                             text = chip.label.uppercase(),
                             style = MaterialTheme.typography.labelSmall,
@@ -209,24 +230,17 @@ fun PopDataRow(
                                 .padding(horizontal = spacing.xs, vertical = 2.dp),
                         )
                     }
-                    if (subtitle != null) {
-                        Text(
-                            text = subtitle.uppercase(),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.outline,
-                            letterSpacing = 1.5.sp,
-                        )
-                    }
                 }
             }
         }
 
         Spacer(Modifier.width(spacing.md))
 
-        // Value on the right
+        // Value on the right — italic per design
         Text(
             text = value.uppercase(),
             style = MaterialTheme.typography.titleLarge,
+            fontStyle = FontStyle.Italic,
             color = resolvedValueColor,
         )
     }

@@ -38,7 +38,7 @@ fun PopDataRowDemo() {
                 icon = PopIcons.Star,
                 label = "Apple Store",
                 value = "-\$1,299.00",
-                chip = PopDataRowDefaults.chipTertiary("Tech"),
+                chips = listOf(PopDataRowDefaults.chipTertiary("Tech")),
                 subtitle = "Oct 24",
                 direction = PopDisplayTextDirection.Negative,
                 isAlternate = false,
@@ -47,7 +47,7 @@ fun PopDataRowDemo() {
                 icon = PopIcons.Heart,
                 label = "Gion Sushi",
                 value = "-\$84.50",
-                chip = PopDataRowDefaults.chipSecondary("Dining"),
+                chips = listOf(PopDataRowDefaults.chipSecondary("Dining")),
                 subtitle = "Oct 22",
                 direction = PopDisplayTextDirection.Negative,
                 isAlternate = true,
@@ -56,7 +56,7 @@ fun PopDataRowDemo() {
                 icon = PopIcons.Bolt,
                 label = "Salary Deposit",
                 value = "+\$4,200.00",
-                chip = PopDataRowDefaults.chipPrimary("Income"),
+                chips = listOf(PopDataRowDefaults.chipPrimary("Income")),
                 subtitle = "Oct 20",
                 direction = PopDisplayTextDirection.Positive,
                 isAlternate = false,
@@ -65,14 +65,52 @@ fun PopDataRowDemo() {
                 icon = PopIcons.Home,
                 label = "Utilities Corp",
                 value = "-\$142.12",
-                chip = PopDataRowDefaults.chipSurface("Home"),
+                chips = listOf(PopDataRowDefaults.chipSurface("Home")),
                 subtitle = "Oct 18",
                 direction = PopDisplayTextDirection.Negative,
                 isAlternate = true,
             )
         }
 
-        // Section 2: Directional Coloring
+        // Section 2: Multiple Chips
+        Text(
+            text = "MULTIPLE CHIPS",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(spacing.xxs)) {
+            PopDataRow(
+                icon = PopIcons.Heart,
+                label = "Domino's Pizza",
+                value = "-\$32.99",
+                chips = listOf(
+                    PopDataRowDefaults.chipSecondary("Dining"),
+                    PopDataRowDefaults.chipTertiary("Pizza"),
+                    PopDataRowDefaults.chipSurface("Dominos"),
+                    PopDataRowDefaults.chipPrimary("Online"),
+                    PopDataRowDefaults.chipSurface("INR"),
+                    PopDataRowDefaults.chipTertiary("Delivery"),
+                ),
+                subtitle = "Oct 18",
+                direction = PopDisplayTextDirection.Negative,
+                isAlternate = false,
+            )
+            PopDataRow(
+                icon = PopIcons.Star,
+                label = "Zomato Order",
+                value = "-\$18.50",
+                chips = listOf(
+                    PopDataRowDefaults.chipSecondary("Dining"),
+                    PopDataRowDefaults.chipTertiary("Food"),
+                    PopDataRowDefaults.chipSurface("UPI"),
+                ),
+                subtitle = "Oct 17",
+                direction = PopDisplayTextDirection.Negative,
+                isAlternate = true,
+            )
+        }
+
+        // Section 3: Directional Coloring
         Text(
             text = "DIRECTIONAL COLORING",
             style = MaterialTheme.typography.labelLarge,
@@ -83,14 +121,14 @@ fun PopDataRowDemo() {
                 icon = PopIcons.TrendUp,
                 label = "Revenue Growth",
                 value = "+\$8,421.00",
-                chip = PopDataRowDefaults.chipPrimary("Growth"),
+                chips = listOf(PopDataRowDefaults.chipPrimary("Growth")),
                 direction = PopDisplayTextDirection.Positive,
             )
             PopDataRow(
                 icon = PopIcons.TrendDown,
                 label = "Operating Costs",
                 value = "-\$3,200.00",
-                chip = PopDataRowDefaults.chipSecondary("Cost"),
+                chips = listOf(PopDataRowDefaults.chipSecondary("Cost")),
                 direction = PopDisplayTextDirection.Negative,
                 isAlternate = true,
             )
@@ -98,12 +136,12 @@ fun PopDataRowDemo() {
                 icon = PopIcons.Layers,
                 label = "Total Assets",
                 value = "\$52,000.00",
-                chip = PopDataRowDefaults.chipSurface("Balance"),
+                chips = listOf(PopDataRowDefaults.chipSurface("Balance")),
                 direction = PopDisplayTextDirection.Neutral,
             )
         }
 
-        // Section 3: Minimal
+        // Section 4: Minimal
         Text(
             text = "MINIMAL",
             style = MaterialTheme.typography.labelLarge,
@@ -125,7 +163,7 @@ fun PopDataRowDemo() {
             )
         }
 
-        // Section 4: Custom Icon Colors
+        // Section 5: Custom Icon Colors
         Text(
             text = "CUSTOM ICON COLORS",
             style = MaterialTheme.typography.labelLarge,
