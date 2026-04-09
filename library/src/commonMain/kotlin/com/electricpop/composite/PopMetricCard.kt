@@ -118,7 +118,7 @@ fun PopMetricCard(
             ),
     ) {
         PopSurface(
-            shape = MaterialTheme.shapes.large,
+            shape = MaterialTheme.shapes.extraSmall,
             tone = PopSurfaceTone.Default,
             containerColor = if (isHero) MaterialTheme.colorScheme.primaryContainer else Color.Unspecified,
             ghostBorder = !isHero,
