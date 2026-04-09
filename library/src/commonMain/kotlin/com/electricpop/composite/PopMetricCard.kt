@@ -36,6 +36,7 @@ import com.electricpop.foundation.PopIconItem
 import com.electricpop.foundation.PopIconSize
 import com.electricpop.foundation.PopSurface
 import com.electricpop.foundation.PopSurfaceTone
+import androidx.compose.ui.unit.dp
 import com.electricpop.theme.ElectricPopTheme
 import com.electricpop.theme.PopShapeFull
 
@@ -136,7 +137,7 @@ fun PopMetricCard(
                     color = if (isHero) {
                         MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
+                        MaterialTheme.colorScheme.onSurface
                     },
                 )
 
@@ -158,7 +159,7 @@ fun PopMetricCard(
                             modifier = Modifier
                                 .clip(PopShapeFull)
                                 .background(MaterialTheme.colorScheme.onPrimaryContainer)
-                                .padding(horizontal = spacing.sm, vertical = spacing.xxs),
+                                .padding(horizontal = spacing.xs, vertical = 2.dp),
                             horizontalArrangement = Arrangement.spacedBy(spacing.xxs),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
@@ -204,7 +205,7 @@ fun PopMetricCard(
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant
                     }
-                    Row(horizontalArrangement = Arrangement.spacedBy(spacing.xs)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(spacing.md)) {
                         icons.forEach { item ->
                             Box(
                                 modifier = Modifier
