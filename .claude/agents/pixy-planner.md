@@ -25,7 +25,34 @@ You will receive from the orchestrator:
 ## Your Process
 
 1. **Analyze the component** — understand all variants, states, and interactions
-2. **Fetch Stitch designs** — use `mcp__stitch__list_screens` and `mcp__stitch__get_screen` to find the relevant screen(s) for visual reference. Look at both light and dark variants if available.
+2. **Fetch and download Stitch designs** — use `mcp__stitch__list_screens` with projectId `7983075619754946215` to list all screens. Identify which screen(s) contain the component (check titles — search broadly, the component may appear inside a card/doc screen rather than having a dedicated screen). Call `mcp__stitch__get_screen` for both light and dark variants.
+
+   Then **download each screenshot at full resolution**:
+   ```bash
+   curl -sL "{screenshotDownloadUrl}" -o /tmp/stitch_{ComponentName}_light.png
+   curl -sL "{screenshotDownloadUrl}" -o /tmp/stitch_{ComponentName}_dark.png
+   ```
+   If the file downloads as HTML (auth issue), try appending `=s0` to the URL. Verify with `file /tmp/stitch_{ComponentName}_light.png`.
+
+   If images are >4000px tall, crop to the relevant section containing the component:
+   ```python
+   from PIL import Image
+   img = Image.open("/tmp/stitch_{ComponentName}_light.png")
+   crop = img.crop((0, y_start, img.width, y_end))  # estimate y_start/y_end from component position
+   crop.save("/tmp/stitch_{ComponentName}_light_crop.png", "PNG")
+   ```
+
+   Read the downloaded (and cropped) screenshots to extract exact visual details: colors, spacing proportions, shape radii, typography weight, shadow/glow, layout structure. Use these observations to inform the implementation plan.
+
+   **Include downloaded file paths at the end of your plan** so the reviewer can reuse them:
+   ```
+   ## Stitch Screenshots (downloaded by planner)
+   - Light: /tmp/stitch_{ComponentName}_light.png (or _crop.png if cropped)
+   - Dark: /tmp/stitch_{ComponentName}_dark.png (or _crop.png if cropped)
+   - Note: {any observations about which screen was used and where in the screen}
+   ```
+
+   If no relevant screen exists in Stitch, state that explicitly in the plan.
 3. **Review existing theme code** — read the actual theme files to know exact token names
 4. **Check for similar existing components** — look in `library/src/commonMain/kotlin/com/electricpop/` for patterns to follow
 5. **Produce the plan**
