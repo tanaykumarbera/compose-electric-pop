@@ -36,7 +36,7 @@ Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pul
 | 12 | PopSectionHeader | Accent label + title + line | Numbered variant |
 | 13 | PopTitleBar | Title + inline PopPill | Headline italic |
 | 14 | PopDisplayText | Large text + fractional | Directional coloring |
-| 15 | PopCodeBlock | Pre-formatted code | Monospace, copy header |
+| 15 | PopCodeBlock | Pre-formatted code | Monospace, copy header — PR #21 merged |
 | 16 | PopIconListItem | Icon + description | For guidelines/lists |
 | 17 | PopTable | Label-value rows | Alternating tonal, colored variants |
 | 18 | PopStepList | Numbered items + icons | 01/02/03 entries |

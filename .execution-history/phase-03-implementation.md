@@ -38,7 +38,7 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 | 16 | PopIconListItem | [DONE] |
 | 17 | PopStepList | [DONE] |
 | 18 | PopTable | [DONE] |
-| 19 | PopCodeBlock | [PENDING] |
+| 19 | PopCodeBlock | [DONE] — PR #21 merged |
 | 20 | PopBottomBar | [DONE] |
 
 ## Wave 4: Composites
@@ -63,3 +63,4 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 | Date | Fix | PR |
 |------|-----|----|
 | 2026-04-07 | PopSectionHeader + PopTitleBar redesigned to match Stitch designs | #14 |
+| 2026-04-09 | PopCodeBlock copy button bg hardcoded to surfaceContainerHigh — clashed with custom containerColor in dark mode. Fixed to contentColor at 15% opacity | #21 |

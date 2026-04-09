@@ -174,7 +174,7 @@ Even without Stitch comparison, read ALL golden screenshots and check for these 
 - [ ] **Tonal consistency** — in dark mode, do all surface tokens look correct (not washed out or too dark)?
 - [ ] **Icon alignment** — are icons vertically/horizontally centered in their containers?
 - [ ] **Spacing uniformity** — does padding look consistent on all sides?
-- [ ] **Custom color params respected** — if the component exposes `containerColor`, `contentColor`, or similar params, verify the custom-color screenshot variant looks correct in BOTH light AND dark. A hardcoded inner background (e.g., `surfaceContainerHighest`) silently overrides caller-supplied colors and makes content invisible in dark mode. This is a Critical issue.
+- [ ] **Custom color params respected** — if the component exposes `containerColor`, `contentColor`, or similar params, verify the custom-color screenshot variant looks correct in BOTH light AND dark. Check ALL sub-elements (buttons, icon backgrounds, decorators, dividers) — not just the main container. A hardcoded color token (e.g., `surfaceContainerHigh` on a button background) will clash with a caller-supplied bright containerColor in dark mode, creating jarring visual artifacts. Grep for `MaterialTheme.colorScheme.*` inside private sub-composables and verify each usage adapts to the parent's custom colors. This is a Critical issue.
 
 Flag any of these as ISSUES_FOUND → Critical if they are visible defects in the golden screenshots.
 
