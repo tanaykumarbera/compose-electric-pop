@@ -104,7 +104,6 @@ fun PopCodeBlock(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                 .clipToBounds()
                 .horizontalScroll(rememberScrollState())
                 .padding(horizontal = spacing.lg, vertical = spacing.md),
