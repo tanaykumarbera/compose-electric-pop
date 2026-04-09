@@ -33,7 +33,6 @@ import com.electricpop.foundation.PopDisplayTextDirection
 import com.electricpop.foundation.PopDisplayTextSize
 import com.electricpop.foundation.PopIcon
 import com.electricpop.foundation.PopIconItem
-import com.electricpop.foundation.PopIconRow
 import com.electricpop.foundation.PopIconSize
 import com.electricpop.foundation.PopSurface
 import com.electricpop.foundation.PopSurfaceTone
@@ -190,17 +189,39 @@ fun PopMetricCard(
                 }
 
                 // 4. Icon row — Slot C: vital indicators (optional)
+                // Each icon sits in a small circular container so it's visible against the card bg
                 if (icons.isNotEmpty()) {
                     Spacer(Modifier.height(spacing.xxs))
-                    PopIconRow(
-                        icons = icons,
-                        iconSize = PopIconSize.Small,
-                        tint = if (isHero) {
-                            MaterialTheme.colorScheme.onPrimaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                        },
-                    )
+                    // Hero: solid dark circles (onPrimaryContainer bg) with lime icons
+                    // Surface: tonal container with onSurfaceVariant icons
+                    val iconContainerColor = if (isHero) {
+                        MaterialTheme.colorScheme.onPrimaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.surfaceContainerHigh
+                    }
+                    val iconTint = if (isHero) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(spacing.xs)) {
+                        icons.forEach { item ->
+                            Box(
+                                modifier = Modifier
+                                    .clip(PopShapeFull)
+                                    .background(iconContainerColor)
+                                    .padding(spacing.sm),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                PopIcon(
+                                    imageVector = item.imageVector,
+                                    contentDescription = item.contentDescription,
+                                    size = PopIconSize.Medium,
+                                    tint = iconTint,
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }

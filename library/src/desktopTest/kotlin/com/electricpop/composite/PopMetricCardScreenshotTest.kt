@@ -23,7 +23,7 @@ class PopMetricCardScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_light() = runDesktopComposeUiTest(width = 420, height = 900) {
+    fun allVariants_light() = runDesktopComposeUiTest(width = 420, height = 1200) {
         setContent { MetricCardContent(darkTheme = false) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopMetricCard_allVariants_light.png",
@@ -32,7 +32,7 @@ class PopMetricCardScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_dark() = runDesktopComposeUiTest(width = 420, height = 900) {
+    fun allVariants_dark() = runDesktopComposeUiTest(width = 420, height = 1200) {
         setContent { MetricCardContent(darkTheme = true) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopMetricCard_allVariants_dark.png",
