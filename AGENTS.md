@@ -52,7 +52,7 @@ Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pul
 | 4 | PopDataRow | PopIcon, PopDisplayText | Icon + label + value |
 | 5 | PopActionCard | PopDropdown, PopDisplayText, PopButton, PopTextField | Input + actions |
 | 6 | PopBannerCard | PopSurface + headline overlay | Big image + text |
-| 7 | PopMetricCard | PopBadge, PopDisplayText, PopSurface | Metric display |
+| 7 | PopMetricCard | PopBadgeDirection, PopDisplayText, PopSurface | Metric display |
 
 ### Chart (3) — `com.electricpop.chart`
 | # | Component | Description |
@@ -159,7 +159,7 @@ Build in dependency order — foundations first, then composites that depend on 
 
 ### Wave 4: Composites (depend on foundation)
 21. PopDataRow (needs PopIcon, PopDisplayText)
-22. PopMetricCard (needs PopBadge, PopDisplayText, PopSurface)
+22. PopMetricCard (needs PopBadgeDirection, PopDisplayText, PopSurface) ✅
 23. PopFeatureCard (needs PopDisplayText, PopBadge, PopIconRow, PopSurface)
 24. PopDashboardCard (needs PopSectionHeader, PopPill, PopDataRow, PopSurface)
 25. PopCarouselCard (needs PopIcon, PopChip, PopDisplayText, PopSurface)
