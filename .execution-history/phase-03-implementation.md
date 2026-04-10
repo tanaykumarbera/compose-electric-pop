@@ -44,8 +44,8 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 ## Wave 4: Composites
 | ID | Component | Status |
 |----|-----------|--------|
-| 21 | PopDataRow | [PENDING] |
-| 22 | PopMetricCard | [PENDING] |
+| 21 | PopDataRow | [DONE] — PR merged |
+| 22 | PopMetricCard | [DONE] — PR #23 open, Stitch-verified via HTML |
 | 23 | PopFeatureCard | [PENDING] |
 | 24 | PopDashboardCard | [PENDING] |
 | 25 | PopCarouselCard | [PENDING] |
@@ -64,3 +64,4 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 |------|-----|----|
 | 2026-04-07 | PopSectionHeader + PopTitleBar redesigned to match Stitch designs | #14 |
 | 2026-04-09 | PopCodeBlock copy button bg hardcoded to surfaceContainerHigh — clashed with custom containerColor in dark mode. Fixed to contentColor at 15% opacity | #21 |
+| 2026-04-10 | PopMetricCard: increased padding (xl), enlarged badge (labelLarge), replaced icon row with overlapping coin-stack (+N overflow). Stitch HTML used for exact CSS→Compose mapping. Updated pixy-planner to download HTML. | #23 |
