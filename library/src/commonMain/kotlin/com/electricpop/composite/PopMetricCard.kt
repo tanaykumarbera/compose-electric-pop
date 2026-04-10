@@ -3,6 +3,7 @@ package com.electricpop.composite
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -14,7 +15,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,9 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
-import com.electricpop.foundation.PopBadge
+import androidx.compose.ui.unit.dp
 import com.electricpop.foundation.PopBadgeDirection
+import com.electricpop.foundation.toColors
 import com.electricpop.foundation.PopDisplayText
 import com.electricpop.foundation.PopDisplayTextDirection
 import com.electricpop.foundation.PopDisplayTextSize
@@ -126,7 +130,7 @@ fun PopMetricCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(spacing.lg),
+                    .padding(spacing.xl),
                 verticalArrangement = Arrangement.spacedBy(spacing.xs),
             ) {
                 // 1. Context label
@@ -149,7 +153,7 @@ fun PopMetricCard(
                     color = if (isHero) MaterialTheme.colorScheme.onPrimaryContainer else null,
                 )
 
-                // 3. Badge — on Hero, invert colors so it contrasts against primaryContainer bg
+                // 3. Badge — larger pill to match Stitch design (px-5 py-2 text-lg)
                 if (badgeValue != null) {
                     Spacer(Modifier.height(spacing.xxs))
                     if (isHero) {
@@ -158,66 +162,130 @@ fun PopMetricCard(
                             modifier = Modifier
                                 .clip(PopShapeFull)
                                 .background(MaterialTheme.colorScheme.onPrimaryContainer)
-                                .padding(horizontal = spacing.sm, vertical = spacing.xxs),
-                            horizontalArrangement = Arrangement.spacedBy(spacing.xxs),
+                                .padding(horizontal = spacing.md, vertical = spacing.xs),
+                            horizontalArrangement = Arrangement.spacedBy(spacing.xs),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             when (badgeDirection) {
                                 PopBadgeDirection.Up -> PopIcon(
                                     imageVector = com.electricpop.foundation.PopIcons.TrendUp,
                                     contentDescription = "Trending up",
-                                    size = PopIconSize.Small,
+                                    size = PopIconSize.Medium,
                                     tint = MaterialTheme.colorScheme.primaryContainer,
                                 )
                                 PopBadgeDirection.Down -> PopIcon(
                                     imageVector = com.electricpop.foundation.PopIcons.TrendDown,
                                     contentDescription = "Trending down",
-                                    size = PopIconSize.Small,
+                                    size = PopIconSize.Medium,
                                     tint = MaterialTheme.colorScheme.primaryContainer,
                                 )
                                 PopBadgeDirection.Neutral -> {}
                             }
                             Text(
                                 text = badgeValue.uppercase(),
-                                style = MaterialTheme.typography.labelSmall,
+                                style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.primaryContainer,
                             )
                         }
                     } else {
-                        PopBadge(value = badgeValue, direction = badgeDirection)
+                        // Surface style: also use larger badge sizing
+                        val badgeColors = badgeDirection.toColors()
+                        Row(
+                            modifier = Modifier
+                                .clip(PopShapeFull)
+                                .background(badgeColors.containerColor)
+                                .padding(horizontal = spacing.md, vertical = spacing.xs),
+                            horizontalArrangement = Arrangement.spacedBy(spacing.xs),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            when (badgeDirection) {
+                                PopBadgeDirection.Up -> PopIcon(
+                                    imageVector = com.electricpop.foundation.PopIcons.TrendUp,
+                                    contentDescription = "Trending up",
+                                    size = PopIconSize.Medium,
+                                    tint = badgeColors.contentColor,
+                                )
+                                PopBadgeDirection.Down -> PopIcon(
+                                    imageVector = com.electricpop.foundation.PopIcons.TrendDown,
+                                    contentDescription = "Trending down",
+                                    size = PopIconSize.Medium,
+                                    tint = badgeColors.contentColor,
+                                )
+                                PopBadgeDirection.Neutral -> {}
+                            }
+                            Text(
+                                text = badgeValue.uppercase(),
+                                style = MaterialTheme.typography.labelLarge,
+                                color = badgeColors.contentColor,
+                            )
+                        }
                     }
                 }
 
-                // 4. Icon row — Slot C: vital indicators (optional)
-                // Each icon sits in a small circular container so it's visible against the card bg
+                // 4. Overlapping coin-stack icons — Slot C: vital indicators (optional)
+                // Stitch design: 40dp circles, -12dp overlap, white/40 bg, 2dp border
+                // Show max 5 icons, then "+N" overflow indicator
                 if (icons.isNotEmpty()) {
-                    Spacer(Modifier.height(spacing.xxs))
-                    // Hero: solid dark circles (onPrimaryContainer bg) with lime icons
-                    // Surface: tonal container with onSurfaceVariant icons
-                    val iconContainerColor = if (isHero) {
-                        MaterialTheme.colorScheme.onPrimaryContainer
+                    Spacer(Modifier.height(spacing.xs))
+                    val maxVisible = 5
+                    val visibleIcons = icons.take(maxVisible)
+                    val overflowCount = icons.size - maxVisible
+                    val coinSize = 40.dp
+                    val overlapOffset = 12.dp
+                    val borderColor = if (isHero) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.surfaceContainer
+                    }
+                    val iconBgColor = if (isHero) {
+                        Color.White.copy(alpha = 0.4f)
                     } else {
                         MaterialTheme.colorScheme.surfaceContainerHigh
                     }
                     val iconTint = if (isHero) {
-                        MaterialTheme.colorScheme.primaryContainer
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant
                     }
-                    Row(horizontalArrangement = Arrangement.spacedBy(spacing.xs)) {
-                        icons.forEach { item ->
+                    val totalItems = visibleIcons.size + if (overflowCount > 0) 1 else 0
+                    Box(
+                        modifier = Modifier
+                            .size(width = coinSize * totalItems - overlapOffset * (totalItems - 1), height = coinSize),
+                    ) {
+                        visibleIcons.forEachIndexed { index, item ->
                             Box(
                                 modifier = Modifier
-                                    .clip(PopShapeFull)
-                                    .background(iconContainerColor)
-                                    .padding(spacing.sm),
+                                    .offset(x = (coinSize - overlapOffset) * index)
+                                    .size(coinSize)
+                                    .clip(CircleShape)
+                                    .background(iconBgColor)
+                                    .border(2.dp, borderColor, CircleShape),
                                 contentAlignment = Alignment.Center,
                             ) {
                                 PopIcon(
                                     imageVector = item.imageVector,
                                     contentDescription = item.contentDescription,
-                                    size = PopIconSize.Medium,
+                                    size = PopIconSize.Small,
                                     tint = iconTint,
+                                )
+                            }
+                        }
+                        // "+N" overflow indicator
+                        if (overflowCount > 0) {
+                            val overflowIndex = visibleIcons.size
+                            Box(
+                                modifier = Modifier
+                                    .offset(x = (coinSize - overlapOffset) * overflowIndex)
+                                    .size(coinSize)
+                                    .clip(CircleShape)
+                                    .background(iconBgColor)
+                                    .border(2.dp, borderColor, CircleShape),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Text(
+                                    text = "+$overflowCount",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = iconTint,
                                 )
                             }
                         }

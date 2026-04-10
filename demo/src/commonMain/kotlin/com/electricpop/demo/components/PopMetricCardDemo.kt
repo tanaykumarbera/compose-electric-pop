@@ -55,6 +55,23 @@ fun PopMetricCardDemo() {
                 fractionalText = ".00",
                 style = PopMetricCardStyle.Hero,
             )
+            PopMetricCard(
+                label = "Network Health",
+                mainText = "\$88,200",
+                fractionalText = ".00",
+                badgeValue = "+8.1%",
+                badgeDirection = PopBadgeDirection.Up,
+                icons = listOf(
+                    PopIconItem(PopIcons.Bolt, "Speed"),
+                    PopIconItem(PopIcons.Sparkle, "Quality"),
+                    PopIconItem(PopIcons.Layers, "Depth"),
+                    PopIconItem(PopIcons.Heart, "Health"),
+                    PopIconItem(PopIcons.Star, "Rating"),
+                    PopIconItem(PopIcons.CheckCircle, "Verified"),
+                    PopIconItem(PopIcons.Home, "Home"),
+                ),
+                style = PopMetricCardStyle.Hero,
+            )
         }
 
         // Section: Surface Metrics

@@ -23,7 +23,7 @@ class PopMetricCardScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_light() = runDesktopComposeUiTest(width = 420, height = 1200) {
+    fun allVariants_light() = runDesktopComposeUiTest(width = 420, height = 1500) {
         setContent { MetricCardContent(darkTheme = false) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopMetricCard_allVariants_light.png",
@@ -32,7 +32,7 @@ class PopMetricCardScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_dark() = runDesktopComposeUiTest(width = 420, height = 1200) {
+    fun allVariants_dark() = runDesktopComposeUiTest(width = 420, height = 1500) {
         setContent { MetricCardContent(darkTheme = true) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopMetricCard_allVariants_dark.png",
@@ -64,10 +64,22 @@ private fun MetricCardContent(darkTheme: Boolean) {
                 ),
                 style = PopMetricCardStyle.Hero,
             )
-            // 2. Hero, no badge
+            // 2. Hero with >5 icons (overflow)
             PopMetricCard(
-                label = "Portfolio Balance",
-                mainText = "\$128,500",
+                label = "Network Health",
+                mainText = "\$88,200",
+                fractionalText = ".00",
+                badgeValue = "+8.1%",
+                badgeDirection = PopBadgeDirection.Up,
+                icons = listOf(
+                    PopIconItem(PopIcons.Bolt, "Speed"),
+                    PopIconItem(PopIcons.Sparkle, "Quality"),
+                    PopIconItem(PopIcons.Layers, "Depth"),
+                    PopIconItem(PopIcons.Heart, "Health"),
+                    PopIconItem(PopIcons.Star, "Rating"),
+                    PopIconItem(PopIcons.CheckCircle, "Verified"),
+                    PopIconItem(PopIcons.Home, "Home"),
+                ),
                 style = PopMetricCardStyle.Hero,
             )
             // 3. Surface + badge (negative)
