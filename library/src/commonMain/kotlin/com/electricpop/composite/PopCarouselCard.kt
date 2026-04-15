@@ -147,7 +147,7 @@ private fun PopCarouselCardStyle.toColors(): CarouselCardColors {
  * - Rule 3 (Ghost Border): NOT applied — content cards, not accessibility-critical.
  * - Rule 4 (Neon Glow): NOT applied — content cards, not CTAs.
  * - Rule 5 (Kinetic Interactions): hover:1.02f press:0.97f, 200ms, when onClick != null.
- * - Rule 6 (Squircle Radii): MaterialTheme.shapes.extraLarge for card, shapes.medium for icon container.
+ * - Rule 6 (Squircle Radii): MaterialTheme.shapes.extraSmall for card, shapes.small for icon container.
  * - Rule 7 (Typography Impact): timestamp.uppercase(), label.uppercase(), value via PopDisplayText.
  *
  * @param item The [PopCarouselCardItem] data to display.
@@ -192,7 +192,7 @@ fun PopCarouselCard(
             ),
     ) {
         PopSurface(
-            shape = MaterialTheme.shapes.extraLarge,
+            shape = MaterialTheme.shapes.extraSmall,
             containerColor = colors.cardBg,
             shadowEnabled = true,
             ghostBorder = false,
@@ -211,7 +211,7 @@ fun PopCarouselCard(
                     Box(
                         modifier = Modifier
                             .size(56.dp)
-                            .clip(MaterialTheme.shapes.medium)
+                            .clip(MaterialTheme.shapes.small)
                             .background(colors.iconContainerBg),
                         contentAlignment = Alignment.Center,
                     ) {
