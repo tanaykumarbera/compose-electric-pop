@@ -184,7 +184,7 @@ This project includes the [ruflo](https://github.com/ruvnet/ruflo) (claude-flow 
 | **Pixy** (Claude Code agents) | `Agent(subagent_type="pixy-*")` in main session | Stitch, GitHub, Telegram | Component build/review — needs those MCPs |
 | **Ruflo** (claude-flow v3) | `mcp__ruflo__*` tools | ruflo-internal | Memory, task tracking, swarm coordination, hooks |
 
-**Why pixy agents cannot be launched through ruflo:** Claude Code subagents dispatched via `Agent(subagent_type=...)` only inherit the MCP servers that are available in the main session. Ruflo's `agent_spawn` runs agents in an isolated context where the Stitch, GitHub, and Telegram MCPs are not visible — causing silent failures. The `/build-component` skill runs in the main session precisely to avoid this.
+**Why pixy agents cannot be launched through ruflo:** Ruflo's `agent_spawn` does not execute Claude at all — it registers a task record in a coordination queue and returns `"status": "registered"`. Tasks stay `"pending"` until an external runner (`claude -p` CLI or a background worker) polls and executes them. There is no way to run pixy agents synchronously through ruflo MCP tools or receive their results inline. The `/build-component` skill uses Claude Code's `Agent(subagent_type=...)` tool instead, which runs actual synchronous inference and returns results directly. (Verified experimentally: spawned agent remained idle with 0 tasks executed.)
 
 ### Where claude-flow adds real value alongside pixy
 
