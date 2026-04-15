@@ -46,13 +46,13 @@ Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pul
 ### Composite (7) — `com.electricpop.composite`
 | # | Component | Composes | Description |
 |---|-----------|----------|-------------|
-| 1 | PopFeatureCard | PopDisplayText, PopBadge, PopIconRow, PopSurface | Hero spotlight card |
+| 1 | ~~PopFeatureCard~~ | — | **Covered by PopMetricCard** — same slot structure (label + display + badge + coin-stack icons), same Hero/Surface styles. PR #25 closed. |
 | 2 | PopCarouselCard | PopIcon, PopChip, PopDisplayText, PopSurface | Horizontal scroll cards |
 | 3 | PopDashboardCard | PopSectionHeader, PopPill, PopDataRow, PopSurface | Data overview |
 | 4 | PopDataRow | PopIcon, PopDisplayText | Icon + label + value |
 | 5 | PopActionCard | PopDropdown, PopDisplayText, PopButton, PopTextField | Input + actions |
 | 6 | PopBannerCard | PopSurface + headline overlay | Big image + text |
-| 7 | PopMetricCard | PopBadgeDirection, PopDisplayText, PopSurface | Metric display |
+| 7 | PopMetricCard | PopBadgeDirection, PopDisplayText, PopSurface | Metric display ✅ |
 
 ### Chart (3) — `com.electricpop.chart`
 | # | Component | Description |
@@ -158,9 +158,9 @@ Build in dependency order — foundations first, then composites that depend on 
 20. PopBottomBar
 
 ### Wave 4: Composites (depend on foundation)
-21. PopDataRow (needs PopIcon, PopDisplayText)
+21. PopDataRow (needs PopIcon, PopDisplayText) ✅
 22. PopMetricCard (needs PopBadgeDirection, PopDisplayText, PopSurface) ✅
-23. PopFeatureCard (needs PopDisplayText, PopBadge, PopIconRow, PopSurface)
+23. ~~PopFeatureCard~~ — **skipped, covered by PopMetricCard**
 24. PopDashboardCard (needs PopSectionHeader, PopPill, PopDataRow, PopSurface)
 25. PopCarouselCard (needs PopIcon, PopChip, PopDisplayText, PopSurface)
 26. PopActionCard (needs PopDropdown, PopDisplayText, PopButton, PopTextField)
@@ -173,24 +173,45 @@ Build in dependency order — foundations first, then composites that depend on 
 
 ---
 
-## Ruflo Agent Ecosystem
+## Ruflo / Claude-flow Integration
 
-In addition to the pixy agents, this project includes the [ruflo](https://github.com/ruvnet/ruflo) (claude-flow v3) agent catalog at `.claude/agents/`. These provide 60+ specialized agent definitions for tasks beyond component development.
+This project includes the [ruflo](https://github.com/ruvnet/ruflo) (claude-flow v3) catalog at `.claude/agents/` and `.claude-flow/`. These add memory, task tracking, swarm coordination, and hooks on top of the pixy component pipeline.
+
+### Two separate runtimes — don't confuse them
+
+| System | Invocation | MCP tools | Best for |
+|--------|-----------|-----------|----------|
+| **Pixy** (Claude Code agents) | `Agent(subagent_type="pixy-*")` in main session | Stitch, GitHub, Telegram | Component build/review — needs those MCPs |
+| **Ruflo** (claude-flow v3) | `mcp__ruflo__*` tools | ruflo-internal | Memory, task tracking, swarm coordination, hooks |
+
+**Why pixy agents cannot be launched through ruflo:** Claude Code subagents dispatched via `Agent(subagent_type=...)` only inherit the MCP servers that are available in the main session. Ruflo's `agent_spawn` runs agents in an isolated context where the Stitch, GitHub, and Telegram MCPs are not visible — causing silent failures. The `/build-component` skill runs in the main session precisely to avoid this.
+
+### Where claude-flow adds real value alongside pixy
+
+| Task | How |
+|------|-----|
+| **Persist component build state across sessions** | `mcp__ruflo__memory_store` to save which components are done, PR URLs, reviewer notes |
+| **Track wave progress** | `mcp__ruflo__task_create/complete` to log each component as a task within a wave |
+| **Cross-session memory** | `mcp__ruflo__memory_search` at session start to recall last-touched component and open items |
+| **Hooks for learning** | `PostToolUse` hooks record edit patterns → `hooks_intelligence` learns project-specific patterns |
+| **Code review (non-component work)** | `.claude/agents/core/reviewer.md` or `github/code-review-swarm` for PRs, hotfixes, infra changes |
+| **Debugging build failures** | `.claude/agents/development/` agents for diagnosing Gradle/Kotlin errors |
+| **GitHub automation** | `.claude/agents/github/` agents for issue triage, release notes, multi-repo work |
 
 ### Relationship to pixy
 
-| Concern | Primary agent | Ruflo fallback |
-|---------|---------------|----------------|
+| Concern | Primary | Ruflo support |
+|---------|---------|---------------|
 | Component planning | `pixy-planner` | — |
 | Component implementation | `pixy-implementor` | — |
-| Component review | `pixy-reviewer` | `code-reviewer` (general-purpose) |
-| Code review (non-component) | — | `.claude/agents/core/reviewer.md` |
-| Testing | — | `.claude/agents/core/tester.md` |
-| Architecture decisions | — | `.claude/agents/architecture/` |
-| GitHub workflows | — | `.claude/agents/github/` |
-| Debugging | — | `.claude/agents/development/` |
+| Component review | `pixy-reviewer` | `core/reviewer.md` (fallback) |
+| Build-state memory | — | `memory_store/search` |
+| Wave progress tracking | — | `task_create/complete` |
+| Code review (non-component) | — | `github/code-review-swarm` |
+| Debugging | — | `development/` agents |
+| GitHub workflows | — | `github/` agents |
 
-**Rule:** For Electric Pop component work, always use pixy agents via `/build-component`. Use ruflo agents for everything else (code reviews, CI/CD, debugging, research).
+**Rule:** Component work goes through `/build-component` → pixy. Everything else (state memory, tracking, code review, debugging) can use ruflo tools directly from the main session.
 
 ### Ruflo agent categories
 

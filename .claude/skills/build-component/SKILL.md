@@ -64,6 +64,25 @@ Stitch design project: `7983075619754946215`
 5. Read existing code in `library/src/commonMain/kotlin/com/electricpop/theme/` to understand the theme API
 6. If this is a composite component, read its foundation dependencies first
 
+**Step 0b: Duplicate check (composites only)**
+
+Before dispatching the planner for any composite component, read the existing composite files:
+```bash
+ls library/src/commonMain/kotlin/com/electricpop/composite/
+```
+Read any composite that has a similar purpose (card, metric, data display). Compare:
+- Does it have the same slot structure (label + value + badge + icons)?
+- Does it have the same Hero/Surface style split?
+- Does the API differ in fewer than 2 meaningful parameters?
+
+If ≥80% overlap is found, **STOP and ask the user** via Telegram before proceeding:
+```
+Duplicate detected: {NewComponent} appears structurally identical to {ExistingComponent}.
+Key differences: {list or "none found"}
+Proceed or skip?
+```
+Do NOT dispatch the planner until the user confirms.
+
 ### Step 1: Plan (pixy-planner)
 Dispatch `pixy-planner` via the Agent tool:
 
