@@ -19,6 +19,16 @@ local.properties
 
 # Claude Code session data
 .claude/projects/
+.claude/settings.local.json
+
+# Claude-flow runtime data (config + scaffolding are tracked)
+.claude-flow/data/
+.claude-flow/logs/
+.claude-flow/sessions/
+.claude-flow/neural/
+.claude-flow/metrics/
+.claude-flow/*.log
+.claude-flow/*.tmp
 
 # Misplaced screenshot artifacts (from incorrect relative paths during recording)
 library/library/

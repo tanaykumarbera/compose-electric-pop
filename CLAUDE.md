@@ -148,6 +148,28 @@ When comparing implementations against Stitch designs:
 - Always compare BOTH light and dark theme variants
 - The reviewer agent fetches Stitch screenshots automatically during review
 
+## Claude-Flow / Ruflo Integration
+
+This project uses [ruflo](https://github.com/ruvnet/ruflo) (claude-flow v3) for multi-agent coordination, intelligent routing, and session management. Ruflo augments the existing pixy agent pipeline — it does **not** replace it.
+
+### What ruflo provides
+- **Hook system** (`.claude/helpers/`) — Pre/post tool-use hooks for safety checks, intelligent task routing, session persistence, and auto-memory sync
+- **Agent catalog** (`.claude/agents/`) — 60+ reusable agent definitions for specialized tasks (code review, testing, architecture, etc.). The pixy agents (`pixy-planner`, `pixy-implementor`, `pixy-reviewer`) remain the primary agents for component development
+- **Skill library** (`.claude/skills/`) — Extended skills for GitHub workflows, SPARC methodology, swarm orchestration, etc. The `/build-component` skill remains the primary entry point for component work
+- **Runtime config** (`.claude-flow/config.yaml`) — Swarm topology, memory backend, and neural learning settings
+- **Session management** — Automatic session save/restore across conversations
+
+### How pixy + ruflo work together
+- **Component development:** Use `/build-component` or pixy subagents as before — this is unchanged
+- **Task routing:** The `UserPromptSubmit` hook automatically suggests the best agent for each task
+- **Session continuity:** `SessionStart`/`SessionEnd` hooks save and restore conversation context
+- **Safety hooks:** `PreToolUse` hooks validate commands before execution
+- **Extended capabilities:** Use ruflo agents/skills for non-component tasks (code review, GitHub workflows, debugging)
+
+### Runtime vs tracked files
+- **Tracked:** `.claude-flow/config.yaml`, `.claude-flow/CAPABILITIES.md`, `.claude-flow/.gitignore`, `.claude-flow/agents/`, `.claude-flow/hooks/`, `.claude-flow/workflows/`, `.claude-flow/security/`, `.claude-flow/learning/`
+- **Gitignored:** `.claude-flow/data/`, `.claude-flow/logs/`, `.claude-flow/sessions/`, `.claude-flow/metrics/`, `.claude-flow/neural/`
+
 ## MCP Tools (Important — read carefully)
 
 GitHub and Stitch operations use MCP plugins — **never** use `gh` CLI (not installed), raw `curl`, or `claude` CLI commands for GitHub API.
@@ -155,6 +177,7 @@ GitHub and Stitch operations use MCP plugins — **never** use `gh` CLI (not ins
 - **GitHub:** `mcp__plugin_github_github__*` — PRs, issues, commits, code search.
 - **Stitch:** `mcp__stitch__*` — design screens, project data.
 - **Context7:** `mcp__plugin_context7_context7__*` — library/framework documentation lookup.
+- **Ruflo:** `mcp__ruflo__*` — memory, swarm coordination, hooks, agent management, performance metrics.
 
 ### How to use MCP tools
 

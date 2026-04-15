@@ -173,6 +173,65 @@ Build in dependency order — foundations first, then composites that depend on 
 
 ---
 
+## Ruflo Agent Ecosystem
+
+In addition to the pixy agents, this project includes the [ruflo](https://github.com/ruvnet/ruflo) (claude-flow v3) agent catalog at `.claude/agents/`. These provide 60+ specialized agent definitions for tasks beyond component development.
+
+### Relationship to pixy
+
+| Concern | Primary agent | Ruflo fallback |
+|---------|---------------|----------------|
+| Component planning | `pixy-planner` | — |
+| Component implementation | `pixy-implementor` | — |
+| Component review | `pixy-reviewer` | `code-reviewer` (general-purpose) |
+| Code review (non-component) | — | `.claude/agents/core/reviewer.md` |
+| Testing | — | `.claude/agents/core/tester.md` |
+| Architecture decisions | — | `.claude/agents/architecture/` |
+| GitHub workflows | — | `.claude/agents/github/` |
+| Debugging | — | `.claude/agents/development/` |
+
+**Rule:** For Electric Pop component work, always use pixy agents via `/build-component`. Use ruflo agents for everything else (code reviews, CI/CD, debugging, research).
+
+### Ruflo agent categories
+
+| Directory | Purpose |
+|-----------|---------|
+| `core/` | Fundamental roles: coder, tester, planner, reviewer, researcher |
+| `github/` | PR management, code review swarms, issue tracking |
+| `architecture/` | System design, DDD, security architecture |
+| `development/` | Backend dev, mobile dev, frontend design |
+| `devops/` | CI/CD pipelines, GitHub Actions |
+| `optimization/` | Performance analysis, benchmarking |
+| `swarm/` | Multi-agent coordination, topology optimization |
+| `testing/` | TDD, comprehensive test generation |
+| `specialized/` | Domain-specific: API docs, production validation |
+
+### Ruflo hooks and routing
+
+The `UserPromptSubmit` hook in `.claude/settings.json` routes tasks to optimal agents automatically. When you start a conversation, the hook analyzes your prompt and suggests the best agent type. This is advisory — you can override it.
+
+Key hooks:
+- **`PreToolUse` (Bash)** — Validates command safety before execution
+- **`PostToolUse` (Write/Edit)** — Records edit outcomes for learning
+- **`SessionStart`** — Restores previous session state, imports auto-memory
+- **`SessionEnd`** — Persists session state for continuity
+- **`SubagentStart/Stop`** — Tracks subagent lifecycle
+
+### Ruflo skills
+
+Extended skills are available at `.claude/skills/`. These complement the existing `/build-component` and `/git-pr` skills:
+
+| Skill | Purpose |
+|-------|---------|
+| `github-code-review` | Comprehensive code review workflows |
+| `github-workflow-automation` | GitHub Actions CI/CD setup |
+| `pair-programming` | AI-assisted pair programming |
+| `sparc-methodology` | SPARC development methodology |
+| `swarm-orchestration` | Multi-agent swarm coordination |
+| `verification-quality` | Truth verification and quality checks |
+
+---
+
 ## Error Handling Protocol
 
 - **Implementor fails same step twice** → Pixy STOPS, reports to human
