@@ -44,11 +44,31 @@ You will receive from the orchestrator:
 
    Read the downloaded (and cropped) screenshots to extract exact visual details: colors, spacing proportions, shape radii, typography weight, shadow/glow, layout structure. Use these observations to inform the implementation plan.
 
+   **Also download the HTML source** for each screen that has one (check `htmlCode.downloadUrl` in the screen data). HTML files contain the exact Tailwind CSS classes and markup which provide precise, machine-readable specifications (padding, font sizes, spacing gaps, colors, border-radius, negative margins, etc.):
+   ```bash
+   curl -sL "{htmlCode.downloadUrl}" -o /tmp/stitch_{ComponentName}_light.html
+   curl -sL "{htmlCode.downloadUrl}" -o /tmp/stitch_{ComponentName}_dark.html
+   ```
+   Read the downloaded HTML to extract exact CSS values for the component. Map Tailwind classes to Compose equivalents:
+   - `p-8` (32px) → `spacing.xl` (32.dp)
+   - `px-5 py-2` → `padding(horizontal = spacing.md, vertical = spacing.xs)`
+   - `-space-x-3` → overlapping layout with -12dp offset
+   - `w-10 h-10` → `Modifier.size(40.dp)`
+   - `bg-white/40` → `Color.White.copy(alpha = 0.4f)`
+   - `border-2` → `Modifier.border(2.dp, ...)`
+   - `text-lg` / `text-xs` → appropriate `MaterialTheme.typography` style
+   - `font-black` → `FontWeight.Black`
+   - `rounded-full` → `CircleShape` or `PopShapeFull`
+
+   Include these exact values in the **Visual Specification** section of the plan, citing the HTML source. This ensures the implementor uses precise dimensions rather than approximations from screenshots.
+
    **Include downloaded file paths at the end of your plan** so the reviewer can reuse them:
    ```
-   ## Stitch Screenshots (downloaded by planner)
-   - Light: /tmp/stitch_{ComponentName}_light.png (or _crop.png if cropped)
-   - Dark: /tmp/stitch_{ComponentName}_dark.png (or _crop.png if cropped)
+   ## Stitch References (downloaded by planner)
+   - Light screenshot: /tmp/stitch_{ComponentName}_light.png (or _crop.png if cropped)
+   - Dark screenshot: /tmp/stitch_{ComponentName}_dark.png (or _crop.png if cropped)
+   - Light HTML: /tmp/stitch_{ComponentName}_light.html
+   - Dark HTML: /tmp/stitch_{ComponentName}_dark.html
    - Note: {any observations about which screen was used and where in the screen}
    ```
 
