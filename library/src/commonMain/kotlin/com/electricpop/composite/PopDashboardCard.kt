@@ -70,8 +70,8 @@ data class PopDashboardItem(
  * - Rule 4 (Neon Glow): N/A — data display card.
  * - Rule 5 (Kinetic): Card-level hover/press scale when onClick != null.
  *   Action button (FAB slot) handles its own kinetics.
- * - Rule 6 (Squircle Radii): MaterialTheme.shapes.extraLarge for outer card,
- *   MaterialTheme.shapes.large for sub-item cards.
+ * - Rule 6 (Squircle Radii): MaterialTheme.shapes.large for outer card,
+ *   MaterialTheme.shapes.medium for sub-item cards.
  * - Rule 7 (Typography): title uppercase, titleValue in displaySmall italic black.
  *
  * @param title Small uppercase label shown above [titleValue] (e.g., "Overview").
@@ -132,7 +132,7 @@ fun PopDashboardCard(
     ) {
         PopSurface(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            shape = MaterialTheme.shapes.extraLarge,
+            shape = MaterialTheme.shapes.large,
             shadowEnabled = true,
         ) {
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -186,7 +186,7 @@ fun PopDashboardCard(
 
                     Spacer(modifier = Modifier.height(spacing.xl))
 
-                    // Bottom: 2-column wrapping sub-cards + optional FAB
+                    // Bottom: 2-column wrapping sub-cards
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(spacing.md),
@@ -200,7 +200,15 @@ fun PopDashboardCard(
                                     .widthIn(min = 120.dp),
                             )
                         }
-                        if (actionContent != null) {
+                    }
+
+                    // FAB row — right-aligned, below sub-cards
+                    if (actionContent != null) {
+                        Spacer(modifier = Modifier.height(spacing.md))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End,
+                        ) {
                             actionContent()
                         }
                     }
@@ -269,9 +277,9 @@ private fun DashboardSubCard(item: PopDashboardItem, modifier: Modifier = Modifi
 
     Column(
         modifier = modifier
-            .clip(MaterialTheme.shapes.large)
+            .clip(MaterialTheme.shapes.medium)
             .background(MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.05f))
-            .border(1.dp, ghostBorderColor, MaterialTheme.shapes.large)
+            .border(1.dp, ghostBorderColor, MaterialTheme.shapes.medium)
             .padding(spacing.md),
         verticalArrangement = Arrangement.spacedBy(spacing.xxs),
     ) {
