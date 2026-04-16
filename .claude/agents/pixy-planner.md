@@ -60,6 +60,23 @@ You will receive from the orchestrator:
    - `font-black` → `FontWeight.Black`
    - `rounded-full` → `CircleShape` or `PopShapeFull`
 
+   **⚠️ Shape / Corner Radius — Critical Tip:**
+   The `ElectricPopShapes` squircle percentages produce much rounder corners than equivalent CSS `border-radius` values at the same nominal size. Always derive the shape from the HTML value explicitly:
+
+   1. Read the exact Tailwind class from the HTML (e.g. `rounded-xl`, `rounded-2xl`).
+   2. Resolve the pixel value. Standard Tailwind: `rounded-sm`=2px, `rounded`=4px, `rounded-md`=6px, `rounded-lg`=8px, `rounded-xl`=12px, `rounded-2xl`=16px, `rounded-3xl`=24px. If the Stitch "Technical Specs" section shows a custom rem value (e.g. "3.0rem"), convert it: 1rem ≈ 16px.
+   3. Map to the **nearest** `ElectricPopShapes` entry. **Default to `extraSmall`** — only go higher if the design is clearly pill-shaped or very round. The squircle at `large`/`extraLarge` looks far rounder than its CSS equivalent and will almost always be too aggressive.
+
+   | Stitch class | Approx px | Use |
+   |---|---|---|
+   | `rounded` / `rounded-sm` / `rounded-md` / `rounded-lg` | ≤8px | `shapes.extraSmall` |
+   | `rounded-xl` | 12px | `shapes.extraSmall` |
+   | `rounded-2xl` | 16px | `shapes.small` |
+   | `rounded-3xl` | 24px | `shapes.medium` |
+   | `rounded-full` / pill | 9999px | `PopShapeFull` |
+
+   When in doubt, **pick the smaller shape** — too-round is always flagged in review; too-subtle is rarely noticed. If no available shape is close enough (gap >1 tier), note the deviation in the plan and propose a direct `SquircleShape(percent = N)` override with a comment.
+
    Include these exact values in the **Visual Specification** section of the plan, citing the HTML source. This ensures the implementor uses precise dimensions rather than approximations from screenshots.
 
    **Include downloaded file paths at the end of your plan** so the reviewer can reuse them:
@@ -189,6 +206,7 @@ Uses Roborazzi with `runDesktopComposeUiTest` and `captureRoboImage` (import fro
 - [ ] Typography references MaterialTheme.typography.{style} — no hardcoded TextStyle
 - [ ] Spacing references ElectricPopTheme.spacing.{size} — no hardcoded dp values
 - [ ] Shapes reference MaterialTheme.shapes or PopShapeFull — no RoundedCornerShape
+- [ ] Corner radius derived from HTML Tailwind class using the shape mapping table — NOT assumed from the component name or spec label. `extraSmall` is the default; larger shapes only when the design is clearly pill-shaped.
 - [ ] Each applicable design rule has specific implementation guidance
 - [ ] Test strategy distinguishes testable logic from visual-only aspects
 - [ ] Demo page covers ALL variants
