@@ -70,7 +70,7 @@ data class PopDashboardItem(
  * - Rule 4 (Neon Glow): N/A — data display card.
  * - Rule 5 (Kinetic): Card-level hover/press scale when onClick != null.
  *   Action button (FAB slot) handles its own kinetics.
- * - Rule 6 (Squircle Radii): MaterialTheme.shapes.large for outer card,
+ * - Rule 6 (Squircle Radii): MaterialTheme.shapes.extraSmall for outer card,
  *   MaterialTheme.shapes.medium for sub-item cards.
  * - Rule 7 (Typography): title uppercase, titleValue in displaySmall italic black.
  *
@@ -132,7 +132,7 @@ fun PopDashboardCard(
     ) {
         PopSurface(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            shape = MaterialTheme.shapes.large,
+            shape = MaterialTheme.shapes.extraSmall,
             shadowEnabled = true,
         ) {
             Box(modifier = Modifier.fillMaxWidth()) {
