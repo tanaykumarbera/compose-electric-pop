@@ -39,7 +39,6 @@ import com.electricpop.theme.ElectricPopTheme
  * @param icon Leading icon identifying the row category.
  * @param label Primary label text.
  * @param value Value text displayed on the trailing side (rendered uppercase by [PopDataRow]).
- * @param iconContentDescription Accessibility description for the icon; null if decorative.
  * @param chips Optional list of [PopDataRowChip] rendered below the label.
  * @param subtitle Optional prefix text shown before the label (e.g., a date).
  * @param direction Semantic direction for the value color. Ignored if [valueColor] is non-null.
@@ -51,7 +50,6 @@ data class PopDashboardCardRow(
     val icon: ImageVector,
     val label: String,
     val value: String,
-    val iconContentDescription: String? = null,
     val chips: List<PopDataRowChip> = emptyList(),
     val subtitle: String? = null,
     val direction: PopDisplayTextDirection = PopDisplayTextDirection.Neutral,
@@ -217,7 +215,12 @@ private fun DashboardCardContent(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(spacing.xl),
+                    .padding(
+                        top = spacing.xxl,
+                        start = spacing.xl,
+                        end = spacing.xl,
+                        bottom = spacing.xl,
+                    ),
             ) {
                 // Full header for default variant
                 if (header != null) {

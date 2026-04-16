@@ -1,67 +1,100 @@
 package com.electricpop.composite
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import com.electricpop.foundation.PopDisplayTextDirection
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-/**
- * Unit tests for data classes used by [PopDashboardCard] and [PopDashboardCardCompact].
- *
- * Note: [PopDashboardCardRow] requires an [androidx.compose.ui.graphics.vector.ImageVector]
- * for the icon field. Since [com.electricpop.foundation.PopIcons] properties are @Composable
- * getters, they cannot be accessed outside composable scope in unit tests. The data class
- * semantics and associated types are tested here instead.
- *
- * Visual rendering is validated via the demo app and Roborazzi screenshot tests.
- */
 class PopDashboardCardTest {
 
+    // Stub ImageVector to exercise PopDashboardCardRow without @Composable context.
+    private val stubIcon: ImageVector = ImageVector.Builder(
+        name = "stub",
+        defaultWidth = 24.dp,
+        defaultHeight = 24.dp,
+        viewportWidth = 24f,
+        viewportHeight = 24f,
+    ).build()
+
     @Test
-    fun popDataRowChip_storesAllFields() {
+    fun popDashboardCardRow_defaultValues() {
+        val row = PopDashboardCardRow(
+            icon = stubIcon,
+            label = "Vault A",
+            value = "$24,000",
+        )
+        assertEquals(stubIcon, row.icon)
+        assertEquals("Vault A", row.label)
+        assertEquals("$24,000", row.value)
+        assertTrue(row.chips.isEmpty())
+        assertNull(row.subtitle)
+        assertEquals(PopDisplayTextDirection.Neutral, row.direction)
+        assertNull(row.valueColor)
+        assertNull(row.onClick)
+    }
+
+    @Test
+    fun popDashboardCardRow_copyModifiesValues() {
+        val original = PopDashboardCardRow(
+            icon = stubIcon,
+            label = "Vault A",
+            value = "$24,000",
+        )
+        val modified = original.copy(
+            label = "Vault B",
+            direction = PopDisplayTextDirection.Positive,
+        )
+        assertEquals("Vault B", modified.label)
+        assertEquals("$24,000", modified.value)
+        assertEquals(PopDisplayTextDirection.Positive, modified.direction)
+        assertEquals(stubIcon, modified.icon)
+    }
+
+    @Test
+    fun popDashboardCardRow_allFieldsSet() {
         val chip = PopDataRowChip(
             label = "Savings",
             containerColor = Color(0xFF00FF00),
             contentColor = Color(0xFF000000),
         )
-        assertEquals("Savings", chip.label)
-        assertEquals(Color(0xFF00FF00), chip.containerColor)
-        assertEquals(Color(0xFF000000), chip.contentColor)
-    }
-
-    @Test
-    fun popDataRowChip_copyModifiesLabel() {
-        val original = PopDataRowChip(
-            label = "Alpha",
-            containerColor = Color.Red,
-            contentColor = Color.White,
+        val row = PopDashboardCardRow(
+            icon = stubIcon,
+            label = "Emergency Fund",
+            value = "$18,890",
+            chips = listOf(chip),
+            subtitle = "Oct 2024",
+            direction = PopDisplayTextDirection.Positive,
+            valueColor = Color.Green,
+            onClick = {},
         )
-        val modified = original.copy(label = "Beta")
-        assertEquals("Beta", modified.label)
-        assertEquals(Color.Red, modified.containerColor)
-        assertEquals(Color.White, modified.contentColor)
+        assertEquals("Emergency Fund", row.label)
+        assertEquals(1, row.chips.size)
+        assertEquals("Savings", row.chips[0].label)
+        assertEquals("Oct 2024", row.subtitle)
+        assertEquals(PopDisplayTextDirection.Positive, row.direction)
+        assertEquals(Color.Green, row.valueColor)
     }
 
     @Test
-    fun popDataRowChip_listRetainsOrder() {
+    fun popDashboardCardRow_chipsListRetainsOrder() {
         val chips = listOf(
             PopDataRowChip("First", Color.Red, Color.White),
             PopDataRowChip("Second", Color.Blue, Color.White),
             PopDataRowChip("Third", Color.Green, Color.Black),
         )
-        assertEquals(3, chips.size)
-        assertEquals("First", chips[0].label)
-        assertEquals("Second", chips[1].label)
-        assertEquals("Third", chips[2].label)
-    }
-
-    @Test
-    fun popDisplayTextDirection_allValuesPresent() {
-        // Verify all direction enum values referenced in PopDashboardCardRow exist
-        val entries = PopDisplayTextDirection.entries
-        assertTrue(entries.contains(PopDisplayTextDirection.Neutral))
-        assertTrue(entries.contains(PopDisplayTextDirection.Positive))
-        assertTrue(entries.contains(PopDisplayTextDirection.Negative))
+        val row = PopDashboardCardRow(
+            icon = stubIcon,
+            label = "Multi-Chip Row",
+            value = "$1,000",
+            chips = chips,
+        )
+        assertEquals(3, row.chips.size)
+        assertEquals("First", row.chips[0].label)
+        assertEquals("Second", row.chips[1].label)
+        assertEquals("Third", row.chips[2].label)
     }
 }
