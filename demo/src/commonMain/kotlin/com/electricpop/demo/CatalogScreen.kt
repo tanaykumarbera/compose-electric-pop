@@ -29,6 +29,7 @@ import com.electricpop.demo.components.PopBottomBarDemo
 import com.electricpop.demo.components.PopStepListDemo
 import com.electricpop.demo.components.PopTableDemo
 import com.electricpop.demo.components.PopCodeBlockDemo
+import com.electricpop.demo.components.PopActionCardDemo
 import com.electricpop.demo.components.PopCarouselCardDemo
 import com.electricpop.demo.components.PopDashboardCardDemo
 import com.electricpop.demo.components.PopDataRowDemo
@@ -76,7 +77,7 @@ val catalogEntries = listOf<CatalogEntry>(
     // CatalogEntry("PopFeatureCard", "Composite") { PopFeatureCardDemo() },
     CatalogEntry("PopDashboardCard", "Composite") { PopDashboardCardDemo() },
     CatalogEntry("PopCarouselCard", "Composite") { PopCarouselCardDemo() },
-    // CatalogEntry("PopActionCard", "Composite") { PopActionCardDemo() },
+    CatalogEntry("PopActionCard", "Composite") { PopActionCardDemo() },
     // CatalogEntry("PopBannerCard", "Composite") { PopBannerCardDemo() },
 
     // Wave 5: Charts
