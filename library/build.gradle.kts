@@ -55,6 +55,10 @@ kotlin {
     }
 }
 
+compose.resources {
+    publicResClass = true
+}
+
 android {
     namespace = "com.electricpop"
     compileSdk = 36

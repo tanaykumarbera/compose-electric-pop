@@ -33,6 +33,7 @@ import com.electricpop.demo.components.PopActionCardDemo
 import com.electricpop.demo.components.PopCarouselCardDemo
 import com.electricpop.demo.components.PopDashboardCardDemo
 import com.electricpop.demo.components.PopBannerCardDemo
+import com.electricpop.demo.components.PopImageBannerCardDemo
 import com.electricpop.demo.components.PopDataRowDemo
 
 data class CatalogEntry(
@@ -74,6 +75,7 @@ val catalogEntries = listOf<CatalogEntry>(
     // Wave 4: Composites
     CatalogEntry("PopDataRow", "Composite") { PopDataRowDemo() },
     CatalogEntry("PopBannerCard", "Composite") { PopBannerCardDemo() },
+    CatalogEntry("PopImageBannerCard", "Composite") { PopImageBannerCardDemo() },
     // CatalogEntry("PopFeatureCard", "Composite") { PopFeatureCardDemo() },
     CatalogEntry("PopDashboardCard", "Composite") { PopDashboardCardDemo() },
     CatalogEntry("PopCarouselCard", "Composite") { PopCarouselCardDemo() },
