@@ -2,7 +2,7 @@ package com.electricpop.demo.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,102 +11,151 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.electricpop.composite.PopBannerCard
-import com.electricpop.composite.PopBannerCardTrend
-import com.electricpop.composite.PopBannerCardTrendDirection
-import com.electricpop.composite.PopBannerCardVital
+import com.electricpop.composite.PopBannerCardStyle
+import com.electricpop.foundation.PopBadgeDirection
+import com.electricpop.foundation.PopDisplayTextDirection
+import com.electricpop.foundation.PopDisplayTextSize
+import com.electricpop.foundation.PopIconItem
 import com.electricpop.foundation.PopIcons
 import com.electricpop.theme.ElectricPopTheme
 
 @Composable
 fun PopBannerCardDemo() {
     val spacing = ElectricPopTheme.spacing
-
     Column(
         modifier = Modifier
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .fillMaxWidth()
             .padding(spacing.lg),
         verticalArrangement = Arrangement.spacedBy(spacing.lg),
     ) {
-        // Section 1: Full variant
-        SectionLabel("TOTAL VALUE")
-        PopBannerCard(
-            label = "Total Ecosystem Value",
-            value = "\$42,069",
-            fractionalValue = ".42",
-            trend = PopBannerCardTrend("+12.4%", PopBannerCardTrendDirection.Up),
-            vitals = listOf(
-                PopBannerCardVital(PopIcons.Bolt, "Bolt"),
-                PopBannerCardVital(PopIcons.Sparkle, "Sparkle"),
-                PopBannerCardVital(PopIcons.CheckCircle, "Check Circle"),
-            ),
+        // Section: Hero Metrics
+        Text(
+            "HERO METRICS",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
+            PopBannerCard(
+                label = "Total Ecosystem Value",
+                mainText = "\$42,069",
+                fractionalText = ".42",
+                badgeValue = "+12.4%",
+                badgeDirection = PopBadgeDirection.Up,
+                icons = listOf(
+                    PopIconItem(PopIcons.Bolt, "Speed"),
+                    PopIconItem(PopIcons.Sparkle, "Quality"),
+                    PopIconItem(PopIcons.Layers, "Depth"),
+                ),
+                style = PopBannerCardStyle.Hero,
+            )
+            PopBannerCard(
+                label = "Portfolio Balance",
+                mainText = "\$128,500",
+                fractionalText = ".00",
+                style = PopBannerCardStyle.Hero,
+            )
+            PopBannerCard(
+                label = "Network Health",
+                mainText = "\$88,200",
+                fractionalText = ".00",
+                badgeValue = "+8.1%",
+                badgeDirection = PopBadgeDirection.Up,
+                icons = listOf(
+                    PopIconItem(PopIcons.Bolt, "Speed"),
+                    PopIconItem(PopIcons.Sparkle, "Quality"),
+                    PopIconItem(PopIcons.Layers, "Depth"),
+                    PopIconItem(PopIcons.Heart, "Health"),
+                    PopIconItem(PopIcons.Star, "Rating"),
+                    PopIconItem(PopIcons.CheckCircle, "Verified"),
+                    PopIconItem(PopIcons.Home, "Home"),
+                ),
+                style = PopBannerCardStyle.Hero,
+            )
+        }
 
-        // Section 2: Negative trend
-        SectionLabel("MONTHLY BURN (NEGATIVE TREND)")
-        PopBannerCard(
-            label = "Monthly Burn",
-            value = "\$8,420",
-            fractionalValue = ".50",
-            trend = PopBannerCardTrend("-3.8%", PopBannerCardTrendDirection.Down),
-            vitals = listOf(
-                PopBannerCardVital(PopIcons.TrendDown, "Trend Down"),
-                PopBannerCardVital(PopIcons.Warning, "Warning"),
-            ),
+        // Section: Surface Metrics
+        Text(
+            "SURFACE METRICS",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
+            PopBannerCard(
+                label = "Monthly Revenue",
+                mainText = "\$8,421",
+                fractionalText = ".00",
+                badgeValue = "+5.8%",
+                badgeDirection = PopBadgeDirection.Up,
+                displayDirection = PopDisplayTextDirection.Positive,
+                style = PopBannerCardStyle.Surface,
+            )
+            PopBannerCard(
+                label = "Operating Costs",
+                mainText = "\$3,200",
+                fractionalText = ".50",
+                badgeValue = "-2.1%",
+                badgeDirection = PopBadgeDirection.Down,
+                displayDirection = PopDisplayTextDirection.Negative,
+                style = PopBannerCardStyle.Surface,
+            )
+            PopBannerCard(
+                label = "Total Assets",
+                mainText = "\$52,000",
+                badgeValue = "0.0%",
+                badgeDirection = PopBadgeDirection.Neutral,
+                style = PopBannerCardStyle.Surface,
+            )
+        }
 
-        // Section 3: Secondary color, neutral trend
-        SectionLabel("SECONDARY COLOR")
-        PopBannerCard(
-            label = "Active Nodes",
-            value = "1,402",
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-            trend = PopBannerCardTrend("STABLE", PopBannerCardTrendDirection.Neutral),
+        // Section: Display Sizes
+        Text(
+            "DISPLAY SIZES",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
+            PopBannerCard(
+                label = "Large Display",
+                mainText = "\$99,999",
+                fractionalText = ".99",
+                displaySize = PopDisplayTextSize.Large,
+                style = PopBannerCardStyle.Surface,
+            )
+            PopBannerCard(
+                label = "Medium Display",
+                mainText = "\$99,999",
+                fractionalText = ".99",
+                displaySize = PopDisplayTextSize.Medium,
+                style = PopBannerCardStyle.Surface,
+            )
+            PopBannerCard(
+                label = "Small Display",
+                mainText = "\$99,999",
+                fractionalText = ".99",
+                displaySize = PopDisplayTextSize.Small,
+                style = PopBannerCardStyle.Surface,
+            )
+        }
 
-        // Section 4: Tertiary color with vitals
-        SectionLabel("TERTIARY COLOR")
-        PopBannerCard(
-            label = "Response Time",
-            value = "142ms",
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            vitals = listOf(
-                PopBannerCardVital(PopIcons.Bolt, "Bolt"),
-                PopBannerCardVital(PopIcons.Sparkle, "Sparkle"),
-            ),
+        // Section: Minimal
+        Text(
+            "MINIMAL",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-
-        // Section 5: Minimal
-        SectionLabel("MINIMAL")
-        PopBannerCard(
-            label = "Temperature",
-            value = "72°F",
-        )
-
-        // Section 6: Clickable (kinetic)
-        SectionLabel("CLICKABLE (KINETIC)")
-        PopBannerCard(
-            label = "Total Ecosystem Value",
-            value = "\$42,069",
-            fractionalValue = ".42",
-            trend = PopBannerCardTrend("+12.4%", PopBannerCardTrendDirection.Up),
-            vitals = listOf(
-                PopBannerCardVital(PopIcons.Bolt, "Bolt"),
-                PopBannerCardVital(PopIcons.Sparkle, "Sparkle"),
-                PopBannerCardVital(PopIcons.CheckCircle, "Check Circle"),
-            ),
-            onClick = {},
-        )
+        Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
+            PopBannerCard(
+                label = "Active Users",
+                mainText = "1,247",
+                style = PopBannerCardStyle.Surface,
+            )
+            PopBannerCard(
+                label = "Uptime",
+                mainText = "99.9",
+                fractionalText = "%",
+                style = PopBannerCardStyle.Surface,
+            )
+        }
     }
-}
-
-@Composable
-private fun SectionLabel(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.labelLarge,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
 }

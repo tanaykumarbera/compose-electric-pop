@@ -30,11 +30,10 @@ import com.electricpop.demo.components.PopStepListDemo
 import com.electricpop.demo.components.PopTableDemo
 import com.electricpop.demo.components.PopCodeBlockDemo
 import com.electricpop.demo.components.PopActionCardDemo
-import com.electricpop.demo.components.PopBannerCardDemo
 import com.electricpop.demo.components.PopCarouselCardDemo
 import com.electricpop.demo.components.PopDashboardCardDemo
+import com.electricpop.demo.components.PopBannerCardDemo
 import com.electricpop.demo.components.PopDataRowDemo
-import com.electricpop.demo.components.PopMetricCardDemo
 
 data class CatalogEntry(
     val name: String,
@@ -74,12 +73,11 @@ val catalogEntries = listOf<CatalogEntry>(
 
     // Wave 4: Composites
     CatalogEntry("PopDataRow", "Composite") { PopDataRowDemo() },
-    CatalogEntry("PopMetricCard", "Composite") { PopMetricCardDemo() },
+    CatalogEntry("PopBannerCard", "Composite") { PopBannerCardDemo() },
     // CatalogEntry("PopFeatureCard", "Composite") { PopFeatureCardDemo() },
     CatalogEntry("PopDashboardCard", "Composite") { PopDashboardCardDemo() },
     CatalogEntry("PopCarouselCard", "Composite") { PopCarouselCardDemo() },
     CatalogEntry("PopActionCard", "Composite") { PopActionCardDemo() },
-    CatalogEntry("PopBannerCard", "Composite") { PopBannerCardDemo() },
 
     // Wave 5: Charts
     // CatalogEntry("PopLineChart", "Chart") { PopLineChartDemo() },

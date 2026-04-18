@@ -1,6 +1,8 @@
 package com.electricpop.composite
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,6 +13,10 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.runDesktopComposeUiTest
 import androidx.compose.ui.unit.dp
+import com.electricpop.foundation.PopBadgeDirection
+import com.electricpop.foundation.PopDisplayTextDirection
+import com.electricpop.foundation.PopDisplayTextSize
+import com.electricpop.foundation.PopIconItem
 import com.electricpop.foundation.PopIcons
 import com.electricpop.theme.ElectricPopTheme
 import io.github.takahirom.roborazzi.captureRoboImage
@@ -20,7 +26,7 @@ class PopBannerCardScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_light() = runDesktopComposeUiTest(width = 420, height = 1400) {
+    fun allVariants_light() = runDesktopComposeUiTest(width = 420, height = 1500) {
         setContent { BannerCardContent(darkTheme = false) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopBannerCard_allVariants_light.png",
@@ -29,7 +35,7 @@ class PopBannerCardScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_dark() = runDesktopComposeUiTest(width = 420, height = 1400) {
+    fun allVariants_dark() = runDesktopComposeUiTest(width = 420, height = 1500) {
         setContent { BannerCardContent(darkTheme = true) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopBannerCard_allVariants_dark.png",
@@ -40,58 +46,68 @@ class PopBannerCardScreenshotTest {
 @Composable
 private fun BannerCardContent(darkTheme: Boolean) {
     ElectricPopTheme(darkTheme = darkTheme) {
-        // Read composable icon values at composable scope BEFORE the Column
-        val iconBolt = PopIcons.Bolt
-        val iconSparkle = PopIcons.Sparkle
-        val iconCheckCircle = PopIcons.CheckCircle
-        val iconTrendDown = PopIcons.TrendDown
-
-        val secondaryContainer = MaterialTheme.colorScheme.secondaryContainer
-        val onSecondaryContainer = MaterialTheme.colorScheme.onSecondaryContainer
-
-        Column(
+        val spacing = ElectricPopTheme.spacing
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp),
+                .background(MaterialTheme.colorScheme.background),
         ) {
-            // Variant 1: Full — Up trend, fractional, vitals
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(spacing.md),
+            ) {
+            // 1. Hero + badge + icons (Slot C)
             PopBannerCard(
                 label = "Total Ecosystem Value",
-                value = "\$42,069",
-                fractionalValue = ".42",
-                trend = PopBannerCardTrend("+12.4%", PopBannerCardTrendDirection.Up),
-                vitals = listOf(
-                    PopBannerCardVital(iconBolt, "Bolt"),
-                    PopBannerCardVital(iconSparkle, "Sparkle"),
-                    PopBannerCardVital(iconCheckCircle, "Check"),
+                mainText = "\$42,069",
+                fractionalText = ".42",
+                badgeValue = "+12.4%",
+                badgeDirection = PopBadgeDirection.Up,
+                icons = listOf(
+                    PopIconItem(PopIcons.Bolt, "Speed"),
+                    PopIconItem(PopIcons.Sparkle, "Quality"),
+                    PopIconItem(PopIcons.Layers, "Depth"),
                 ),
+                style = PopBannerCardStyle.Hero,
             )
-
-            // Variant 2: Down trend, no fractional
+            // 2. Hero with >5 icons (overflow)
             PopBannerCard(
-                label = "Monthly Burn",
-                value = "\$8,420",
-                trend = PopBannerCardTrend("-3.8%", PopBannerCardTrendDirection.Down),
-                vitals = listOf(
-                    PopBannerCardVital(iconTrendDown, "Trend Down"),
+                label = "Network Health",
+                mainText = "\$88,200",
+                fractionalText = ".00",
+                badgeValue = "+8.1%",
+                badgeDirection = PopBadgeDirection.Up,
+                icons = listOf(
+                    PopIconItem(PopIcons.Bolt, "Speed"),
+                    PopIconItem(PopIcons.Sparkle, "Quality"),
+                    PopIconItem(PopIcons.Layers, "Depth"),
+                    PopIconItem(PopIcons.Heart, "Health"),
+                    PopIconItem(PopIcons.Star, "Rating"),
+                    PopIconItem(PopIcons.CheckCircle, "Verified"),
+                    PopIconItem(PopIcons.Home, "Home"),
                 ),
+                style = PopBannerCardStyle.Hero,
             )
-
-            // Variant 3: Secondary color, neutral trend, no vitals
+            // 3. Surface + badge (negative)
             PopBannerCard(
-                label = "Active Nodes",
-                value = "1,402",
-                containerColor = secondaryContainer,
-                contentColor = onSecondaryContainer,
-                trend = PopBannerCardTrend("STABLE", PopBannerCardTrendDirection.Neutral),
+                label = "Monthly Revenue",
+                mainText = "\$8,421",
+                fractionalText = ".00",
+                badgeValue = "-3.2%",
+                badgeDirection = PopBadgeDirection.Down,
+                displayDirection = PopDisplayTextDirection.Negative,
+                style = PopBannerCardStyle.Surface,
             )
-
-            // Variant 4: Minimal — no fractional, no trend, no vitals
+            // 4. Surface, no badge, small size
             PopBannerCard(
-                label = "Temperature",
-                value = "72°F",
+                label = "Active Users",
+                mainText = "1,247",
+                displaySize = PopDisplayTextSize.Small,
+                style = PopBannerCardStyle.Surface,
             )
+            }
         }
     }
 }

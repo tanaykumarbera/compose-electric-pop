@@ -281,3 +281,5 @@ Agent(
 7. **Compose UI testing on desktop is currently broken.** The Skiko native library isn't in the test classpath. This is a known gap — accept placeholder tests for purely visual components and validate via the demo app. Investigate screenshot testing as a future improvement.
 
 8. **Plans and code diverge.** The implementation plan specified versions and APIs that turned out to be wrong. The plan was not retroactively updated — the code is the source of truth. Future sessions should read the code, not just the plan.
+
+- 2026-04-18 — Composite tier rebalanced: PopMetricCard renamed to PopBannerCard (enhanced chip/icon row); old numeric PopBannerCard removed; new PopImageBannerCard added. Spec: `docs/superpowers/specs/2026-04-18-banner-card-refactor.md`.

@@ -82,7 +82,9 @@ Example screenshot test structure:
 ```kotlin
 package com.electricpop.{tier}
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onRoot
@@ -98,8 +100,14 @@ class {ComponentName}ScreenshotTest {
     fun allVariants_light() = runDesktopComposeUiTest(width = 400, height = 600) {
         setContent {
             ElectricPopTheme(darkTheme = false) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    // Render all variants here
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
+                ) {
+                    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        // Render all variants here
+                    }
                 }
             }
         }
@@ -111,8 +119,14 @@ class {ComponentName}ScreenshotTest {
     fun allVariants_dark() = runDesktopComposeUiTest(width = 400, height = 600) {
         setContent {
             ElectricPopTheme(darkTheme = true) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    // Same variants in dark theme
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
+                ) {
+                    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        // Same variants in dark theme
+                    }
                 }
             }
         }
@@ -120,6 +134,8 @@ class {ComponentName}ScreenshotTest {
     }
 }
 ```
+
+> **Required:** wrap screenshot content in `Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background))` so dark-mode goldens have a dark page background for visual parity with light goldens. `ElectricPopTheme` alone does not paint a page background.
 
 ### 8. Build, test, and record screenshots
 Run these commands in sequence:

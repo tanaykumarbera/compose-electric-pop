@@ -51,8 +51,8 @@ Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pul
 | 3 | PopDashboardCard | PopSectionHeader, PopPill, PopDataRow, PopSurface | Data overview |
 | 4 | PopDataRow | PopIcon, PopDisplayText | Icon + label + value |
 | 5 | PopActionCard | PopDropdown, PopDisplayText, PopButton, PopTextField | Input + actions |
-| 6 | PopBannerCard | PopSurface + headline overlay | Big image + text |
-| 7 | PopMetricCard | PopBadgeDirection, PopDisplayText, PopSurface | Metric display |
+| 6 | PopBannerCard | PopBadgeDirection, PopDisplayText, PopIcon, PopSurface | Metric banner: label + value + trend chip + overlapping icon cluster (Hero/Surface styles). |
+| 7 | PopImageBannerCard | PopSurface + Image | Big image card with overlaid headline, configurable text anchor + scrim. |
 
 ### Chart (3) — `com.electricpop.chart`
 | # | Component | Description |
@@ -159,12 +159,12 @@ Build in dependency order — foundations first, then composites that depend on 
 
 ### Wave 4: Composites (depend on foundation)
 21. PopDataRow (needs PopIcon, PopDisplayText)
-22. PopMetricCard (needs PopBadgeDirection, PopDisplayText, PopSurface) ✅
+22. PopBannerCard (needs PopBadgeDirection, PopDisplayText, PopIcon, PopSurface) ✅
 23. PopFeatureCard (needs PopDisplayText, PopBadge, PopIconRow, PopSurface)
 24. PopDashboardCard (needs PopSectionHeader, PopPill, PopDataRow, PopSurface)
 25. PopCarouselCard (needs PopIcon, PopChip, PopDisplayText, PopSurface)
 26. PopActionCard (needs PopDropdown, PopDisplayText, PopButton, PopTextField)
-27. PopBannerCard (needs PopSurface)
+27. PopImageBannerCard (needs PopSurface)
 
 ### Wave 5: Charts
 28. PopLineChart

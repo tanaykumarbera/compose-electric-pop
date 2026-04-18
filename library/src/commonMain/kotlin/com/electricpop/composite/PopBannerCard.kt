@@ -12,14 +12,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,214 +29,253 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.electricpop.foundation.PopIcons
+import com.electricpop.foundation.PopBadgeDirection
+import com.electricpop.foundation.toColors
+import com.electricpop.foundation.PopDisplayText
+import com.electricpop.foundation.PopDisplayTextDirection
+import com.electricpop.foundation.PopDisplayTextSize
+import com.electricpop.foundation.PopIcon
+import com.electricpop.foundation.PopIconItem
+import com.electricpop.foundation.PopIconSize
 import com.electricpop.foundation.PopSurface
 import com.electricpop.foundation.PopSurfaceTone
 import com.electricpop.theme.ElectricPopTheme
 import com.electricpop.theme.PopShapeFull
 
 /**
- * The trend direction for [PopBannerCardTrend].
+ * Visual style variant for [PopBannerCard].
  */
-enum class PopBannerCardTrendDirection { Up, Down, Neutral }
+enum class PopBannerCardStyle {
+    /** Neutral surface background (surfaceContainer). For secondary/supporting metrics. */
+    Surface,
+    /** Primary container background (primaryContainer). For the hero/primary metric. */
+    Hero,
+}
 
 /**
- * A trend indicator shown at the bottom of [PopBannerCard].
+ * A card that displays a labeled metric value with optional fractional text, directional badge,
+ * and Hero or Surface styling.
  *
- * @param label The trend label text (rendered uppercase).
- * @param direction The trend direction — controls default icon selection.
- * @param icon Optional override icon; falls back to direction-based default.
- */
-@Immutable
-data class PopBannerCardTrend(
-    val label: String,
-    val direction: PopBannerCardTrendDirection = PopBannerCardTrendDirection.Up,
-    val icon: ImageVector? = null,
-)
-
-/**
- * A vital indicator icon rendered in an overlapping circle cluster in [PopBannerCard].
+ * Follows the No-Line Rule: tonal surface shifts separate content areas — no dividers.
+ * Ghost border is enabled for Surface style to provide accessibility separation.
+ * Kinetic hover/press animation is enabled when [onClick] is non-null.
  *
- * @param icon The icon to display.
- * @param contentDescription Accessibility description for the icon.
- */
-@Immutable
-data class PopBannerCardVital(
-    val icon: ImageVector,
-    val contentDescription: String? = null,
-)
-
-/**
- * A hero metric banner card showing a large primary value, label, optional fractional value,
- * trend pill, and vitals cluster.
- *
- * Design rules enforced:
- * - **Rule 1 (No-Line):** solid container color, no borders on the card itself.
- * - **Rule 2 (Tonal Shadows):** delegated to [PopSurface].
- * - **Rule 3 (Ghost Border):** not used — decorative hero card.
- * - **Rule 4 (Neon Glow):** not applicable for banner.
- * - **Rule 5 (Kinetic):** hover → scale(1.02), press → scale(0.97), 200ms tween (when [onClick] != null).
- * - **Rule 6 (Squircle):** `MaterialTheme.shapes.extraSmall` for card; `PopShapeFull` for pill + vitals.
- * - **Rule 7 (Typography Impact):** label uppercase + wide letterSpacing; value `displayLarge`;
- *   trend uppercase + Black Italic.
- *
- * @param label Card label (rendered uppercase with wide tracking).
- * @param value Primary metric value text (rendered as displayLarge).
+ * @param label Context label shown uppercase above the main value.
+ * @param mainText The primary metric value (e.g., "$42,069"). Rendered uppercase via [PopDisplayText].
  * @param modifier Optional [Modifier] for the outer container.
- * @param fractionalValue Optional fractional/supplemental value shown next to [value].
- * @param trend Optional trend indicator pill shown below the value block.
- * @param vitals Optional list of vital icon indicators shown as overlapping circles.
- * @param containerColor Card background color — defaults to `primaryContainer`.
- * @param contentColor Content color — defaults to `onPrimaryContainer`.
- * @param onClick Optional click handler; enables kinetic scale interaction when set.
+ * @param fractionalText Optional fractional/suffix text (e.g., ".42", "%").
+ * @param badgeValue If non-null, a trend badge is shown below the display value (e.g., "+12.4%").
+ * @param badgeDirection Semantic direction for the badge arrow and color.
+ * @param displayDirection Semantic direction for the [PopDisplayText] color.
+ * @param displaySize Size variant for the main display value.
+ * @param icons Optional list of [PopIconItem] rendered as Slot C (vital indicators) below the badge.
+ *   On Hero style these are tinted with [onPrimaryContainer]; on Surface style with [onSurfaceVariant].
+ * @param style [PopBannerCardStyle.Hero] uses primaryContainer background; [PopBannerCardStyle.Surface] uses default surface tone.
+ * @param onClick Optional click handler. Enables kinetic hover/press scale animation when set.
  */
 @Composable
 fun PopBannerCard(
     label: String,
-    value: String,
+    mainText: String,
     modifier: Modifier = Modifier,
-    fractionalValue: String? = null,
-    trend: PopBannerCardTrend? = null,
-    vitals: List<PopBannerCardVital> = emptyList(),
-    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    fractionalText: String? = null,
+    badgeValue: String? = null,
+    badgeDirection: PopBadgeDirection = PopBadgeDirection.Neutral,
+    displayDirection: PopDisplayTextDirection = PopDisplayTextDirection.Neutral,
+    displaySize: PopDisplayTextSize = PopDisplayTextSize.Large,
+    icons: List<PopIconItem> = emptyList(),
+    style: PopBannerCardStyle = PopBannerCardStyle.Surface,
     onClick: (() -> Unit)? = null,
 ) {
     val spacing = ElectricPopTheme.spacing
-    val shape = MaterialTheme.shapes.extraSmall
-
-    // Rule 5: Kinetic interaction
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
     val isPressed by interactionSource.collectIsPressedAsState()
+
     val targetScale = when {
         onClick == null -> 1f
         isPressed -> 0.97f
-        isHovered -> 1.02f
+        isHovered -> 1.03f
         else -> 1f
     }
-    val scale by animateFloatAsState(targetScale, tween(200), label = "banner_scale")
+    val scale by animateFloatAsState(
+        targetValue = targetScale,
+        animationSpec = tween(durationMillis = 200),
+    )
+
+    val isHero = style == PopBannerCardStyle.Hero
 
     Box(
         modifier = modifier
             .graphicsLayer { scaleX = scale; scaleY = scale }
             .then(
                 if (onClick != null) {
-                    Modifier.clickable(interactionSource = interactionSource, indication = null, onClick = onClick)
+                    Modifier.clickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = onClick,
+                    )
                 } else {
                     Modifier
                 }
             ),
     ) {
         PopSurface(
-            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.extraSmall,
             tone = PopSurfaceTone.Default,
-            shape = shape,
-            shadowEnabled = true,
-            ghostBorder = false,
-            containerColor = containerColor,
-            contentColor = contentColor,
+            containerColor = if (isHero) MaterialTheme.colorScheme.primaryContainer else Color.Unspecified,
+            ghostBorder = !isHero,
         ) {
             Column(
-                modifier = Modifier.padding(spacing.xl),
-                verticalArrangement = Arrangement.spacedBy(spacing.xl),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(spacing.xl),
+                verticalArrangement = Arrangement.spacedBy(spacing.xs),
             ) {
-                // Block 1 — Label + value
-                Column(verticalArrangement = Arrangement.spacedBy(spacing.xs)) {
-                    // Rule 7: uppercase label with wide letterSpacing
-                    Text(
-                        text = label.uppercase(),
-                        style = MaterialTheme.typography.labelSmall,
-                        letterSpacing = 2.4.sp,
-                        color = contentColor.copy(alpha = 0.6f),
-                    )
-                    Row(
-                        verticalAlignment = Alignment.Bottom,
-                        horizontalArrangement = Arrangement.spacedBy(spacing.xs),
-                    ) {
-                        // Rule 7: displayLarge for primary value
-                        Text(
-                            text = value,
-                            style = MaterialTheme.typography.displayLarge,
-                            color = contentColor,
-                        )
-                        if (fractionalValue != null) {
-                            Text(
-                                text = fractionalValue,
-                                style = MaterialTheme.typography.headlineSmall.copy(
-                                    fontStyle = FontStyle.Italic,
-                                    fontWeight = FontWeight.Bold,
-                                ),
-                                color = contentColor,
-                                modifier = Modifier.padding(bottom = 8.dp),
-                            )
-                        }
-                    }
-                }
+                // 1. Context label
+                Text(
+                    text = label.uppercase(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = if (isHero) {
+                        MaterialTheme.colorScheme.onPrimaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
+                )
 
-                // Block 2 — Trend pill + vitals cluster (only if needed)
-                if (trend != null || vitals.isNotEmpty()) {
+                // 2. Display value
+                PopDisplayText(
+                    mainText = mainText,
+                    fractionalText = fractionalText,
+                    direction = displayDirection,
+                    size = displaySize,
+                    color = if (isHero) MaterialTheme.colorScheme.onPrimaryContainer else null,
+                )
+
+                // 3 + 4. Chip + icon cluster on a single row.
+                // Chip typography: titleLarge italic/Black/uppercase.
+                // Chip colors:
+                //   Hero → onPrimaryContainer bg, primaryContainer content.
+                //   Surface → derived from badgeDirection.toColors().
+                // Icons: 40dp circles, -12dp overlap, +N overflow.
+                val hasChip = badgeValue != null
+                val hasIcons = icons.isNotEmpty()
+                if (hasChip || hasIcons) {
+                    Spacer(Modifier.height(spacing.sm))
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(spacing.md),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        // Trend pill
-                        if (trend != null) {
+                        if (hasChip) {
+                            val chipBg: Color
+                            val chipContent: Color
+                            if (isHero) {
+                                chipBg = MaterialTheme.colorScheme.onPrimaryContainer
+                                chipContent = MaterialTheme.colorScheme.primaryContainer
+                            } else {
+                                val badgeColors = badgeDirection.toColors()
+                                chipBg = badgeColors.containerColor
+                                chipContent = badgeColors.contentColor
+                            }
                             Row(
                                 modifier = Modifier
                                     .clip(PopShapeFull)
-                                    .background(contentColor.copy(alpha = 0.15f))
-                                    .padding(
-                                        horizontal = spacing.md,
-                                        vertical = spacing.xs,
-                                    ),
+                                    .background(chipBg)
+                                    .padding(horizontal = spacing.md, vertical = spacing.xs),
+                                horizontalArrangement = Arrangement.spacedBy(spacing.xs),
                                 verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(spacing.sm),
                             ) {
-                                Icon(
-                                    imageVector = trend.icon ?: when (trend.direction) {
-                                        PopBannerCardTrendDirection.Up -> PopIcons.TrendUp
-                                        PopBannerCardTrendDirection.Down -> PopIcons.TrendDown
-                                        PopBannerCardTrendDirection.Neutral -> PopIcons.Sparkle
-                                    },
-                                    contentDescription = null,
-                                    tint = contentColor,
-                                    modifier = Modifier.size(20.dp),
-                                )
-                                // Rule 7: uppercase, Black Italic for trend label
+                                when (badgeDirection) {
+                                    PopBadgeDirection.Up -> PopIcon(
+                                        imageVector = com.electricpop.foundation.PopIcons.TrendUp,
+                                        contentDescription = "Trending up",
+                                        size = PopIconSize.Medium,
+                                        tint = chipContent,
+                                    )
+                                    PopBadgeDirection.Down -> PopIcon(
+                                        imageVector = com.electricpop.foundation.PopIcons.TrendDown,
+                                        contentDescription = "Trending down",
+                                        size = PopIconSize.Medium,
+                                        tint = chipContent,
+                                    )
+                                    PopBadgeDirection.Neutral -> {}
+                                }
                                 Text(
-                                    text = trend.label.uppercase(),
+                                    text = badgeValue!!.uppercase(),
                                     style = MaterialTheme.typography.titleLarge.copy(
                                         fontStyle = FontStyle.Italic,
                                         fontWeight = FontWeight.Black,
                                     ),
-                                    color = contentColor,
+                                    color = chipContent,
                                 )
                             }
                         }
 
-                        // Vitals cluster — overlapping circles (Rule 6: PopShapeFull)
-                        if (vitals.isNotEmpty()) {
-                            Row(horizontalArrangement = Arrangement.spacedBy((-12).dp)) {
-                                vitals.forEach { vital ->
+                        if (hasIcons) {
+                            val maxVisible = 5
+                            val visibleIcons = icons.take(maxVisible)
+                            val overflowCount = icons.size - maxVisible
+                            val coinSize = 40.dp
+                            val overlapOffset = 12.dp
+                            val borderColor = if (isHero) {
+                                MaterialTheme.colorScheme.primaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.surfaceContainer
+                            }
+                            val iconBgColor = if (isHero) {
+                                Color.White.copy(alpha = 0.4f)
+                            } else {
+                                MaterialTheme.colorScheme.surfaceContainerHigh
+                            }
+                            val iconTint = if (isHero) {
+                                MaterialTheme.colorScheme.onPrimaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            }
+                            val totalItems = visibleIcons.size + if (overflowCount > 0) 1 else 0
+                            Box(
+                                modifier = Modifier
+                                    .size(
+                                        width = coinSize * totalItems - overlapOffset * (totalItems - 1),
+                                        height = coinSize,
+                                    ),
+                            ) {
+                                visibleIcons.forEachIndexed { index, item ->
                                     Box(
                                         modifier = Modifier
-                                            .size(40.dp)
-                                            .clip(PopShapeFull)
-                                            .background(contentColor.copy(alpha = 0.15f))
-                                            .border(2.dp, containerColor, PopShapeFull),
+                                            .offset(x = (coinSize - overlapOffset) * index)
+                                            .size(coinSize)
+                                            .clip(CircleShape)
+                                            .background(iconBgColor)
+                                            .border(2.dp, borderColor, CircleShape),
                                         contentAlignment = Alignment.Center,
                                     ) {
-                                        Icon(
-                                            imageVector = vital.icon,
-                                            contentDescription = vital.contentDescription,
-                                            tint = contentColor,
-                                            modifier = Modifier.size(16.dp),
+                                        PopIcon(
+                                            imageVector = item.imageVector,
+                                            contentDescription = item.contentDescription,
+                                            size = PopIconSize.Small,
+                                            tint = iconTint,
+                                        )
+                                    }
+                                }
+                                if (overflowCount > 0) {
+                                    val overflowIndex = visibleIcons.size
+                                    Box(
+                                        modifier = Modifier
+                                            .offset(x = (coinSize - overlapOffset) * overflowIndex)
+                                            .size(coinSize)
+                                            .clip(CircleShape)
+                                            .background(iconBgColor)
+                                            .border(2.dp, borderColor, CircleShape),
+                                        contentAlignment = Alignment.Center,
+                                    ) {
+                                        Text(
+                                            text = "+$overflowCount",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = iconTint,
                                         )
                                     }
                                 }
