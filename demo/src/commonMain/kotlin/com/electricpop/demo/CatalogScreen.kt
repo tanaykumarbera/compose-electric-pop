@@ -35,6 +35,7 @@ import com.electricpop.demo.components.PopDashboardCardDemo
 import com.electricpop.demo.components.PopBannerCardDemo
 import com.electricpop.demo.components.PopImageBannerCardDemo
 import com.electricpop.demo.components.PopDataRowDemo
+import com.electricpop.demo.components.PopLineChartDemo
 
 data class CatalogEntry(
     val name: String,
@@ -82,7 +83,7 @@ val catalogEntries = listOf<CatalogEntry>(
     CatalogEntry("PopActionCard", "Composite") { PopActionCardDemo() },
 
     // Wave 5: Charts
-    // CatalogEntry("PopLineChart", "Chart") { PopLineChartDemo() },
+    CatalogEntry("PopLineChart", "Chart") { PopLineChartDemo() },
     // CatalogEntry("PopBarChart", "Chart") { PopBarChartDemo() },
     // CatalogEntry("PopDonutChart", "Chart") { PopDonutChartDemo() },
 )
