@@ -120,29 +120,29 @@ Check `.execution-history/phase-03-implementation.md` for current status. Resume
 | 10 | PopChip | DONE |
 | 11 | PopDropdown | DONE |
 
-### Wave 3: Layout Foundation — IN PROGRESS (start from feat/pop-display-text)
-| # | Component | Tier | Variants | Notes |
-|---|-----------|------|----------|-------|
-| 12 | PopIconRow | foundation | Dynamic 1-N icons | Horizontal cluster, used by PopFeatureCard |
-| 13 | PopSectionHeader | foundation | Accent label + title + line | Numbered variant |
-| 14 | PopTitleBar | foundation | Title + inline PopPill | Headline italic |
-| 15 | PopDisplayText | foundation | Large text + fractional | Directional coloring — DONE |
-| 16 | PopIconListItem | foundation | Icon + description | For guidelines/lists |
-| 17 | PopStepList | foundation | Numbered items + icons | 01/02/03 entries |
-| 18 | PopTable | foundation | Label-value rows | Alternating tonal, colored variants |
-| 19 | PopCodeBlock | foundation | Pre-formatted code | Monospace, copy header |
-| 20 | PopBottomBar | foundation | Icons, Icons+text, active | Glassmorphic, backdrop-blur |
+### Wave 3: Layout Foundation — DONE
+| # | Component | Tier | Status |
+|---|-----------|------|--------|
+| 12 | PopIconRow | foundation | DONE |
+| 13 | PopSectionHeader | foundation | DONE — redesigned per Stitch (PR #14) |
+| 14 | PopTitleBar | foundation | DONE — redesigned per Stitch (PR #14) |
+| 15 | PopDisplayText | foundation | DONE |
+| 16 | PopIconListItem | foundation | DONE |
+| 17 | PopStepList | foundation | DONE |
+| 18 | PopTable | foundation | DONE |
+| 19 | PopCodeBlock | foundation | DONE — PR #21 merged |
+| 20 | PopBottomBar | foundation | DONE — PR #20 merged |
 
-### Wave 4: Composites (7 components)
-| # | Component | Tier | Composes | Notes |
-|---|-----------|------|----------|-------|
-| 21 | PopDataRow | composite | PopIcon, PopDisplayText | Icon + label + value |
-| 22 | PopMetricCard | composite | PopBadge, PopDisplayText, PopSurface | Metric display |
-| 23 | PopFeatureCard | composite | PopDisplayText, PopBadge, PopIconRow, PopSurface | Hero spotlight card |
-| 24 | PopDashboardCard | composite | PopSectionHeader, PopPill, PopDataRow, PopSurface | Data overview |
-| 25 | PopCarouselCard | composite | PopIcon, PopChip, PopDisplayText, PopSurface | Horizontal scroll cards |
-| 26 | PopActionCard | composite | PopDropdown, PopDisplayText, PopButton, PopTextField | Input + actions |
-| 27 | PopBannerCard | composite | PopSurface + headline overlay | Big image + text |
+### Wave 4: Composites — IN PROGRESS (1 remaining)
+| # | Component | Tier | Composes | Status |
+|---|-----------|------|----------|--------|
+| 21 | PopDataRow | composite | PopIcon, PopDisplayText | DONE — PR #22 merged |
+| 22 | PopBannerCard (enhanced) | composite | PopBadge, PopDisplayText, PopIcon, PopSurface | DONE — PR #23 merged; renamed from PopMetricCard 2026-04-18 |
+| 23 | PopFeatureCard | composite | PopDisplayText, PopBadge, PopIconRow, PopSurface | DONE — PR merged |
+| 24 | PopDashboardCard | composite | PopSectionHeader, PopPill, PopDataRow, PopSurface | DONE — PR merged |
+| 25 | PopCarouselCard | composite | PopIcon, PopChip, PopDisplayText, PopSurface | DONE — PR merged |
+| 26 | PopActionCard | composite | PopButton, PopChip, PopDisplayText (slot-based) | DONE — PR #28 open |
+| **27** | **PopImageBannerCard** | **composite** | **PopSurface + Image overlay** | **⬅ NEXT** |
 
 ### Wave 5: Charts (3 components)
 | # | Component | Tier | Notes |

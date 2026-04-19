@@ -79,8 +79,8 @@ ElectricPopTheme(
 | PopDashboardCard | Data overview card with status pills and data rows |
 | PopDataRow | Icon + title + value row with tonal separation |
 | PopActionCard | Card with input fields and action buttons |
-| PopBannerCard | Big image card with overlay headline |
-| PopMetricCard | Self-contained metric display |
+| PopBannerCard | Metric banner with trend chip and overlapping icon cluster |
+| PopImageBannerCard | Big image card with overlay headline and configurable text anchor |
 
 ### Chart (3)
 

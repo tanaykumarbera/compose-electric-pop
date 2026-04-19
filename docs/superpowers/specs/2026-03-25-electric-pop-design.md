@@ -143,6 +143,8 @@ These rules are baked into every component. They are not optional.
 
 ### 6.2 Composite (7 components)
 
+> **Revised 2026-04-18 — see spec `2026-04-18-banner-card-refactor`.**
+
 | # | Component | Composed From | Description |
 |---|---|---|---|
 | 1 | **PopFeatureCard** | PopDisplayText, PopBadge, PopIconRow, PopSurface | Primary spotlight card. Large metric, trend indicator, supporting icon cluster. Primary container bg. |
@@ -150,8 +152,8 @@ These rules are baked into every component. They are not optional.
 | 3 | **PopDashboardCard** | PopSectionHeader, PopPill, PopDataRow, PopSurface | Data overview card. Tertiary gradient bg, status pills, icon + label + value data rows. |
 | 4 | **PopDataRow** | PopIcon, PopDisplayText | Icon + title + category chip + value. Tonal shift separation (no borders). Directional value coloring. |
 | 5 | **PopActionCard** | PopDropdown, PopDisplayText, PopButton, PopTextField | Card with input + actions. Recipient selector, dropdown, large input (7xl-9xl), action button group. |
-| 6 | **PopBannerCard** | PopSurface, headline text overlay | Big image card with overlaid text. Bold italic uppercase headline. |
-| 7 | **PopMetricCard** | PopBadge, PopDisplayText, PopSurface | Self-contained metric display. Surface bg, lg radius. |
+| 6 | **PopBannerCard** | PopBadge, PopDisplayText, PopIcon, PopSurface | Metric banner: label, value, trend chip (italic black uppercase), overlapping icon cluster. Hero/Surface styles. |
+| 7 | **PopImageBannerCard** | PopSurface + Image overlay | Big image hero card with overlaid italic-black-uppercase headline. Configurable text anchor + scrim. |
 
 ### 6.3 Chart (3 components)
 

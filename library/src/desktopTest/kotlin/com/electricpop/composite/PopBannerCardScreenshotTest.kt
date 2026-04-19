@@ -1,9 +1,12 @@
 package com.electricpop.composite
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ExperimentalTestApi
@@ -19,39 +22,44 @@ import com.electricpop.theme.ElectricPopTheme
 import io.github.takahirom.roborazzi.captureRoboImage
 import kotlin.test.Test
 
-class PopMetricCardScreenshotTest {
+class PopBannerCardScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun allVariants_light() = runDesktopComposeUiTest(width = 420, height = 1500) {
-        setContent { MetricCardContent(darkTheme = false) }
+        setContent { BannerCardContent(darkTheme = false) }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopMetricCard_allVariants_light.png",
+            filePath = "src/desktopTest/snapshots/PopBannerCard_allVariants_light.png",
         )
     }
 
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun allVariants_dark() = runDesktopComposeUiTest(width = 420, height = 1500) {
-        setContent { MetricCardContent(darkTheme = true) }
+        setContent { BannerCardContent(darkTheme = true) }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopMetricCard_allVariants_dark.png",
+            filePath = "src/desktopTest/snapshots/PopBannerCard_allVariants_dark.png",
         )
     }
 }
 
 @Composable
-private fun MetricCardContent(darkTheme: Boolean) {
+private fun BannerCardContent(darkTheme: Boolean) {
     ElectricPopTheme(darkTheme = darkTheme) {
         val spacing = ElectricPopTheme.spacing
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(spacing.md),
+                .background(MaterialTheme.colorScheme.background),
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(spacing.md),
+            ) {
             // 1. Hero + badge + icons (Slot C)
-            PopMetricCard(
+            PopBannerCard(
                 label = "Total Ecosystem Value",
                 mainText = "\$42,069",
                 fractionalText = ".42",
@@ -62,10 +70,10 @@ private fun MetricCardContent(darkTheme: Boolean) {
                     PopIconItem(PopIcons.Sparkle, "Quality"),
                     PopIconItem(PopIcons.Layers, "Depth"),
                 ),
-                style = PopMetricCardStyle.Hero,
+                style = PopBannerCardStyle.Hero,
             )
             // 2. Hero with >5 icons (overflow)
-            PopMetricCard(
+            PopBannerCard(
                 label = "Network Health",
                 mainText = "\$88,200",
                 fractionalText = ".00",
@@ -80,25 +88,26 @@ private fun MetricCardContent(darkTheme: Boolean) {
                     PopIconItem(PopIcons.CheckCircle, "Verified"),
                     PopIconItem(PopIcons.Home, "Home"),
                 ),
-                style = PopMetricCardStyle.Hero,
+                style = PopBannerCardStyle.Hero,
             )
             // 3. Surface + badge (negative)
-            PopMetricCard(
+            PopBannerCard(
                 label = "Monthly Revenue",
                 mainText = "\$8,421",
                 fractionalText = ".00",
                 badgeValue = "-3.2%",
                 badgeDirection = PopBadgeDirection.Down,
                 displayDirection = PopDisplayTextDirection.Negative,
-                style = PopMetricCardStyle.Surface,
+                style = PopBannerCardStyle.Surface,
             )
             // 4. Surface, no badge, small size
-            PopMetricCard(
+            PopBannerCard(
                 label = "Active Users",
                 mainText = "1,247",
                 displaySize = PopDisplayTextSize.Small,
-                style = PopMetricCardStyle.Surface,
+                style = PopBannerCardStyle.Surface,
             )
+            }
         }
     }
 }

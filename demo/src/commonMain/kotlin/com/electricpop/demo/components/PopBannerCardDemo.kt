@@ -10,8 +10,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.electricpop.composite.PopMetricCard
-import com.electricpop.composite.PopMetricCardStyle
+import com.electricpop.composite.PopBannerCard
+import com.electricpop.composite.PopBannerCardStyle
 import com.electricpop.foundation.PopBadgeDirection
 import com.electricpop.foundation.PopDisplayTextDirection
 import com.electricpop.foundation.PopDisplayTextSize
@@ -20,7 +20,7 @@ import com.electricpop.foundation.PopIcons
 import com.electricpop.theme.ElectricPopTheme
 
 @Composable
-fun PopMetricCardDemo() {
+fun PopBannerCardDemo() {
     val spacing = ElectricPopTheme.spacing
     Column(
         modifier = Modifier
@@ -36,7 +36,7 @@ fun PopMetricCardDemo() {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
-            PopMetricCard(
+            PopBannerCard(
                 label = "Total Ecosystem Value",
                 mainText = "\$42,069",
                 fractionalText = ".42",
@@ -47,15 +47,15 @@ fun PopMetricCardDemo() {
                     PopIconItem(PopIcons.Sparkle, "Quality"),
                     PopIconItem(PopIcons.Layers, "Depth"),
                 ),
-                style = PopMetricCardStyle.Hero,
+                style = PopBannerCardStyle.Hero,
             )
-            PopMetricCard(
+            PopBannerCard(
                 label = "Portfolio Balance",
                 mainText = "\$128,500",
                 fractionalText = ".00",
-                style = PopMetricCardStyle.Hero,
+                style = PopBannerCardStyle.Hero,
             )
-            PopMetricCard(
+            PopBannerCard(
                 label = "Network Health",
                 mainText = "\$88,200",
                 fractionalText = ".00",
@@ -70,7 +70,7 @@ fun PopMetricCardDemo() {
                     PopIconItem(PopIcons.CheckCircle, "Verified"),
                     PopIconItem(PopIcons.Home, "Home"),
                 ),
-                style = PopMetricCardStyle.Hero,
+                style = PopBannerCardStyle.Hero,
             )
         }
 
@@ -81,30 +81,30 @@ fun PopMetricCardDemo() {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
-            PopMetricCard(
+            PopBannerCard(
                 label = "Monthly Revenue",
                 mainText = "\$8,421",
                 fractionalText = ".00",
                 badgeValue = "+5.8%",
                 badgeDirection = PopBadgeDirection.Up,
                 displayDirection = PopDisplayTextDirection.Positive,
-                style = PopMetricCardStyle.Surface,
+                style = PopBannerCardStyle.Surface,
             )
-            PopMetricCard(
+            PopBannerCard(
                 label = "Operating Costs",
                 mainText = "\$3,200",
                 fractionalText = ".50",
                 badgeValue = "-2.1%",
                 badgeDirection = PopBadgeDirection.Down,
                 displayDirection = PopDisplayTextDirection.Negative,
-                style = PopMetricCardStyle.Surface,
+                style = PopBannerCardStyle.Surface,
             )
-            PopMetricCard(
+            PopBannerCard(
                 label = "Total Assets",
                 mainText = "\$52,000",
                 badgeValue = "0.0%",
                 badgeDirection = PopBadgeDirection.Neutral,
-                style = PopMetricCardStyle.Surface,
+                style = PopBannerCardStyle.Surface,
             )
         }
 
@@ -115,26 +115,26 @@ fun PopMetricCardDemo() {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
-            PopMetricCard(
+            PopBannerCard(
                 label = "Large Display",
                 mainText = "\$99,999",
                 fractionalText = ".99",
                 displaySize = PopDisplayTextSize.Large,
-                style = PopMetricCardStyle.Surface,
+                style = PopBannerCardStyle.Surface,
             )
-            PopMetricCard(
+            PopBannerCard(
                 label = "Medium Display",
                 mainText = "\$99,999",
                 fractionalText = ".99",
                 displaySize = PopDisplayTextSize.Medium,
-                style = PopMetricCardStyle.Surface,
+                style = PopBannerCardStyle.Surface,
             )
-            PopMetricCard(
+            PopBannerCard(
                 label = "Small Display",
                 mainText = "\$99,999",
                 fractionalText = ".99",
                 displaySize = PopDisplayTextSize.Small,
-                style = PopMetricCardStyle.Surface,
+                style = PopBannerCardStyle.Surface,
             )
         }
 
@@ -145,16 +145,16 @@ fun PopMetricCardDemo() {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
-            PopMetricCard(
+            PopBannerCard(
                 label = "Active Users",
                 mainText = "1,247",
-                style = PopMetricCardStyle.Surface,
+                style = PopBannerCardStyle.Surface,
             )
-            PopMetricCard(
+            PopBannerCard(
                 label = "Uptime",
                 mainText = "99.9",
                 fractionalText = "%",
-                style = PopMetricCardStyle.Surface,
+                style = PopBannerCardStyle.Surface,
             )
         }
     }

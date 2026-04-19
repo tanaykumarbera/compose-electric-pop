@@ -1602,6 +1602,8 @@ Prerequisites: Phase 01 and 02 fully complete.
 | 32 | PopBottomBar | [PENDING] |
 | 33 | PopDropdown | [PENDING] |
 
+> **Revised 2026-04-18:** see `docs/superpowers/specs/2026-04-18-banner-card-refactor.md`. PopMetricCard was renamed to PopBannerCard; original numeric PopBannerCard was replaced by PopImageBannerCard.
+
 ### Composite
 | ID | Component | Status |
 |----|-----------|--------|
@@ -1674,6 +1676,8 @@ ElectricPopTheme {
 **Foundation (20):** PopButton, PopTextField, PopRadioGroup, PopSwitch, PopSlider, PopChip, PopIcon, PopSurface, PopBadge, PopPill, PopIconRow, PopSectionHeader, PopTitleBar, PopDisplayText, PopCodeBlock, PopIconListItem, PopTable, PopStepList, PopBottomBar, PopDropdown
 
 **Composite (7):** PopFeatureCard, PopCarouselCard, PopDashboardCard, PopDataRow, PopActionCard, PopBannerCard, PopMetricCard
+
+> _2026-04-18 note: the `PopMetricCard` slot in this list became `PopImageBannerCard`. See `docs/superpowers/specs/2026-04-18-banner-card-refactor.md`._
 
 **Chart (3):** PopLineChart, PopBarChart, PopDonutChart
 

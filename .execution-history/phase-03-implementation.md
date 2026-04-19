@@ -44,13 +44,13 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 ## Wave 4: Composites
 | ID | Component | Status |
 |----|-----------|--------|
-| 21 | PopDataRow | [DONE] — PR merged |
-| 22 | PopMetricCard | [DONE] — PR #23 open, Stitch-verified via HTML |
-| 23 | PopFeatureCard | [PENDING] |
-| 24 | PopDashboardCard | [PENDING] |
-| 25 | PopCarouselCard | [PENDING] |
-| 26 | PopActionCard | [PENDING] |
-| 27 | PopBannerCard | [PENDING] |
+| 21 | PopDataRow | [DONE] — PR #22 merged |
+| 22 | PopBannerCard (enhanced) | [DONE] — PR #23 merged — renamed from PopMetricCard 2026-04-18 |
+| 23 | PopFeatureCard | [DONE] — PR merged |
+| 24 | PopDashboardCard | [DONE] — PR merged |
+| 25 | PopCarouselCard | [DONE] — PR merged |
+| 26 | PopActionCard | [DONE] — PR #28 open |
+| 27 | PopImageBannerCard | [NEXT] |
 
 ## Wave 5: Charts
 | ID | Component | Status |
@@ -65,3 +65,4 @@ Prerequisites: Phase 01 and 02 fully complete. Pixy pipeline validated.
 | 2026-04-07 | PopSectionHeader + PopTitleBar redesigned to match Stitch designs | #14 |
 | 2026-04-09 | PopCodeBlock copy button bg hardcoded to surfaceContainerHigh — clashed with custom containerColor in dark mode. Fixed to contentColor at 15% opacity | #21 |
 | 2026-04-10 | PopMetricCard: increased padding (xl), enlarged badge (labelLarge), replaced icon row with overlapping coin-stack (+N overflow). Stitch HTML used for exact CSS→Compose mapping. Updated pixy-planner to download HTML. | #23 |
+| 2026-04-18 | PopMetricCard renamed to PopBannerCard (enhanced chip + single-row icons); old numeric PopBannerCard deleted and replaced by new PopImageBannerCard. See spec `2026-04-18-banner-card-refactor`. | – |
