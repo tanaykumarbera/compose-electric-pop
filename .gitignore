@@ -17,6 +17,9 @@ local.properties
 # Superpowers
 .superpowers/
 
+# Pixy orchestrator plans (ephemeral build-time artifacts)
+.pixy/
+
 # Claude flow session data
 .claude-flow/
 
