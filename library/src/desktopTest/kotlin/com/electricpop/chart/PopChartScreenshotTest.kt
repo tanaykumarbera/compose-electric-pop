@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.runDesktopComposeUiTest
-import androidx.compose.ui.unit.dp
 import com.electricpop.theme.ElectricPopTheme
 import io.github.takahirom.roborazzi.captureRoboImage
 import kotlin.test.Test
@@ -22,7 +23,7 @@ class PopChartScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_light() = runDesktopComposeUiTest(width = 460, height = 1800) {
+    fun allVariants_light() = runDesktopComposeUiTest(width = 460, height = 2400) {
         setContent { PopChartContent(darkTheme = false) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopChart_allVariants_light.png",
@@ -31,7 +32,7 @@ class PopChartScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_dark() = runDesktopComposeUiTest(width = 460, height = 1800) {
+    fun allVariants_dark() = runDesktopComposeUiTest(width = 460, height = 2400) {
         setContent { PopChartContent(darkTheme = true) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopChart_allVariants_dark.png",
@@ -58,39 +59,44 @@ private fun PopChartContent(darkTheme: Boolean) {
                     .padding(spacing.md),
                 verticalArrangement = Arrangement.spacedBy(spacing.md),
             ) {
-                // Variant 1: Single series, smooth, no area
+                // ── LINE section ─────────────────────────────────────────────
                 Text(
-                    "SINGLE SERIES · SMOOTH",
+                    "LINE",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+
+                // Variant 1: Single series, Normal smoothness, no area
+                Text(
+                    "SINGLE SERIES · NORMAL",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 PopChart(
                     series = listOf(PopChartSeries("Revenue", primaryValues)),
+                    style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.Normal),
                     xLabels = xLabels,
                     title = "Monthly Revenue",
-                    subtitle = "This Year",
-                    smooth = true,
-                    showArea = false,
+                    subtitle = "Normal smoothness",
                 )
 
-                // Variant 2: Single series, smooth, area fill
+                // Variant 2: Single series, Normal + area
                 Text(
-                    "SINGLE SERIES · AREA FILL",
+                    "SINGLE SERIES · NORMAL · AREA",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 PopChart(
                     series = listOf(PopChartSeries("Revenue", primaryValues)),
+                    style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.Normal, showArea = true),
                     xLabels = xLabels,
                     title = "Monthly Revenue",
-                    subtitle = "With Area",
-                    smooth = true,
-                    showArea = true,
+                    subtitle = "With area fill",
                 )
 
-                // Variant 3: Two series, smooth, no area
+                // Variant 3: Two series, Normal, no area
                 Text(
-                    "TWO SERIES · SMOOTH",
+                    "TWO SERIES · NORMAL",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -99,15 +105,14 @@ private fun PopChartContent(darkTheme: Boolean) {
                         PopChartSeries("This Year", primaryValues),
                         PopChartSeries("Last Year", secondaryValues),
                     ),
+                    style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.Normal),
                     xLabels = xLabels,
                     title = "Year Comparison",
-                    smooth = true,
-                    showArea = false,
                 )
 
-                // Variant 4: Two series, smooth, area fill, activeIndex = 7
+                // Variant 4: Two series, Normal + area + activeIndex = 7
                 Text(
-                    "TWO SERIES · AREA FILL · ACTIVE INDEX",
+                    "TWO SERIES · NORMAL · AREA · ACTIVE",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -115,28 +120,114 @@ private fun PopChartContent(darkTheme: Boolean) {
                     series = listOf(
                         PopChartSeries("This Year", primaryValues),
                         PopChartSeries("Last Year", secondaryValues),
+                    ),
+                    style = PopChartStyle.Line(
+                        smoothness = PopChartStyle.Smoothness.Normal,
+                        showArea = true,
+                        activeIndex = 7,
                     ),
                     xLabels = xLabels,
                     title = "Year Comparison",
                     subtitle = "August highlighted",
-                    smooth = true,
-                    showArea = true,
-                    activeIndex = 7,
                 )
 
-                // Variant 5: Single series, straight lines
+                // Variant 5: Single series, None (straight)
                 Text(
-                    "SINGLE SERIES · STRAIGHT",
+                    "SINGLE SERIES · NONE (STRAIGHT)",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 PopChart(
                     series = listOf(PopChartSeries("Revenue", primaryValues)),
+                    style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.None),
                     xLabels = xLabels,
                     title = "Monthly Revenue",
-                    subtitle = "Linear segments",
-                    smooth = false,
-                    showArea = false,
+                    subtitle = "Straight segments",
+                )
+
+                // Variant 6: Single series, High (Catmull-Rom)
+                Text(
+                    "SINGLE SERIES · HIGH (CATMULL-ROM)",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                PopChart(
+                    series = listOf(PopChartSeries("Revenue", primaryValues)),
+                    style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.High),
+                    xLabels = xLabels,
+                    title = "Monthly Revenue",
+                    subtitle = "High smoothness (Catmull-Rom)",
+                )
+
+                Spacer(modifier = Modifier.height(spacing.sm))
+
+                // ── BAR section ──────────────────────────────────────────────
+                Text(
+                    "BAR",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+
+                // Variant 7: Single, Clustered
+                Text(
+                    "SINGLE SERIES · CLUSTERED",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                PopChart(
+                    series = listOf(PopChartSeries("Revenue", primaryValues)),
+                    style = PopChartStyle.Bar(grouping = PopChartStyle.Grouping.Clustered),
+                    xLabels = xLabels,
+                    title = "Monthly Revenue",
+                    subtitle = "Clustered",
+                )
+
+                // Variant 8: Single, Clustered + activeIndex = 7
+                Text(
+                    "SINGLE SERIES · CLUSTERED · ACTIVE",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                PopChart(
+                    series = listOf(PopChartSeries("Revenue", primaryValues)),
+                    style = PopChartStyle.Bar(grouping = PopChartStyle.Grouping.Clustered, activeIndex = 7),
+                    xLabels = xLabels,
+                    title = "Monthly Revenue",
+                    subtitle = "August highlighted",
+                )
+
+                // Variant 9: Two series, Clustered
+                Text(
+                    "TWO SERIES · CLUSTERED",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                PopChart(
+                    series = listOf(
+                        PopChartSeries("This Year", primaryValues),
+                        PopChartSeries("Last Year", secondaryValues),
+                    ),
+                    style = PopChartStyle.Bar(grouping = PopChartStyle.Grouping.Clustered),
+                    xLabels = xLabels,
+                    title = "Year Comparison",
+                    subtitle = "Clustered",
+                )
+
+                // Variant 10: Two series, Stacked
+                Text(
+                    "TWO SERIES · STACKED",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                PopChart(
+                    series = listOf(
+                        PopChartSeries("This Year", primaryValues),
+                        PopChartSeries("Last Year", secondaryValues),
+                    ),
+                    style = PopChartStyle.Bar(grouping = PopChartStyle.Grouping.Stacked),
+                    xLabels = xLabels,
+                    title = "Year Comparison",
+                    subtitle = "Stacked",
                 )
             }
         }

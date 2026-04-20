@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.electricpop.chart.PopChart
 import com.electricpop.chart.PopChartSeries
+import com.electricpop.chart.PopChartStyle
 import com.electricpop.foundation.PopSurface
 import com.electricpop.foundation.PopSurfaceTone
 import com.electricpop.theme.ElectricPopTheme
@@ -31,73 +32,139 @@ fun PopChartDemo() {
         verticalArrangement = Arrangement.spacedBy(spacing.lg),
     ) {
 
-        // ── SINGLE SERIES ────────────────────────────────────────────────────
+        // ── LINE ─────────────────────────────────────────────────────────────
         Text(
-            "SINGLE SERIES",
+            "LINE",
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
-            // Smooth, no area
+            // Single series, Normal, no area
             PopChart(
                 series = listOf(PopChartSeries("Revenue", primaryValues)),
+                style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.Normal),
                 xLabels = xLabels,
                 title = "Monthly Revenue",
-                subtitle = "Smooth · No area",
-                smooth = true,
-                showArea = false,
+                subtitle = "Normal · No area",
             )
-            // Smooth with area fill
+            // Single series, Normal, area fill
             PopChart(
                 series = listOf(PopChartSeries("Revenue", primaryValues)),
+                style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.Normal, showArea = true),
                 xLabels = xLabels,
                 title = "Monthly Revenue",
-                subtitle = "Smooth · Area fill",
-                smooth = true,
-                showArea = true,
+                subtitle = "Normal · Area fill",
             )
-            // Straight segments
+            // Single series, None (straight)
             PopChart(
                 series = listOf(PopChartSeries("Revenue", primaryValues)),
+                style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.None),
                 xLabels = xLabels,
                 title = "Monthly Revenue",
-                subtitle = "Straight segments",
-                smooth = false,
-                showArea = false,
+                subtitle = "None · Straight segments",
             )
-        }
-
-        // ── MULTI SERIES ─────────────────────────────────────────────────────
-        Text(
-            "MULTI SERIES",
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
-            // Two series, no area
+            // Two series, Normal, no area
             PopChart(
                 series = listOf(
                     PopChartSeries("This Year", primaryValues),
                     PopChartSeries("Last Year", secondaryValues),
                 ),
+                style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.Normal),
                 xLabels = xLabels,
                 title = "Year Comparison",
-                subtitle = "Smooth · No area",
-                smooth = true,
-                showArea = false,
+                subtitle = "Normal · No area",
             )
-            // Two series, area fill, activeIndex
+            // Two series, Normal, area fill, activeIndex = 7
             PopChart(
                 series = listOf(
                     PopChartSeries("This Year", primaryValues),
                     PopChartSeries("Last Year", secondaryValues),
+                ),
+                style = PopChartStyle.Line(
+                    smoothness = PopChartStyle.Smoothness.Normal,
+                    showArea = true,
+                    activeIndex = 7,
                 ),
                 xLabels = xLabels,
                 title = "Year Comparison",
                 subtitle = "Area fill · August highlighted",
-                smooth = true,
-                showArea = true,
-                activeIndex = 7,
+            )
+        }
+
+        // ── SMOOTHNESS ───────────────────────────────────────────────────────
+        Text(
+            "SMOOTHNESS",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
+            PopChart(
+                series = listOf(PopChartSeries("Revenue", primaryValues)),
+                style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.None),
+                xLabels = xLabels,
+                title = "Smoothness: None",
+                subtitle = "Straight segments",
+            )
+            PopChart(
+                series = listOf(PopChartSeries("Revenue", primaryValues)),
+                style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.Normal),
+                xLabels = xLabels,
+                title = "Smoothness: Normal",
+                subtitle = "Monotone-cubic (Fritsch-Carlson)",
+            )
+            PopChart(
+                series = listOf(PopChartSeries("Revenue", primaryValues)),
+                style = PopChartStyle.Line(smoothness = PopChartStyle.Smoothness.High),
+                xLabels = xLabels,
+                title = "Smoothness: High",
+                subtitle = "Catmull-Rom tension=0.5",
+            )
+        }
+
+        // ── BAR ──────────────────────────────────────────────────────────────
+        Text(
+            "BAR",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
+            // Single, Clustered
+            PopChart(
+                series = listOf(PopChartSeries("Revenue", primaryValues)),
+                style = PopChartStyle.Bar(grouping = PopChartStyle.Grouping.Clustered),
+                xLabels = xLabels,
+                title = "Clustered",
+                subtitle = "Single series",
+            )
+            // Single, Clustered + active
+            PopChart(
+                series = listOf(PopChartSeries("Revenue", primaryValues)),
+                style = PopChartStyle.Bar(grouping = PopChartStyle.Grouping.Clustered, activeIndex = 7),
+                xLabels = xLabels,
+                title = "Clustered · August active",
+                subtitle = "Active glow on index 7",
+            )
+            // Two series, Clustered
+            PopChart(
+                series = listOf(
+                    PopChartSeries("This Year", primaryValues),
+                    PopChartSeries("Last Year", secondaryValues),
+                ),
+                style = PopChartStyle.Bar(grouping = PopChartStyle.Grouping.Clustered),
+                xLabels = xLabels,
+                title = "Two series · Clustered",
+                subtitle = "Side-by-side bars",
+            )
+            // Two series, Stacked
+            PopChart(
+                series = listOf(
+                    PopChartSeries("This Year", primaryValues),
+                    PopChartSeries("Last Year", secondaryValues),
+                ),
+                style = PopChartStyle.Bar(grouping = PopChartStyle.Grouping.Stacked),
+                xLabels = xLabels,
+                title = "Two series · Stacked",
+                subtitle = "Cumulative bars",
             )
         }
 
@@ -110,11 +177,10 @@ fun PopChartDemo() {
         PopSurface(tone = PopSurfaceTone.Default) {
             PopChart(
                 series = listOf(PopChartSeries("Revenue", primaryValues)),
+                style = PopChartStyle.Line(showArea = true),
                 xLabels = xLabels,
                 title = "Inside a Card",
                 subtitle = "embedded = true",
-                smooth = true,
-                showArea = true,
                 embedded = true,
             )
         }
