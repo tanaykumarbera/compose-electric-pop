@@ -29,6 +29,8 @@
       "Bash(jar *)",
       "Bash(javap *)",
       "Bash(jq *)",
+      "Bash(./scripts/stitch-cache.sh *)",
+      "Bash(scripts/stitch-cache.sh *)",
       "mcp__stitch__list_screens",
       "mcp__stitch__get_screen",
       "mcp__plugin_github_github__*",

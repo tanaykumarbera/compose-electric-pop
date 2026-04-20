@@ -17,6 +17,12 @@ local.properties
 # Superpowers
 .superpowers/
 
+# Pixy orchestrator plans (ephemeral build-time artifacts)
+.pixy/
+
+# Project-local scratch (Stitch asset cache, etc.)
+/tmp/
+
 # Claude flow session data
 .claude-flow/
 
