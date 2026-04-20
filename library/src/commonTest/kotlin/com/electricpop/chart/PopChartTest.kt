@@ -287,15 +287,11 @@ class PopChartTest {
     }
 
     @Test
-    fun catmullRomControlPoints_tension0_controlsCollinearWithEndpoints() {
+    fun catmullRomControlPoints_tension0_controlsBetweenEndpoints() {
         // At tension=0, scale = (1-0)/3 = 1/3
         // c1 = p1 + (p2 - p0) / 3
         // c2 = p2 - (p3 - p1) / 3
-        // For collinear points with equal spacing: p0=(0,0), p1=(10,0), p2=(20,0), p3=(30,0)
-        // c1 = (10,0) + (20,0)/3 ≈ (16.67, 0)  — NOT equal to p1
-        // However the test says "c1 = p1, c2 = p2 for straight cubic" which needs tension=1
-        // Let's verify that at tension=0 with symmetric/collinear points the controls are
-        // symmetric: test the actual formula behavior
+        // For collinear points with equal spacing the controls land 1/3 of the way inside the segment.
         val p0 = Offset(0f, 10f)
         val p1 = Offset(10f, 10f)
         val p2 = Offset(20f, 10f)
