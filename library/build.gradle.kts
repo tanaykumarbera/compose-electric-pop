@@ -5,6 +5,17 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.roborazzi)
+    alias(libs.plugins.kover)
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                packages("com.electricpop.demo.*")
+            }
+        }
+    }
 }
 
 kotlin {
