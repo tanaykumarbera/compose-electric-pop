@@ -77,15 +77,12 @@ val catalogEntries = listOf<CatalogEntry>(
     CatalogEntry("PopDataRow", "Composite") { PopDataRowDemo() },
     CatalogEntry("PopBannerCard", "Composite") { PopBannerCardDemo() },
     CatalogEntry("PopImageBannerCard", "Composite") { PopImageBannerCardDemo() },
-    // CatalogEntry("PopFeatureCard", "Composite") { PopFeatureCardDemo() },
     CatalogEntry("PopDashboardCard", "Composite") { PopDashboardCardDemo() },
     CatalogEntry("PopCarouselCard", "Composite") { PopCarouselCardDemo() },
     CatalogEntry("PopActionCard", "Composite") { PopActionCardDemo() },
 
     // Wave 5: Charts
     CatalogEntry("PopChart", "Chart") { PopChartDemo() },
-    // CatalogEntry("PopBarChart", "Chart") { PopBarChartDemo() },
-    // CatalogEntry("PopDonutChart", "Chart") { PopDonutChartDemo() },
 )
 
 @Composable

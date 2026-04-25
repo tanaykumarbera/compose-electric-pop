@@ -70,16 +70,15 @@ ElectricPopTheme(
 | PopBottomBar | Glassmorphic navigation bar |
 | PopDropdown | Selector with expand affordance |
 
-### Composite (7)
+### Composite (6)
 
 | Component | Description |
 |-----------|-------------|
-| PopFeatureCard | Hero spotlight card with metric, trend, and icon cluster |
 | PopCarouselCard | Horizontal scroll card strip |
 | PopDashboardCard | Data overview card with status pills and data rows |
 | PopDataRow | Icon + title + value row with tonal separation |
 | PopActionCard | Card with input fields and action buttons |
-| PopBannerCard | Metric banner with trend chip and overlapping icon cluster |
+| PopBannerCard | Hero / metric banner with trend chip and overlapping icon cluster |
 | PopImageBannerCard | Big image card with overlay headline and configurable text anchor |
 
 ### Chart (3)

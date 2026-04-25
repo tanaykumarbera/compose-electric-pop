@@ -43,16 +43,15 @@ Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pul
 | 19 | PopBottomBar | Icons, Icons+text, active | Glassmorphic, backdrop-blur |
 | 20 | PopDropdown | Selector + expand icon | Primary accent |
 
-### Composite (7) — `com.electricpop.composite`
+### Composite (6) — `com.electricpop.composite`
 | # | Component | Composes | Description |
 |---|-----------|----------|-------------|
-| 1 | PopFeatureCard | PopDisplayText, PopBadge, PopIconRow, PopSurface | Hero spotlight card |
-| 2 | PopCarouselCard | PopIcon, PopChip, PopDisplayText, PopSurface | Horizontal scroll cards |
-| 3 | PopDashboardCard | PopSectionHeader, PopPill, PopDataRow, PopSurface | Data overview |
-| 4 | PopDataRow | PopIcon, PopDisplayText | Icon + label + value |
-| 5 | PopActionCard | PopDropdown, PopDisplayText, PopButton, PopTextField | Input + actions |
-| 6 | PopBannerCard | PopBadgeDirection, PopDisplayText, PopIcon, PopSurface | Metric banner: label + value + trend chip + overlapping icon cluster (Hero/Surface styles). |
-| 7 | PopImageBannerCard | PopSurface + Image | Big image card with overlaid headline, configurable text anchor + scrim. |
+| 1 | PopCarouselCard | PopIcon, PopChip, PopDisplayText, PopSurface | Horizontal scroll cards |
+| 2 | PopDashboardCard | PopSectionHeader, PopPill, PopDataRow, PopSurface | Data overview |
+| 3 | PopDataRow | PopIcon, PopDisplayText | Icon + label + value |
+| 4 | PopActionCard | PopDropdown, PopDisplayText, PopButton, PopTextField | Input + actions |
+| 5 | PopBannerCard | PopBadgeDirection, PopDisplayText, PopIcon, PopSurface | Hero / metric banner: label + value + trend chip + overlapping icon cluster (Hero/Surface styles). |
+| 6 | PopImageBannerCard | PopSurface + Image | Big image card with overlaid headline, configurable text anchor + scrim. |
 
 ### Chart (3) — `com.electricpop.chart`
 | # | Component | Description |
@@ -159,17 +158,14 @@ Build in dependency order — foundations first, then composites that depend on 
 
 ### Wave 4: Composites (depend on foundation)
 21. PopDataRow (needs PopIcon, PopDisplayText)
-22. PopBannerCard (needs PopBadgeDirection, PopDisplayText, PopIcon, PopSurface) ✅
-23. PopFeatureCard (needs PopDisplayText, PopBadge, PopIconRow, PopSurface)
-24. PopDashboardCard (needs PopSectionHeader, PopPill, PopDataRow, PopSurface)
-25. PopCarouselCard (needs PopIcon, PopChip, PopDisplayText, PopSurface)
-26. PopActionCard (needs PopDropdown, PopDisplayText, PopButton, PopTextField)
-27. PopImageBannerCard (needs PopSurface)
+22. PopBannerCard (needs PopBadgeDirection, PopDisplayText, PopIcon, PopSurface) — also fills the hero-spotlight slot originally planned as PopFeatureCard
+23. PopDashboardCard (needs PopSectionHeader, PopPill, PopDataRow, PopSurface)
+24. PopCarouselCard (needs PopIcon, PopChip, PopDisplayText, PopSurface)
+25. PopActionCard (needs PopDropdown, PopDisplayText, PopButton, PopTextField)
+26. PopImageBannerCard (needs PopSurface)
 
 ### Wave 5: Charts
-28. PopLineChart
-29. PopBarChart
-30. PopDonutChart
+27. PopChart with PopChartStyle.Line / Bar / Donut variants
 
 ---
 
