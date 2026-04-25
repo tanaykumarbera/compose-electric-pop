@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.electricpop.chart.PopChart
 import com.electricpop.chart.PopChartSeries
 import com.electricpop.chart.PopChartStyle
@@ -165,6 +166,73 @@ fun PopChartDemo() {
                 xLabels = xLabels,
                 title = "Two series · Stacked",
                 subtitle = "Cumulative bars",
+            )
+        }
+
+        // ── DONUT ────────────────────────────────────────────────────────────
+        Text(
+            "DONUT",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
+            // Gauge mode
+            PopChart(
+                series = listOf(PopChartSeries("Spent", listOf(72f))),
+                style = PopChartStyle.Donut(
+                    total = 100f,
+                    centerValue = "72%",
+                    centerLabel = "Active Cap",
+                ),
+                title = "Budget Remaining",
+                subtitle = "Gauge · 72%",
+                chartHeight = 220.dp,
+            )
+            // Gauge mode + active glow
+            PopChart(
+                series = listOf(PopChartSeries("Spent", listOf(72f))),
+                style = PopChartStyle.Donut(
+                    total = 100f,
+                    centerValue = "72%",
+                    centerLabel = "Active Cap",
+                    activeIndex = 0,
+                ),
+                title = "Budget Remaining",
+                subtitle = "Gauge · Active",
+                chartHeight = 220.dp,
+            )
+            // Pie — 4 slices (38 + 27 + 21 + 14 = 100)
+            PopChart(
+                series = listOf(
+                    PopChartSeries("Marketing", listOf(38f)),
+                    PopChartSeries("Engineering", listOf(27f)),
+                    PopChartSeries("Ops", listOf(21f)),
+                    PopChartSeries("Reserve", listOf(14f)),
+                ),
+                style = PopChartStyle.Donut(
+                    centerValue = "\$1.2K",
+                    centerLabel = "Total",
+                ),
+                title = "Allocation",
+                subtitle = "Pie · 4 slices",
+                chartHeight = 220.dp,
+            )
+            // Pie + active = 1 (Engineering — tertiaryContainer)
+            PopChart(
+                series = listOf(
+                    PopChartSeries("Marketing", listOf(38f)),
+                    PopChartSeries("Engineering", listOf(27f)),
+                    PopChartSeries("Ops", listOf(21f)),
+                    PopChartSeries("Reserve", listOf(14f)),
+                ),
+                style = PopChartStyle.Donut(
+                    centerValue = "\$1.2K",
+                    centerLabel = "Total",
+                    activeIndex = 1,
+                ),
+                title = "Allocation",
+                subtitle = "Pie · Active 1",
+                chartHeight = 220.dp,
             )
         }
 

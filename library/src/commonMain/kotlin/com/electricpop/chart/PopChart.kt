@@ -7,13 +7,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -33,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.electricpop.foundation.PopSurface
 import com.electricpop.foundation.PopSurfaceTone
 import com.electricpop.theme.ElectricPopTheme
@@ -42,14 +48,28 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * One named data series for [PopChart].
+ * One named data series for [PopChart]. The same type works across line, bar, and donut.
  *
- * @param label Short label shown in the legend (uppercased at render time).
- * @param values The y-values. Must be non-empty for the series to render.
- *   Heterogeneous series lengths are supported; x-position is normalized to
- *   `index / (maxLength - 1)` per series.
- * @param color Optional color override. When null, PopChart picks a default from
- *   the theme in series order (primary-container lime → tertiary-container cyan → secondary-container magenta).
+ * Per-style interpretation of [values]:
+ * - **Line / Bar** — full list of y-values across the x-axis.
+ * - **Donut** — only `values[0]` is used (one slice per series). Other indices are
+ *   ignored. Negative values clamp to 0; NaN values are filtered.
+ *
+ * Example with custom colors:
+ * ```kotlin
+ * listOf(
+ *     PopChartSeries("Hot", listOf(40f), color = Color(0xFFFF3366)),
+ *     PopChartSeries("Cool", listOf(60f)),                 // theme cycle (cyan)
+ * )
+ * ```
+ *
+ * @param label Short label (uppercased at render time when shown in legends or x-labels).
+ * @param values The numeric data. See per-style interpretation above. Heterogeneous lengths
+ *   are supported for line/bar; x-position is normalized to `index / (maxLength - 1)`.
+ * @param color Optional color override. When null, the series picks a default from the
+ *   theme in series order — `primaryContainer` (lime) → `tertiaryContainer` (cyan) →
+ *   `secondaryContainer` (magenta), cycling on `index % 3`. Pass any `Color` to override
+ *   for a single series; mix overrides and nulls freely.
  */
 @Immutable
 data class PopChartSeries(
@@ -105,6 +125,91 @@ sealed class PopChartStyle {
         val activeIndex: Int? = null,
     ) : PopChartStyle()
 
+    /**
+     * Donut chart style — circular gauge or multi-slice pie.
+     *
+     * ### Modes (one renderer)
+     *
+     * - **Gauge** — pass one [PopChartSeries] + an explicit [total]. The arc fills
+     *   `series[0].values[0] / total` of the ring; the rest is a tonal `surfaceContainerHigh`
+     *   track. Mirrors Stitch's "Budget Remaining 72%" card.
+     * - **Pie** — pass multiple [PopChartSeries]; each contributes `values[0]` as a slice.
+     *   When [total] is null, total = sum of slice values. When [total] > slice sum, the
+     *   leftover ring renders in `surfaceContainerHigh` (multi-category gauge with headroom).
+     *
+     * ### Geometry
+     *
+     * - Arc starts at 12 o'clock and grows **clockwise**.
+     * - Diameter = `min(canvasWidth, chartHeight)` — control the overall size by passing
+     *   `chartHeight` to [PopChart].
+     * - Ring thickness = `diameter × strokeRatio`.
+     * - Negative values are clamped to 0; NaN values are filtered. (Donuts can't represent
+     *   negative magnitudes.)
+     *
+     * ### Center text
+     *
+     * If [centerValue] or [centerLabel] is set, text overlays the donut hole. The value
+     * uses `displayLarge` italic black and **autoscales down** (floor 14sp) when a long
+     * string would otherwise breach the inner ring. The label uses `labelSmall` uppercase.
+     * Both are rendered with theme tokens — colors and base typography come from
+     * `MaterialTheme`. Use [centerInset] to add breathing room between the inner ring
+     * and the text.
+     *
+     * ### Custom colors
+     *
+     * Per-slice colors come from [PopChartSeries.color]. Pass any `Color`; leave null
+     * to fall back to the default theme cycle (`primaryContainer` → `tertiaryContainer`
+     * → `secondaryContainer`).
+     *
+     * ### Example
+     *
+     * ```kotlin
+     * PopChart(
+     *     series = listOf(
+     *         PopChartSeries("Done", listOf(72f), color = Color(0xFFFF6B35)),
+     *     ),
+     *     style = PopChartStyle.Donut(
+     *         total = 100f,
+     *         centerValue = "72%",
+     *         centerLabel = "Complete",
+     *         strokeRatio = 0.15f,   // thinner ring
+     *         centerInset = 12.dp,   // more breathing room
+     *     ),
+     *     chartHeight = 240.dp,
+     * )
+     * ```
+     *
+     * @param centerLabel Small uppercase caption rendered **below** [centerValue] inside the
+     *   hole (`labelSmall`, `onSurfaceVariant`). Use for unit/context — e.g. `"Active Cap"`,
+     *   `"Total"`, `"Complete"`. Pass null to omit.
+     * @param centerValue Bold headline number rendered inside the donut hole (`displayLarge`
+     *   italic black, `onSurface`). Caller pre-formats the string — e.g. `"72%"`, `"$1.2K"`,
+     *   `"3 / 5"`. Autoscales down to fit the inner ring; floor is 14sp. Pass null to omit.
+     * @param strokeRatio Ring thickness as a fraction of the donut **diameter**.
+     *   Range: `0.05f`–`0.40f`. Smaller = hairline ring; larger = chunky ring. Default
+     *   `0.218f` ≈ Stitch's 24px stroke on a 110px-radius design.
+     * @param total Explicit total denominator. When null, total = sum of slice values.
+     *   Use non-null for **gauge** mode (single value over a cap) or to leave headroom
+     *   in pie mode. If `total < slice sum`, falls back to slice sum (a slice can never
+     *   exceed the ring).
+     * @param activeIndex Slice index highlighted with layered neon halos (alpha 0.18 / 0.28)
+     *   plus 1.02× stroke width (Rule 4 + Rule 5). Clamped via [clampActiveIndex] —
+     *   out-of-range values render no active highlight. Pass null for none.
+     * @param centerInset Dp padding between the inner ring edge and the center text content.
+     *   Default `8.dp` keeps the text comfortably clear of the ring. Increase for more
+     *   breathing room; set `0.dp` to maximize available text area (autoscale will use
+     *   the full inscribed-square chord).
+     */
+    @Immutable
+    data class Donut(
+        val centerLabel: String? = null,
+        val centerValue: String? = null,
+        val strokeRatio: Float = 0.218f,
+        val total: Float? = null,
+        val activeIndex: Int? = null,
+        val centerInset: Dp = 8.dp,
+    ) : PopChartStyle()
+
     /** Curve algorithm for [Line.smoothness]. */
     enum class Smoothness { None, Normal, High }
 
@@ -127,6 +232,7 @@ sealed class PopChartStyle {
  * @param modifier Modifier for the outermost container.
  * @param xLabels Optional labels drawn below the canvas, evenly spaced. Length must match
  *   the max series length; extras ignored; shorter is truncated.
+ *   **Ignored for [PopChartStyle.Donut]** — donuts have no x-axis.
  * @param title Optional uppercase headline drawn above the chart.
  * @param subtitle Optional supporting label (uppercase, labelSmall) under the title.
  * @param embedded When true, omits the outer PopSurface container (for nesting in another card).
@@ -185,46 +291,146 @@ fun PopChart(
             // Canvas chart area
             val hasData = series.any { it.values.isNotEmpty() }
 
-            Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(chartHeight),
-            ) {
-                if (!hasData) {
-                    // Empty placeholder: a tonal horizontal bar
-                    val strokeY = size.height / 2f
-                    drawLine(
-                        color = colorScheme.surfaceContainerHigh,
-                        start = Offset(0f, strokeY),
-                        end = Offset(size.width, strokeY),
-                        strokeWidth = 2.dp.toPx(),
-                        cap = StrokeCap.Round,
-                    )
-                    return@Canvas
+            when (style) {
+                is PopChartStyle.Donut -> {
+                    // xLabels: ignored for Donut style (no x-axis)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(chartHeight),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Canvas(modifier = Modifier.fillMaxSize()) {
+                            if (!hasData) {
+                                // Empty placeholder: tonal full-ring track only
+                                drawDonutChart(emptyList(), style, colorScheme)
+                            } else {
+                                drawDonutChart(series, style, colorScheme)
+                            }
+                        }
+                        if (style.centerValue != null || style.centerLabel != null) {
+                            // Constrain the center text box to the inscribed square inside the
+                            // donut hole (minus centerInset on each side) so long values like
+                            // "$1.2K" can't overflow the inner ring. Inscribed-square side =
+                            // effectiveInnerDiameter / √2 ≈ 0.7071 × effectiveInnerDiameter.
+                            val innerDiameter = chartHeight * (1f - 2f * style.strokeRatio)
+                            val effectiveInnerDiameter =
+                                (innerDiameter - style.centerInset * 2).coerceAtLeast(0.dp)
+                            val centerBoxWidth = effectiveInnerDiameter * 0.7071f
+                            val valueStyle = MaterialTheme.typography.displayLarge.copy(
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.Black,
+                                color = colorScheme.onSurface,
+                                textAlign = TextAlign.Center,
+                            )
+                            Column(
+                                modifier = Modifier.width(centerBoxWidth),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                if (style.centerValue != null) {
+                                    // Prefer displayLarge; autoscale down to 14sp only if the
+                                    // text would otherwise overflow the inner-hole chord.
+                                    BasicText(
+                                        text = style.centerValue,
+                                        style = valueStyle,
+                                        maxLines = 1,
+                                        autoSize = TextAutoSize.StepBased(
+                                            minFontSize = 14.sp,
+                                            maxFontSize = valueStyle.fontSize,
+                                            stepSize = 1.sp,
+                                        ),
+                                    )
+                                }
+                                if (style.centerLabel != null) {
+                                    Text(
+                                        text = style.centerLabel.uppercase(),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = colorScheme.onSurfaceVariant,
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
-
-                when (style) {
-                    is PopChartStyle.Line -> drawLineChart(series, style, colorScheme, density)
-                    is PopChartStyle.Bar -> drawBarChart(series, style, colorScheme, density, spacing)
+                is PopChartStyle.Line -> {
+                    Canvas(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(chartHeight),
+                    ) {
+                        if (!hasData) {
+                            // Empty placeholder: a tonal horizontal bar
+                            val strokeY = size.height / 2f
+                            drawLine(
+                                color = colorScheme.surfaceContainerHigh,
+                                start = Offset(0f, strokeY),
+                                end = Offset(size.width, strokeY),
+                                strokeWidth = 2.dp.toPx(),
+                                cap = StrokeCap.Round,
+                            )
+                            return@Canvas
+                        }
+                        drawLineChart(series, style, colorScheme, density)
+                    }
+                    // X-axis labels for Line
+                    if (xLabels.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(spacing.xs))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            val maxLen = series.maxOfOrNull { it.values.size } ?: 0
+                            val labelsToShow = xLabels.take(maxLen)
+                            labelsToShow.forEach { label ->
+                                Text(
+                                    text = label.uppercase(),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = colorScheme.onSurfaceVariant,
+                                    textAlign = TextAlign.Center,
+                                )
+                            }
+                        }
+                    }
                 }
-            }
-
-            // X-axis labels
-            if (xLabels.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(spacing.xs))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    val maxLen = series.maxOfOrNull { it.values.size } ?: 0
-                    val labelsToShow = xLabels.take(maxLen)
-                    labelsToShow.forEach { label ->
-                        Text(
-                            text = label.uppercase(),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center,
-                        )
+                is PopChartStyle.Bar -> {
+                    Canvas(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(chartHeight),
+                    ) {
+                        if (!hasData) {
+                            // Empty placeholder: a tonal horizontal bar
+                            val strokeY = size.height / 2f
+                            drawLine(
+                                color = colorScheme.surfaceContainerHigh,
+                                start = Offset(0f, strokeY),
+                                end = Offset(size.width, strokeY),
+                                strokeWidth = 2.dp.toPx(),
+                                cap = StrokeCap.Round,
+                            )
+                            return@Canvas
+                        }
+                        drawBarChart(series, style, colorScheme, density, spacing)
+                    }
+                    // X-axis labels for Bar
+                    if (xLabels.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(spacing.xs))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            val maxLen = series.maxOfOrNull { it.values.size } ?: 0
+                            val labelsToShow = xLabels.take(maxLen)
+                            labelsToShow.forEach { label ->
+                                Text(
+                                    text = label.uppercase(),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = colorScheme.onSurfaceVariant,
+                                    textAlign = TextAlign.Center,
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -500,6 +706,182 @@ private fun DrawScope.drawBar(
     }
     translate(left = rect.left, top = rect.top) {
         drawPath(path = path, color = color)
+    }
+}
+
+// --- Donut chart drawing ---
+
+/**
+ * Internal data class representing one computed arc slice for the donut renderer.
+ *
+ * Angles use "top-up" convention: 0° = 12 o'clock, positive = clockwise.
+ * The renderer subtracts 90° when calling [drawArc] to convert to Compose's
+ * native 0° = 3 o'clock convention.
+ */
+internal data class DonutSlice(
+    val seriesIndex: Int,
+    val color: Color?,          // null → resolve via defaultSeriesColor at draw time
+    val startAngleDeg: Float,   // 0° = top of circle (12 o'clock); CW positive
+    val sweepAngleDeg: Float,   // strictly > 0 for slices that draw
+)
+
+/**
+ * Computes the effective total denominator for the donut ring.
+ *
+ * - When [explicit] is null → use [sliceSum].
+ * - When [explicit] < [sliceSum] → fall back to [sliceSum] (a slice can never exceed the ring).
+ * - When [explicit] > 0 and >= [sliceSum] → use [explicit] (allows headroom/gauge mode).
+ */
+internal fun donutTotal(explicit: Float?, sliceSum: Float): Float =
+    explicit?.takeIf { it > 0f && it >= sliceSum } ?: sliceSum
+
+/**
+ * Computes the arc slices for a donut chart from a list of series.
+ *
+ * Each series contributes `values[0]` as its slice value. Other indices are ignored.
+ * Negative values are clamped to 0. NaN values are treated as 0 and excluded.
+ *
+ * - Empty series list or all-zero values → returns empty list (caller draws track only).
+ * - [explicitTotal] < slice sum → falls back to slice sum (via [donutTotal]).
+ * - Angles use "top-up" convention (0° = 12 o'clock, CW positive); renderer converts for Compose.
+ */
+internal fun computeDonutSlices(
+    series: List<PopChartSeries>,
+    explicitTotal: Float?,
+): List<DonutSlice> {
+    // Extract (index, value, color) triples; clamp negative and NaN to 0
+    data class Triple(val index: Int, val value: Float, val color: Color?)
+    val triples = series.mapIndexed { i, s ->
+        val raw = s.values.firstOrNull() ?: 0f
+        val value = if (raw.isNaN() || raw < 0f) 0f else raw
+        Triple(i, value, s.color)
+    }
+    val sliceSum = triples.sumOf { it.value.toDouble() }.toFloat()
+    if (sliceSum <= 0f) return emptyList()
+
+    val effectiveTotal = donutTotal(explicitTotal, sliceSum)
+    var runningAngle = 0f
+    return buildList {
+        for (triple in triples) {
+            val sweep = (triple.value / effectiveTotal) * 360f
+            if (sweep <= 0f) continue
+            add(
+                DonutSlice(
+                    seriesIndex = triple.index,
+                    color = triple.color,
+                    startAngleDeg = runningAngle,
+                    sweepAngleDeg = sweep,
+                ),
+            )
+            runningAngle += sweep
+        }
+    }
+}
+
+/**
+ * Draws the donut chart on the current [DrawScope].
+ *
+ * Drawing pipeline:
+ * 1. Compute geometry from canvas [size].
+ * 2. Draw a full-circle track in `surfaceContainerHigh` (tonal "available" ring).
+ * 3. Compute slices via [computeDonutSlices]. If empty → return (track-only placeholder).
+ * 4. Draw non-active slices in series order.
+ * 5. Draw active slice last with layered neon halos (Rule 4 + Rule 5).
+ *
+ * Note: `StrokeCap.Round` adds a half-circle cap at each arc end. At 100% coverage
+ * the caps slightly overlap at the 12 o'clock seam — this matches the Stitch design's
+ * `stroke-linecap="round"` behavior and is intentional.
+ *
+ * `xLabels` are ignored for this style (no x-axis on a donut).
+ */
+private fun DrawScope.drawDonutChart(
+    series: List<PopChartSeries>,
+    style: PopChartStyle.Donut,
+    colorScheme: ColorScheme,
+) {
+    val diameter = min(size.width, size.height)
+    val strokeWidthPx = diameter * style.strokeRatio
+    val outerRadius = diameter / 2f
+    val centerRadius = outerRadius - strokeWidthPx / 2f
+    val center = Offset(size.width / 2f, size.height / 2f)
+    val arcRect = Rect(
+        center.x - centerRadius,
+        center.y - centerRadius,
+        center.x + centerRadius,
+        center.y + centerRadius,
+    )
+
+    // 2. Draw full-circle track (tonal background ring)
+    drawArc(
+        color = colorScheme.surfaceContainerHigh,
+        startAngle = 0f,
+        sweepAngle = 360f,
+        useCenter = false,
+        topLeft = arcRect.topLeft,
+        size = arcRect.size,
+        style = Stroke(width = strokeWidthPx, cap = StrokeCap.Round),
+    )
+
+    // 3. Compute slices
+    val slices = computeDonutSlices(series, style.total)
+    if (slices.isEmpty()) return  // track-only placeholder
+
+    // 5. Determine active slice
+    val activeClamped = clampActiveIndex(style.activeIndex, slices.size)
+
+    // 6. Draw non-active slices first
+    slices.forEachIndexed { i, slice ->
+        if (i == activeClamped) return@forEachIndexed
+        val sliceColor = slice.color ?: defaultSeriesColor(slice.seriesIndex, colorScheme)
+        // Convert top-up angle to Compose's 3-o'clock convention by subtracting 90°
+        drawArc(
+            color = sliceColor,
+            startAngle = slice.startAngleDeg - 90f,
+            sweepAngle = slice.sweepAngleDeg,
+            useCenter = false,
+            topLeft = arcRect.topLeft,
+            size = arcRect.size,
+            style = Stroke(width = strokeWidthPx, cap = StrokeCap.Round),
+        )
+    }
+
+    // 7. Draw active slice last with glow halos (Rule 4 + Rule 5)
+    if (activeClamped != null) {
+        val activeSlice = slices[activeClamped]
+        val sliceColor = activeSlice.color ?: defaultSeriesColor(activeSlice.seriesIndex, colorScheme)
+        val composeStart = activeSlice.startAngleDeg - 90f
+        val sweep = activeSlice.sweepAngleDeg
+
+        // 7a. Outer glow halo — inflates 8dp on each side
+        drawArc(
+            color = sliceColor.copy(alpha = 0.18f),
+            startAngle = composeStart,
+            sweepAngle = sweep,
+            useCenter = false,
+            topLeft = arcRect.topLeft,
+            size = arcRect.size,
+            style = Stroke(width = strokeWidthPx + 16.dp.toPx(), cap = StrokeCap.Round),
+        )
+        // 7b. Inner glow halo — inflates 4dp on each side
+        drawArc(
+            color = sliceColor.copy(alpha = 0.28f),
+            startAngle = composeStart,
+            sweepAngle = sweep,
+            useCenter = false,
+            topLeft = arcRect.topLeft,
+            size = arcRect.size,
+            style = Stroke(width = strokeWidthPx + 8.dp.toPx(), cap = StrokeCap.Round),
+        )
+        // 7c. Active slice at 1.02× stroke width (subtle radial bulge — Rule 5)
+        drawArc(
+            color = sliceColor,
+            startAngle = composeStart,
+            sweepAngle = sweep,
+            useCenter = false,
+            topLeft = arcRect.topLeft,
+            size = arcRect.size,
+            style = Stroke(width = strokeWidthPx * 1.02f, cap = StrokeCap.Round),
+        )
     }
 }
 
