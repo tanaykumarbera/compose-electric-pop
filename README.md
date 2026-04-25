@@ -43,7 +43,7 @@ ElectricPopTheme(
 }
 ```
 
-## Components (30)
+## Components (26)
 
 ### Foundation (20)
 
@@ -70,25 +70,26 @@ ElectricPopTheme(
 | PopBottomBar | Glassmorphic navigation bar |
 | PopDropdown | Selector with expand affordance |
 
-### Composite (7)
+### Composite (6)
 
 | Component | Description |
 |-----------|-------------|
-| PopFeatureCard | Hero spotlight card with metric, trend, and icon cluster |
 | PopCarouselCard | Horizontal scroll card strip |
 | PopDashboardCard | Data overview card with status pills and data rows |
 | PopDataRow | Icon + title + value row with tonal separation |
 | PopActionCard | Card with input fields and action buttons |
-| PopBannerCard | Metric banner with trend chip and overlapping icon cluster |
+| PopBannerCard | Hero / metric banner with trend chip and overlapping icon cluster |
 | PopImageBannerCard | Big image card with overlay headline and configurable text anchor |
 
-### Chart (3)
+### Chart (1, with 3 styles)
 
-| Component | Description |
-|-----------|-------------|
-| PopLineChart | Trend line with glow on active points |
-| PopBarChart | Comparative bars with active scaling |
-| PopDonutChart | Circular gauge with center text |
+A single `PopChart` composable picks its rendering via `PopChartStyle`.
+
+| Style | Description |
+|-------|-------------|
+| `PopChartStyle.Line` | Trend line with glow on active points |
+| `PopChartStyle.Bar`  | Comparative bars with active scaling |
+| `PopChartStyle.Donut` | Circular gauge with center text and configurable inset |
 
 ## Design System
 

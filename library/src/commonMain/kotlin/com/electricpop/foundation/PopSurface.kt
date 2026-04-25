@@ -81,7 +81,7 @@ internal fun Color.darken(fraction: Float): Color {
  *   `outlineVariant` at 15% opacity — enabled via [ghostBorder].
  * - **Rule 6 (Squircle Radii):** Uses [ElectricPopShapes] by default.
  *
- * Many composite components (PopFeatureCard, PopBannerCard, PopDashboardCard, etc.)
+ * Many composite components (PopBannerCard, PopDashboardCard, PopActionCard, etc.)
  * compose from PopSurface as their outer container.
  *
  * @param modifier Optional [Modifier] applied to the container.

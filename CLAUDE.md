@@ -19,8 +19,8 @@ Electric Pop is a Compose Multiplatform UI component library implementing the "K
 library/src/commonMain/kotlin/com/electricpop/
 ├── theme/        → ElectricPopTheme, Color, Typography, Shape, Spacing
 ├── foundation/   → 20 basic components (PopButton, PopTextField, etc.)
-├── composite/    → 7 composite components (PopFeatureCard, PopDataRow, etc.)
-└── chart/        → 3 chart components (PopLineChart, PopBarChart, PopDonutChart)
+├── composite/    → 6 composite components (PopBannerCard, PopDataRow, etc.)
+└── chart/        → 1 PopChart with PopChartStyle.Line/Bar/Donut variants
 
 demo/src/commonMain/kotlin/com/electricpop/demo/
 ├── App.kt           → Root app with theme toggle
@@ -125,11 +125,11 @@ Every component must enforce these. Violation = review rejection.
 ### Foundation (20)
 PopButton, PopTextField, PopRadioGroup, PopSwitch, PopSlider, PopChip, PopIcon, PopSurface, PopBadge, PopPill, PopIconRow, PopSectionHeader, PopTitleBar, PopDisplayText, PopCodeBlock, PopIconListItem, PopTable, PopStepList, PopBottomBar, PopDropdown
 
-### Composite (7)
-PopFeatureCard, PopCarouselCard, PopDashboardCard, PopDataRow, PopActionCard, PopBannerCard, PopImageBannerCard
+### Composite (6)
+PopCarouselCard, PopDashboardCard, PopDataRow, PopActionCard, PopBannerCard, PopImageBannerCard
 
-### Chart (3)
-PopLineChart, PopBarChart, PopDonutChart
+### Chart (1, with 3 styles)
+PopChart with `PopChartStyle.Line`, `PopChartStyle.Bar`, `PopChartStyle.Donut`
 
 ## Key Dependencies
 
