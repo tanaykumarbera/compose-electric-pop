@@ -12,7 +12,7 @@ cd compose-electric-pop
 
 Requirements:
 
-- JDK 17 (Zulu / Temurin both work)
+- JDK 21 (Zulu / Temurin both work). Required because `squircle-shape:5.x` is compiled for class file version 65.
 - Android SDK with `compileSdk = 36` available (`sdkmanager "platforms;android-36"`)
 - Xcode 15+ if you want to build the iOS targets locally (not required for desktop / Android contributions)
 
