@@ -24,7 +24,7 @@ class PopChartScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_light() = runDesktopComposeUiTest(width = 460, height = 7200) {
+    fun allVariants_light() = runDesktopComposeUiTest(width = 460, height = 5800) {
         setContent { PopChartContent(darkTheme = false) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopChart_allVariants_light.png",
@@ -33,7 +33,7 @@ class PopChartScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_dark() = runDesktopComposeUiTest(width = 460, height = 7200) {
+    fun allVariants_dark() = runDesktopComposeUiTest(width = 460, height = 5800) {
         setContent { PopChartContent(darkTheme = true) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopChart_allVariants_dark.png",
