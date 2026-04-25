@@ -47,6 +47,24 @@ jobs:
       - name: Verify Roborazzi screenshots
         run: ./gradlew :library:verifyRoborazziDesktop --stacktrace
 
+      - name: Generate coverage report
+        run: ./gradlew :library:koverXmlReport :library:koverHtmlReport --stacktrace
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./library/build/reports/kover/report.xml
+          fail_ci_if_error: false
+          verbose: true
+
+      - name: Upload coverage HTML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: library/build/reports/kover/html/
+
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4

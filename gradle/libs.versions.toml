@@ -5,6 +5,7 @@ agp = "8.7.3"
 maven-publish = "0.28.0"
 squircle-shape = "5.2.0"
 roborazzi = "1.59.0"
+kover = "0.9.8"
 
 [libraries]
 squircle-shape = { module = "com.stoyanvuchev:squircle-shape", version.ref = "squircle-shape" }
@@ -20,3 +21,4 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
