@@ -15,16 +15,16 @@
 ### Commit 1 — Rename + enhance
 
 **Renamed (via `git mv`, then symbol-renamed in place):**
-- `library/src/commonMain/kotlin/com/electricpop/composite/PopMetricCard.kt` → `PopBannerCard.kt`
-- `library/src/commonTest/kotlin/com/electricpop/composite/PopMetricCardTest.kt` → `PopBannerCardTest.kt`
-- `library/src/desktopTest/kotlin/com/electricpop/composite/PopMetricCardScreenshotTest.kt` → `PopBannerCardScreenshotTest.kt`
-- `demo/src/commonMain/kotlin/com/electricpop/demo/components/PopMetricCardDemo.kt` → `PopBannerCardDemo.kt`
+- `library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopMetricCard.kt` → `PopBannerCard.kt`
+- `library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopMetricCardTest.kt` → `PopBannerCardTest.kt`
+- `library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopMetricCardScreenshotTest.kt` → `PopBannerCardScreenshotTest.kt`
+- `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopMetricCardDemo.kt` → `PopBannerCardDemo.kt`
 
 **Deleted:**
-- `library/src/commonMain/kotlin/com/electricpop/composite/PopBannerCard.kt` (current numeric impl — **deleted before** git-mv of Metric → Banner so the rename target is free)
-- `library/src/commonTest/kotlin/com/electricpop/composite/PopBannerCardTest.kt`
-- `library/src/desktopTest/kotlin/com/electricpop/composite/PopBannerCardScreenshotTest.kt`
-- `demo/src/commonMain/kotlin/com/electricpop/demo/components/PopBannerCardDemo.kt`
+- `library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopBannerCard.kt` (current numeric impl — **deleted before** git-mv of Metric → Banner so the rename target is free)
+- `library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopBannerCardTest.kt`
+- `library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopBannerCardScreenshotTest.kt`
+- `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopBannerCardDemo.kt`
 - `library/src/desktopTest/snapshots/PopBannerCard_allVariants_light.png` (old numeric goldens)
 - `library/src/desktopTest/snapshots/PopBannerCard_allVariants_dark.png`
 - `library/src/desktopTest/snapshots/PopMetricCard_allVariants_light.png` (will be re-recorded under new name)
@@ -40,7 +40,7 @@
 - `.execution-history/execution-summary-phase-1-2.md` — append one-line historical note
 - `docs/superpowers/plans/2026-03-25-electric-pop-implementation.md:1613–1614, 1676` — append dated note near banner rows
 - `docs/superpowers/specs/2026-03-25-electric-pop-design.md:144, 153–154` — update 6.2 table + revision note
-- `library/src/commonMain/kotlin/com/electricpop/foundation/PopSurface.kt:84` — update comment reference
+- `library/src/commonMain/kotlin/co/tanay/electricpop/foundation/PopSurface.kt:84` — update comment reference
 
 **Re-recorded goldens (post-enhancements + dark-bg wrapper):**
 - `library/src/desktopTest/snapshots/PopBannerCard_allVariants_light.png` (new, Metric-derived content)
@@ -49,15 +49,15 @@
 ### Commit 2 — Add PopImageBannerCard
 
 **Created:**
-- `library/src/commonMain/kotlin/com/electricpop/composite/PopImageBannerCard.kt` — component
-- `library/src/commonTest/kotlin/com/electricpop/composite/PopImageBannerCardTest.kt` — unit test (anchor→alignment + gradient helpers)
-- `library/src/desktopTest/kotlin/com/electricpop/composite/PopImageBannerCardScreenshotTest.kt` — 5 variants × 2 themes = 10 goldens
-- `demo/src/commonMain/kotlin/com/electricpop/demo/components/PopImageBannerCardDemo.kt` — all 5 variants
+- `library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopImageBannerCard.kt` — component
+- `library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopImageBannerCardTest.kt` — unit test (anchor→alignment + gradient helpers)
+- `library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopImageBannerCardScreenshotTest.kt` — 5 variants × 2 themes = 10 goldens
+- `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopImageBannerCardDemo.kt` — all 5 variants
 - `library/src/commonMain/composeResources/drawable/pop_banner_hero.png` — bundled abstract sample (~1200×800, <100KB, CC0 / procedurally generated)
 - 10 new snapshot files under `library/src/desktopTest/snapshots/PopImageBannerCard_*.png`
 
 **Modified:**
-- `demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt` — add one catalog entry + import
+- `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt` — add one catalog entry + import
 
 ---
 
@@ -79,7 +79,7 @@ Expected: BUILD SUCCESSFUL. This establishes that all current snapshots match �
 
 - [ ] **Step 3: Record current component inventory line counts for sanity**
 
-Run: `grep -c "CatalogEntry(" demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt`
+Run: `grep -c "CatalogEntry(" demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt`
 Expected: matches the 25-ish existing entries (the count is informational — if the number changes unexpectedly, we know a merge interleaved other component work).
 
 ---
@@ -89,28 +89,28 @@ Expected: matches the 25-ish existing entries (the count is informational — if
 ### Task 1: Delete old PopBannerCard (numeric) files
 
 **Files:**
-- Delete: `library/src/commonMain/kotlin/com/electricpop/composite/PopBannerCard.kt`
-- Delete: `library/src/commonTest/kotlin/com/electricpop/composite/PopBannerCardTest.kt`
-- Delete: `library/src/desktopTest/kotlin/com/electricpop/composite/PopBannerCardScreenshotTest.kt`
-- Delete: `demo/src/commonMain/kotlin/com/electricpop/demo/components/PopBannerCardDemo.kt`
+- Delete: `library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopBannerCard.kt`
+- Delete: `library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopBannerCardTest.kt`
+- Delete: `library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopBannerCardScreenshotTest.kt`
+- Delete: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopBannerCardDemo.kt`
 - Delete: `library/src/desktopTest/snapshots/PopBannerCard_allVariants_light.png`
 - Delete: `library/src/desktopTest/snapshots/PopBannerCard_allVariants_dark.png`
 
 - [ ] **Step 1: Remove numeric PopBannerCard sources, tests, demo, and goldens**
 
 ```bash
-git rm library/src/commonMain/kotlin/com/electricpop/composite/PopBannerCard.kt
-git rm library/src/commonTest/kotlin/com/electricpop/composite/PopBannerCardTest.kt
-git rm library/src/desktopTest/kotlin/com/electricpop/composite/PopBannerCardScreenshotTest.kt
-git rm demo/src/commonMain/kotlin/com/electricpop/demo/components/PopBannerCardDemo.kt
+git rm library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopBannerCard.kt
+git rm library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopBannerCardTest.kt
+git rm library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopBannerCardScreenshotTest.kt
+git rm demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopBannerCardDemo.kt
 git rm library/src/desktopTest/snapshots/PopBannerCard_allVariants_light.png
 git rm library/src/desktopTest/snapshots/PopBannerCard_allVariants_dark.png
 ```
 
 - [ ] **Step 2: Temporarily remove the catalog entry that references the deleted demo**
 
-Edit `demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt`:
-- Delete the import line `import com.electricpop.demo.components.PopBannerCardDemo`
+Edit `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt`:
+- Delete the import line `import co.tanay.electricpop.demo.components.PopBannerCardDemo`
 - Delete the catalog row `CatalogEntry("PopBannerCard", "Composite") { PopBannerCardDemo() },` (currently the last Wave 4 entry at line 82)
 
 (The renamed Metric demo is still called `PopMetricCardDemo` at this point — we haven't touched its symbol yet. Task 3 updates the catalog again to point at the renamed demo.)
@@ -135,17 +135,17 @@ If any `Unresolved reference` surfaces for those three types, that call site mus
 - [ ] **Step 1: git mv the four files**
 
 ```bash
-git mv library/src/commonMain/kotlin/com/electricpop/composite/PopMetricCard.kt \
-       library/src/commonMain/kotlin/com/electricpop/composite/PopBannerCard.kt
+git mv library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopMetricCard.kt \
+       library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopBannerCard.kt
 
-git mv library/src/commonTest/kotlin/com/electricpop/composite/PopMetricCardTest.kt \
-       library/src/commonTest/kotlin/com/electricpop/composite/PopBannerCardTest.kt
+git mv library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopMetricCardTest.kt \
+       library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopBannerCardTest.kt
 
-git mv library/src/desktopTest/kotlin/com/electricpop/composite/PopMetricCardScreenshotTest.kt \
-       library/src/desktopTest/kotlin/com/electricpop/composite/PopBannerCardScreenshotTest.kt
+git mv library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopMetricCardScreenshotTest.kt \
+       library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopBannerCardScreenshotTest.kt
 
-git mv demo/src/commonMain/kotlin/com/electricpop/demo/components/PopMetricCardDemo.kt \
-       demo/src/commonMain/kotlin/com/electricpop/demo/components/PopBannerCardDemo.kt
+git mv demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopMetricCardDemo.kt \
+       demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopBannerCardDemo.kt
 ```
 
 - [ ] **Step 2: Also remove old Metric goldens (will be re-recorded under Banner names)**
@@ -165,11 +165,11 @@ Expected: four `R` (renamed) lines for the four moved files and two `D` lines fo
 ### Task 3: Rename Metric symbols to Banner in the moved component file
 
 **Files:**
-- Modify: `library/src/commonMain/kotlin/com/electricpop/composite/PopBannerCard.kt` (formerly `PopMetricCard.kt`)
+- Modify: `library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopBannerCard.kt` (formerly `PopMetricCard.kt`)
 
 - [ ] **Step 1: Rename the enum class, companion type, and function**
 
-Edit `library/src/commonMain/kotlin/com/electricpop/composite/PopBannerCard.kt`:
+Edit `library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopBannerCard.kt`:
 - Replace (all occurrences): `PopMetricCardStyle` → `PopBannerCardStyle`
 - Replace (all occurrences): `PopMetricCard` → `PopBannerCard` (this covers the function name, the kdoc, and stray identifiers)
 
@@ -185,16 +185,16 @@ Expected: BUILD SUCCESSFUL. If `Unresolved reference: PopMetricCard*` appears in
 ### Task 4: Update the renamed test file to reference the new symbol
 
 **Files:**
-- Modify: `library/src/commonTest/kotlin/com/electricpop/composite/PopBannerCardTest.kt`
+- Modify: `library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopBannerCardTest.kt`
 
 - [ ] **Step 1: Rename the class and the placeholder comment**
 
-Edit `library/src/commonTest/kotlin/com/electricpop/composite/PopBannerCardTest.kt`:
+Edit `library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopBannerCardTest.kt`:
 - Replace `class PopMetricCardTest` → `class PopBannerCardTest`
 - Replace the placeholder body so it reads:
 
 ```kotlin
-package com.electricpop.composite
+package co.tanay.electricpop.composite
 
 import kotlin.test.Test
 
@@ -213,7 +213,7 @@ class PopBannerCardTest {
 
 - [ ] **Step 2: Run common tests**
 
-Run: `./gradlew :library:desktopTest --tests "com.electricpop.composite.PopBannerCardTest"`
+Run: `./gradlew :library:desktopTest --tests "co.tanay.electricpop.composite.PopBannerCardTest"`
 Expected: BUILD SUCCESSFUL with 1 test passed.
 
 ---
@@ -221,15 +221,15 @@ Expected: BUILD SUCCESSFUL with 1 test passed.
 ### Task 5: Update the renamed demo file to reference the new symbol
 
 **Files:**
-- Modify: `demo/src/commonMain/kotlin/com/electricpop/demo/components/PopBannerCardDemo.kt`
+- Modify: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopBannerCardDemo.kt`
 
 - [ ] **Step 1: Rename composable and imports**
 
-Edit `demo/src/commonMain/kotlin/com/electricpop/demo/components/PopBannerCardDemo.kt`:
+Edit `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopBannerCardDemo.kt`:
 - Replace (all occurrences): `PopMetricCard` → `PopBannerCard`
 - Replace (all occurrences): `PopMetricCardStyle` → `PopBannerCardStyle`
 - Replace `fun PopMetricCardDemo` → `fun PopBannerCardDemo`
-- The two `com.electricpop.composite.PopMetricCard*` imports become `com.electricpop.composite.PopBannerCard*`.
+- The two `co.tanay.electricpop.composite.PopMetricCard*` imports become `co.tanay.electricpop.composite.PopBannerCard*`.
 
 - [ ] **Step 2: Compile the demo module**
 
@@ -238,10 +238,10 @@ Expected: `Unresolved reference: PopBannerCardDemo` in `CatalogScreen.kt` (becau
 
 - [ ] **Step 3: Re-register the demo in CatalogScreen**
 
-Edit `demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt`:
+Edit `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt`:
 - Remove the line `CatalogEntry("PopMetricCard", "Composite") { PopMetricCardDemo() },` (currently at row 77).
-- Remove the line `import com.electricpop.demo.components.PopMetricCardDemo`.
-- Add the line `import com.electricpop.demo.components.PopBannerCardDemo`.
+- Remove the line `import co.tanay.electricpop.demo.components.PopMetricCardDemo`.
+- Add the line `import co.tanay.electricpop.demo.components.PopBannerCardDemo`.
 - Add the Wave 4 row (replacing the removed `PopMetricCard` row, at the same position for a minimal diff):
   ```kotlin
   CatalogEntry("PopBannerCard", "Composite") { PopBannerCardDemo() },
@@ -259,11 +259,11 @@ Expected: BUILD SUCCESSFUL.
 ### Task 6: Update the renamed screenshot-test file to reference the new symbol
 
 **Files:**
-- Modify: `library/src/desktopTest/kotlin/com/electricpop/composite/PopBannerCardScreenshotTest.kt`
+- Modify: `library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopBannerCardScreenshotTest.kt`
 
 - [ ] **Step 1: Rename symbols in the screenshot test (file paths updated in Task 8)**
 
-Edit `library/src/desktopTest/kotlin/com/electricpop/composite/PopBannerCardScreenshotTest.kt`:
+Edit `library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopBannerCardScreenshotTest.kt`:
 - Replace (all occurrences): `PopMetricCard` → `PopBannerCard`
 - Replace the two golden file paths:
   - `"src/desktopTest/snapshots/PopMetricCard_allVariants_light.png"` → `"src/desktopTest/snapshots/PopBannerCard_allVariants_light.png"`
@@ -281,7 +281,7 @@ Expected: BUILD SUCCESSFUL. (Do not run screenshots yet — Task 7 changes the c
 ### Task 7: Enhance the chip (titleLarge italic/Black + uppercased) and merge chip + icons onto one row
 
 **Files:**
-- Modify: `library/src/commonMain/kotlin/com/electricpop/composite/PopBannerCard.kt`
+- Modify: `library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopBannerCard.kt`
 
 - [ ] **Step 1: Add the typography imports**
 
@@ -334,13 +334,13 @@ Locate the existing block in `PopBannerCard.kt` that starts at the current line 
                             ) {
                                 when (badgeDirection) {
                                     PopBadgeDirection.Up -> PopIcon(
-                                        imageVector = com.electricpop.foundation.PopIcons.TrendUp,
+                                        imageVector = co.tanay.electricpop.foundation.PopIcons.TrendUp,
                                         contentDescription = "Trending up",
                                         size = PopIconSize.Medium,
                                         tint = chipContent,
                                     )
                                     PopBadgeDirection.Down -> PopIcon(
-                                        imageVector = com.electricpop.foundation.PopIcons.TrendDown,
+                                        imageVector = co.tanay.electricpop.foundation.PopIcons.TrendDown,
                                         contentDescription = "Trending down",
                                         size = PopIconSize.Medium,
                                         tint = chipContent,
@@ -450,7 +450,7 @@ Expected: BUILD SUCCESSFUL. Any unused-import warnings (`.sp`) should be cleaned
 ### Task 8: Apply the dark-bg screenshot wrapper to the renamed screenshot test
 
 **Files:**
-- Modify: `library/src/desktopTest/kotlin/com/electricpop/composite/PopBannerCardScreenshotTest.kt`
+- Modify: `library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopBannerCardScreenshotTest.kt`
 
 - [ ] **Step 1: Wrap the variants in a theme-painted page background**
 
@@ -502,12 +502,12 @@ import androidx.compose.material3.MaterialTheme
 
 - [ ] **Step 2: Re-record the two goldens**
 
-Run: `./gradlew :library:recordRoborazziDesktop --tests "com.electricpop.composite.PopBannerCardScreenshotTest"`
+Run: `./gradlew :library:recordRoborazziDesktop --tests "co.tanay.electricpop.composite.PopBannerCardScreenshotTest"`
 Expected: BUILD SUCCESSFUL; two PNGs written under `library/src/desktopTest/snapshots/PopBannerCard_allVariants_{light,dark}.png`.
 
 - [ ] **Step 3: Verify goldens are stable on a second pass**
 
-Run: `./gradlew :library:verifyRoborazziDesktop --tests "com.electricpop.composite.PopBannerCardScreenshotTest"`
+Run: `./gradlew :library:verifyRoborazziDesktop --tests "co.tanay.electricpop.composite.PopBannerCardScreenshotTest"`
 Expected: BUILD SUCCESSFUL (no diff on re-verify).
 
 Sanity check: open both PNGs and confirm the dark one has a dark page background outside the cards (this is the whole reason for Section 8 in the spec). If the dark background is still white, the wrapper is wrong — re-check Step 1.
@@ -579,7 +579,7 @@ Expected: two hunks — one updating the code fence, one adding the prose note. 
 - Modify: `.execution-history/execution-summary-phase-1-2.md`
 - Modify: `docs/superpowers/plans/2026-03-25-electric-pop-implementation.md`
 - Modify: `docs/superpowers/specs/2026-03-25-electric-pop-design.md`
-- Modify: `library/src/commonMain/kotlin/com/electricpop/foundation/PopSurface.kt`
+- Modify: `library/src/commonMain/kotlin/co/tanay/electricpop/foundation/PopSurface.kt`
 
 - [ ] **Step 1: `CLAUDE.md` — swap `PopMetricCard` for `PopImageBannerCard` in the composite list**
 
@@ -670,7 +670,7 @@ Edit `docs/superpowers/specs/2026-03-25-electric-pop-design.md`:
 - Replace row 7 (line 154) entirely:
   `| 7 | **PopImageBannerCard** | PopSurface + Image overlay | Big image hero card with overlaid italic-black-uppercase headline. Configurable text anchor + scrim. |`
 
-- [ ] **Step 9: `library/src/commonMain/kotlin/com/electricpop/foundation/PopSurface.kt:84` — update comment**
+- [ ] **Step 9: `library/src/commonMain/kotlin/co/tanay/electricpop/foundation/PopSurface.kt:84` — update comment**
 
 The line currently reads:
 
@@ -826,14 +826,14 @@ Expected: BUILD SUCCESSFUL. After this runs, the symbol `compose_electric_pop.li
 ### Task 13: Implement `PopImageBannerCard`
 
 **Files:**
-- Create: `library/src/commonMain/kotlin/com/electricpop/composite/PopImageBannerCard.kt`
+- Create: `library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopImageBannerCard.kt`
 
 - [ ] **Step 1: Write the anchor enum + helper functions + component**
 
-Create `library/src/commonMain/kotlin/com/electricpop/composite/PopImageBannerCard.kt`:
+Create `library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopImageBannerCard.kt`:
 
 ```kotlin
-package com.electricpop.composite
+package co.tanay.electricpop.composite
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -868,7 +868,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.electricpop.theme.ElectricPopTheme
+import co.tanay.electricpop.theme.ElectricPopTheme
 
 /**
  * Anchor position for the text block inside [PopImageBannerCard].
@@ -1095,12 +1095,12 @@ Expected: BUILD SUCCESSFUL.
 ### Task 14: Unit-test the helpers
 
 **Files:**
-- Create: `library/src/commonTest/kotlin/com/electricpop/composite/PopImageBannerCardTest.kt`
+- Create: `library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopImageBannerCardTest.kt`
 
 - [ ] **Step 1: Write tests that exercise real component code, not stdlib**
 
 ```kotlin
-package com.electricpop.composite
+package co.tanay.electricpop.composite
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
@@ -1147,7 +1147,7 @@ class PopImageBannerCardTest {
 
 - [ ] **Step 2: Run the test**
 
-Run: `./gradlew :library:desktopTest --tests "com.electricpop.composite.PopImageBannerCardTest"`
+Run: `./gradlew :library:desktopTest --tests "co.tanay.electricpop.composite.PopImageBannerCardTest"`
 Expected: BUILD SUCCESSFUL; 4 tests passed.
 
 ---
@@ -1155,15 +1155,15 @@ Expected: BUILD SUCCESSFUL; 4 tests passed.
 ### Task 15: Build the demo page and register in the catalog
 
 **Files:**
-- Create: `demo/src/commonMain/kotlin/com/electricpop/demo/components/PopImageBannerCardDemo.kt`
-- Modify: `demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt`
+- Create: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopImageBannerCardDemo.kt`
+- Modify: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt`
 
 - [ ] **Step 1: Write the demo page with the five screenshot variants (plus a clickable variant)**
 
-Create `demo/src/commonMain/kotlin/com/electricpop/demo/components/PopImageBannerCardDemo.kt`:
+Create `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopImageBannerCardDemo.kt`:
 
 ```kotlin
-package com.electricpop.demo.components
+package co.tanay.electricpop.demo.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -1177,9 +1177,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.electricpop.composite.PopImageBannerCard
-import com.electricpop.composite.PopImageBannerTextAnchor
-import com.electricpop.theme.ElectricPopTheme
+import co.tanay.electricpop.composite.PopImageBannerCard
+import co.tanay.electricpop.composite.PopImageBannerTextAnchor
+import co.tanay.electricpop.theme.ElectricPopTheme
 import compose_electric_pop.library.generated.resources.Res
 import compose_electric_pop.library.generated.resources.pop_banner_hero
 import org.jetbrains.compose.resources.painterResource
@@ -1269,8 +1269,8 @@ private fun SectionLabel(text: String) {
 
 - [ ] **Step 2: Register in CatalogScreen**
 
-Edit `demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt`:
-- Add import: `import com.electricpop.demo.components.PopImageBannerCardDemo`
+Edit `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt`:
+- Add import: `import co.tanay.electricpop.demo.components.PopImageBannerCardDemo`
 - Add Wave 4 row directly after the existing `PopBannerCard` entry:
   ```kotlin
   CatalogEntry("PopImageBannerCard", "Composite") { PopImageBannerCardDemo() },
@@ -1286,12 +1286,12 @@ Expected: BUILD SUCCESSFUL.
 ### Task 16: Screenshot-test the five configurations per theme
 
 **Files:**
-- Create: `library/src/desktopTest/kotlin/com/electricpop/composite/PopImageBannerCardScreenshotTest.kt`
+- Create: `library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopImageBannerCardScreenshotTest.kt`
 
 - [ ] **Step 1: Write the test file — five named variants × two themes**
 
 ```kotlin
-package com.electricpop.composite
+package co.tanay.electricpop.composite
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -1308,7 +1308,7 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.runDesktopComposeUiTest
 import androidx.compose.ui.unit.dp
-import com.electricpop.theme.ElectricPopTheme
+import co.tanay.electricpop.theme.ElectricPopTheme
 import compose_electric_pop.library.generated.resources.Res
 import compose_electric_pop.library.generated.resources.pop_banner_hero
 import io.github.takahirom.roborazzi.captureRoboImage
@@ -1405,12 +1405,12 @@ The spec's 5 screenshot variants are represented as 5 sub-cards in one composite
 
 - [ ] **Step 2: Record goldens**
 
-Run: `./gradlew :library:recordRoborazziDesktop --tests "com.electricpop.composite.PopImageBannerCardScreenshotTest"`
+Run: `./gradlew :library:recordRoborazziDesktop --tests "co.tanay.electricpop.composite.PopImageBannerCardScreenshotTest"`
 Expected: BUILD SUCCESSFUL; two PNGs written under `library/src/desktopTest/snapshots/PopImageBannerCard_allVariants_{light,dark}.png`.
 
 - [ ] **Step 3: Verify goldens**
 
-Run: `./gradlew :library:verifyRoborazziDesktop --tests "com.electricpop.composite.PopImageBannerCardScreenshotTest"`
+Run: `./gradlew :library:verifyRoborazziDesktop --tests "co.tanay.electricpop.composite.PopImageBannerCardScreenshotTest"`
 Expected: BUILD SUCCESSFUL.
 
 Sanity check: open both PNGs. Confirm:
@@ -1442,11 +1442,11 @@ Expected: BUILD SUCCESSFUL with zero diffs across **all** components (Banner + I
 - [ ] **Step 4: Stage and commit**
 
 ```bash
-git add library/src/commonMain/kotlin/com/electricpop/composite/PopImageBannerCard.kt
-git add library/src/commonTest/kotlin/com/electricpop/composite/PopImageBannerCardTest.kt
-git add library/src/desktopTest/kotlin/com/electricpop/composite/PopImageBannerCardScreenshotTest.kt
-git add demo/src/commonMain/kotlin/com/electricpop/demo/components/PopImageBannerCardDemo.kt
-git add demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt
+git add library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopImageBannerCard.kt
+git add library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopImageBannerCardTest.kt
+git add library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopImageBannerCardScreenshotTest.kt
+git add demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopImageBannerCardDemo.kt
+git add demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt
 git add library/src/commonMain/composeResources/drawable/pop_banner_hero.png
 git add library/src/desktopTest/snapshots/PopImageBannerCard_allVariants_light.png
 git add library/src/desktopTest/snapshots/PopImageBannerCard_allVariants_dark.png
@@ -1455,12 +1455,12 @@ git status --short
 
 Expected (only these files staged):
 ```
-A  demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt (M, not A)
-A  demo/src/commonMain/kotlin/com/electricpop/demo/components/PopImageBannerCardDemo.kt
+A  demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt (M, not A)
+A  demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopImageBannerCardDemo.kt
 A  library/src/commonMain/composeResources/drawable/pop_banner_hero.png
-A  library/src/commonMain/kotlin/com/electricpop/composite/PopImageBannerCard.kt
-A  library/src/commonTest/kotlin/com/electricpop/composite/PopImageBannerCardTest.kt
-A  library/src/desktopTest/kotlin/com/electricpop/composite/PopImageBannerCardScreenshotTest.kt
+A  library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopImageBannerCard.kt
+A  library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopImageBannerCardTest.kt
+A  library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopImageBannerCardScreenshotTest.kt
 A  library/src/desktopTest/snapshots/PopImageBannerCard_allVariants_dark.png
 A  library/src/desktopTest/snapshots/PopImageBannerCard_allVariants_light.png
 ```

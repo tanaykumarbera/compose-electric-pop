@@ -16,13 +16,13 @@ Electric Pop is a Compose Multiplatform UI component library implementing the "K
 ## Project Structure
 
 ```
-library/src/commonMain/kotlin/com/electricpop/
+library/src/commonMain/kotlin/co/tanay/electricpop/
 ├── theme/        → ElectricPopTheme, Color, Typography, Shape, Spacing
 ├── foundation/   → 20 basic components (PopButton, PopTextField, etc.)
 ├── composite/    → 6 composite components (PopBannerCard, PopDataRow, etc.)
 └── chart/        → 1 PopChart with PopChartStyle.Line/Bar/Donut variants
 
-demo/src/commonMain/kotlin/com/electricpop/demo/
+demo/src/commonMain/kotlin/co/tanay/electricpop/demo/
 ├── App.kt           → Root app with theme toggle
 ├── CatalogScreen.kt → Component catalog list
 └── components/      → Per-component demo pages
@@ -62,9 +62,9 @@ Every component follows this exact workflow:
 - Check which foundation components a composite depends on
 
 ### 2. Create Component File
-- Path: `library/src/commonMain/kotlin/com/electricpop/{tier}/{ComponentName}.kt`
+- Path: `library/src/commonMain/kotlin/co/tanay/electricpop/{tier}/{ComponentName}.kt`
 - One file per component, one composable function per variant
-- Package: `com.electricpop.{tier}` (foundation, composite, or chart)
+- Package: `co.tanay.electricpop.{tier}` (foundation, composite, or chart)
 
 ### 3. Coding Rules
 - **MUST** read colors from `MaterialTheme.colorScheme`, NEVER hardcode hex values
@@ -77,7 +77,7 @@ Every component follows this exact workflow:
 - Typography is loaded via `ElectricPopTypography()` (composable function, not a val) — fonts are bundled resources
 
 ### 4. Test
-- Path: `library/src/commonTest/kotlin/com/electricpop/{tier}/{ComponentName}Test.kt`
+- Path: `library/src/commonTest/kotlin/co/tanay/electricpop/{tier}/{ComponentName}Test.kt`
 - Compose UI tests (runComposeUiTest) are NOT available in commonTest — do NOT use them there
 - Tests MUST exercise the component's actual code, NOT Kotlin stdlib
 - For components with logic (parsing, formatting, state machines): unit-test that logic
@@ -86,7 +86,7 @@ Every component follows this exact workflow:
 - Run: `./gradlew :library:desktopTest`
 
 ### 4b. Screenshot Test
-- Path: `library/src/desktopTest/kotlin/com/electricpop/{tier}/{ComponentName}ScreenshotTest.kt`
+- Path: `library/src/desktopTest/kotlin/co/tanay/electricpop/{tier}/{ComponentName}ScreenshotTest.kt`
 - Uses Roborazzi: `runDesktopComposeUiTest` + `captureRoboImage` (import `io.github.takahirom.roborazzi`)
 - MUST capture light AND dark theme screenshots showing ALL variants
 - Golden images: `library/src/desktopTest/snapshots/{ComponentName}_*.png`
@@ -94,7 +94,7 @@ Every component follows this exact workflow:
 - Verify: `./gradlew :library:verifyRoborazziDesktop`
 
 ### 5. Demo Page
-- Path: `demo/src/commonMain/kotlin/com/electricpop/demo/components/{ComponentName}Demo.kt`
+- Path: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/{ComponentName}Demo.kt`
 - Show ALL variants with sample data
 - Register in `CatalogScreen.kt` → add entry to `catalogEntries` list
 - Verify light + dark themes both render correctly

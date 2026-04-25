@@ -34,11 +34,11 @@ Everything else (rules, theme tokens, commit format, test rules) you read from `
 ### 1. Read for patterns
 - Read at least one existing component in the same tier for code-style reference.
 - Read the theme files to confirm current APIs:
-  - `library/src/commonMain/kotlin/com/electricpop/theme/Color.kt`
-  - `library/src/commonMain/kotlin/com/electricpop/theme/Typography.kt`
-  - `library/src/commonMain/kotlin/com/electricpop/theme/Shape.kt`
-  - `library/src/commonMain/kotlin/com/electricpop/theme/Spacing.kt`
-  - `library/src/commonMain/kotlin/com/electricpop/theme/ElectricPopTheme.kt`
+  - `library/src/commonMain/kotlin/co/tanay/electricpop/theme/Color.kt`
+  - `library/src/commonMain/kotlin/co/tanay/electricpop/theme/Typography.kt`
+  - `library/src/commonMain/kotlin/co/tanay/electricpop/theme/Shape.kt`
+  - `library/src/commonMain/kotlin/co/tanay/electricpop/theme/Spacing.kt`
+  - `library/src/commonMain/kotlin/co/tanay/electricpop/theme/ElectricPopTheme.kt`
 
 ### 2. Component file
 - Path from the plan.
@@ -70,12 +70,12 @@ Everything else (rules, theme tokens, commit format, test rules) you read from `
 - `FlowRow` or `Column` as appropriate.
 
 ### 5. Catalog registration
-- Read `demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt` first.
+- Read `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt` first.
 - Add/uncomment the entry in the correct tier section.
 - Add the import.
 
 ### 6. Screenshot tests
-- Path: `library/src/desktopTest/kotlin/com/electricpop/{tier}/{ComponentName}ScreenshotTest.kt`.
+- Path: `library/src/desktopTest/kotlin/co/tanay/electricpop/{tier}/{ComponentName}ScreenshotTest.kt`.
 - Uses Roborazzi: `runDesktopComposeUiTest` + `captureRoboImage` (import from `io.github.takahirom.roborazzi`).
 - At minimum: one light + one dark screenshot, showing all variants.
 - File pattern: `src/desktopTest/snapshots/{ComponentName}_{variant}_{light|dark}.png`.

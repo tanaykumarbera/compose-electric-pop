@@ -90,7 +90,7 @@ Include exact shape derivation in the plan's Visual Spec, citing the HTML class.
 
 ### 4. Review theme and existing patterns
 
-- Read the theme files under `library/src/commonMain/kotlin/com/electricpop/theme/` for exact token names.
+- Read the theme files under `library/src/commonMain/kotlin/co/tanay/electricpop/theme/` for exact token names.
 - Read one or two existing components in the same tier for code-style reference.
 - For composites: read the foundation components it will compose.
 
@@ -107,11 +107,11 @@ Write the plan to `.pixy/plans/{ComponentName}.md`. Create the directory with `m
 - Description: {one line}
 
 ## Files
-- Create: library/src/commonMain/kotlin/com/electricpop/{tier}/{ComponentName}.kt
-- Create: library/src/commonTest/kotlin/com/electricpop/{tier}/{ComponentName}Test.kt
-- Create: library/src/desktopTest/kotlin/com/electricpop/{tier}/{ComponentName}ScreenshotTest.kt
-- Create: demo/src/commonMain/kotlin/com/electricpop/demo/components/{ComponentName}Demo.kt
-- Modify: demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt
+- Create: library/src/commonMain/kotlin/co/tanay/electricpop/{tier}/{ComponentName}.kt
+- Create: library/src/commonTest/kotlin/co/tanay/electricpop/{tier}/{ComponentName}Test.kt
+- Create: library/src/desktopTest/kotlin/co/tanay/electricpop/{tier}/{ComponentName}ScreenshotTest.kt
+- Create: demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/{ComponentName}Demo.kt
+- Modify: demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt
 
 ## API Design
 

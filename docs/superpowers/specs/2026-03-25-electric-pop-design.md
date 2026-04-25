@@ -19,7 +19,7 @@ The library ships as a **single Gradle module** with package-level separation in
 | UI Framework | Compose Multiplatform |
 | Build System | Gradle with version catalogs |
 | Publishing | Maven Central (via vanniktech/gradle-maven-publish-plugin) |
-| Module Structure | Single module `electric-pop`, package separation |
+| Module Structure | Single module `compose-electric-pop`, package separation |
 | Theming | Customizable via MaterialTheme-style API, Electric Pop as default |
 
 ---
@@ -27,7 +27,7 @@ The library ships as a **single Gradle module** with package-level separation in
 ## 3. Package Structure
 
 ```
-com.electricpop/
+co.tanay.electricpop/
   ├── theme/          // ElectricPopTheme, Colors, Typography, Shapes, Spacing
   ├── foundation/     // 20 basic components
   ├── composite/      // 7 composite UX components
@@ -228,7 +228,7 @@ Separate `demo/` module (not published to Maven Central):
 
 ## 10. Publishing
 
-- **Artifact**: `com.electricpop:electric-pop`
+- **Artifact**: `co.tanay:compose-electric-pop`
 - **Repository**: Maven Central
 - **Plugin**: `vanniktech/gradle-maven-publish-plugin`
 - **Versioning**: Semantic versioning (MAJOR.MINOR.PATCH)
