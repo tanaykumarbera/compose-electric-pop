@@ -48,14 +48,28 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * One named data series for [PopChart].
+ * One named data series for [PopChart]. The same type works across line, bar, and donut.
  *
- * @param label Short label shown in the legend (uppercased at render time).
- * @param values The y-values. Must be non-empty for the series to render.
- *   Heterogeneous series lengths are supported; x-position is normalized to
- *   `index / (maxLength - 1)` per series.
- * @param color Optional color override. When null, PopChart picks a default from
- *   the theme in series order (primary-container lime → tertiary-container cyan → secondary-container magenta).
+ * Per-style interpretation of [values]:
+ * - **Line / Bar** — full list of y-values across the x-axis.
+ * - **Donut** — only `values[0]` is used (one slice per series). Other indices are
+ *   ignored. Negative values clamp to 0; NaN values are filtered.
+ *
+ * Example with custom colors:
+ * ```kotlin
+ * listOf(
+ *     PopChartSeries("Hot", listOf(40f), color = Color(0xFFFF3366)),
+ *     PopChartSeries("Cool", listOf(60f)),                 // theme cycle (cyan)
+ * )
+ * ```
+ *
+ * @param label Short label (uppercased at render time when shown in legends or x-labels).
+ * @param values The numeric data. See per-style interpretation above. Heterogeneous lengths
+ *   are supported for line/bar; x-position is normalized to `index / (maxLength - 1)`.
+ * @param color Optional color override. When null, the series picks a default from the
+ *   theme in series order — `primaryContainer` (lime) → `tertiaryContainer` (cyan) →
+ *   `secondaryContainer` (magenta), cycling on `index % 3`. Pass any `Color` to override
+ *   for a single series; mix overrides and nulls freely.
  */
 @Immutable
 data class PopChartSeries(
@@ -112,43 +126,79 @@ sealed class PopChartStyle {
     ) : PopChartStyle()
 
     /**
-     * Donut chart style.
+     * Donut chart style — circular gauge or multi-slice pie.
      *
-     * Two modes share one drawing path:
+     * ### Modes (one renderer)
      *
-     * - **Gauge mode** — pass exactly one [PopChartSeries] and an explicit [total]
-     *   (e.g. budget cap). The donut fills `series[0].values[0] / total` of the
-     *   ring as the filled arc; the remaining circumference is a tonal track in
-     *   `surfaceContainerHigh`. The Stitch "Budget Remaining 72%" card is this mode.
-     * - **Pie mode** — pass two or more [PopChartSeries], each contributing
-     *   `values[0]` as a slice value. When [total] is null the total is the sum
-     *   of slice values (every slice is shown). When [total] is non-null and
-     *   greater than the slice sum, the leftover circumference renders in
-     *   `surfaceContainerHigh` (so a multi-category gauge with headroom works).
+     * - **Gauge** — pass one [PopChartSeries] + an explicit [total]. The arc fills
+     *   `series[0].values[0] / total` of the ring; the rest is a tonal `surfaceContainerHigh`
+     *   track. Mirrors Stitch's "Budget Remaining 72%" card.
+     * - **Pie** — pass multiple [PopChartSeries]; each contributes `values[0]` as a slice.
+     *   When [total] is null, total = sum of slice values. When [total] > slice sum, the
+     *   leftover ring renders in `surfaceContainerHigh` (multi-category gauge with headroom).
      *
-     * The arc starts at 12 o'clock (top) and grows clockwise, matching the Stitch
-     * SVG `-rotate-90` convention.
+     * ### Geometry
      *
-     * Negative slice values are clamped to 0 (donuts cannot represent negative magnitudes).
-     * NaN slice values are filtered and treated as 0.
+     * - Arc starts at 12 o'clock and grows **clockwise**.
+     * - Diameter = `min(canvasWidth, chartHeight)` — control the overall size by passing
+     *   `chartHeight` to [PopChart].
+     * - Ring thickness = `diameter × strokeRatio`.
+     * - Negative values are clamped to 0; NaN values are filtered. (Donuts can't represent
+     *   negative magnitudes.)
      *
-     * @param centerLabel Optional supporting label below [centerValue]
-     *   (`labelSmall`, uppercased, `onSurfaceVariant`). Stitch: "Active Cap".
-     * @param centerValue Optional headline rendered inside the donut hole
-     *   (`displayLarge`, italic, black). Stitch: "72%". Caller is responsible for
-     *   formatting (`"${pct.toInt()}%"`, `"$1.2K"`, etc.).
-     *   Note: at `chartHeight = 180.dp` with long values (e.g. "$10.5K"), text may
-     *   approach the inner ring edge. Use `chartHeight = 220.dp` for donut variants.
-     * @param strokeRatio Ring thickness as a fraction of the donut **outer radius**
-     *   (default `0.218f`, matching the Stitch design's 24/110 ≈ 21.8%). Resolves
-     *   responsively as the canvas resizes — preferred over a fixed dp width.
-     * @param total Explicit total denominator. When null, total = sum of slice
-     *   values. Use a non-null total for gauge mode (single value over a cap)
-     *   or to leave headroom in pie mode. If explicit total < slice sum, falls back
-     *   to slice sum (a slice can never exceed the ring).
-     * @param activeIndex Slice index highlighted with a layered neon halo + 1.02×
-     *   stroke width (Rule 4 + Rule 5). Clamped via [clampActiveIndex]; null →
-     *   no active highlight.
+     * ### Center text
+     *
+     * If [centerValue] or [centerLabel] is set, text overlays the donut hole. The value
+     * uses `displayLarge` italic black and **autoscales down** (floor 14sp) when a long
+     * string would otherwise breach the inner ring. The label uses `labelSmall` uppercase.
+     * Both are rendered with theme tokens — colors and base typography come from
+     * `MaterialTheme`. Use [centerInset] to add breathing room between the inner ring
+     * and the text.
+     *
+     * ### Custom colors
+     *
+     * Per-slice colors come from [PopChartSeries.color]. Pass any `Color`; leave null
+     * to fall back to the default theme cycle (`primaryContainer` → `tertiaryContainer`
+     * → `secondaryContainer`).
+     *
+     * ### Example
+     *
+     * ```kotlin
+     * PopChart(
+     *     series = listOf(
+     *         PopChartSeries("Done", listOf(72f), color = Color(0xFFFF6B35)),
+     *     ),
+     *     style = PopChartStyle.Donut(
+     *         total = 100f,
+     *         centerValue = "72%",
+     *         centerLabel = "Complete",
+     *         strokeRatio = 0.15f,   // thinner ring
+     *         centerInset = 12.dp,   // more breathing room
+     *     ),
+     *     chartHeight = 240.dp,
+     * )
+     * ```
+     *
+     * @param centerLabel Small uppercase caption rendered **below** [centerValue] inside the
+     *   hole (`labelSmall`, `onSurfaceVariant`). Use for unit/context — e.g. `"Active Cap"`,
+     *   `"Total"`, `"Complete"`. Pass null to omit.
+     * @param centerValue Bold headline number rendered inside the donut hole (`displayLarge`
+     *   italic black, `onSurface`). Caller pre-formats the string — e.g. `"72%"`, `"$1.2K"`,
+     *   `"3 / 5"`. Autoscales down to fit the inner ring; floor is 14sp. Pass null to omit.
+     * @param strokeRatio Ring thickness as a fraction of the donut **diameter**.
+     *   Range: `0.05f`–`0.40f`. Smaller = hairline ring; larger = chunky ring. Default
+     *   `0.218f` ≈ Stitch's 24px stroke on a 110px-radius design.
+     * @param total Explicit total denominator. When null, total = sum of slice values.
+     *   Use non-null for **gauge** mode (single value over a cap) or to leave headroom
+     *   in pie mode. If `total < slice sum`, falls back to slice sum (a slice can never
+     *   exceed the ring).
+     * @param activeIndex Slice index highlighted with layered neon halos (alpha 0.18 / 0.28)
+     *   plus 1.02× stroke width (Rule 4 + Rule 5). Clamped via [clampActiveIndex] —
+     *   out-of-range values render no active highlight. Pass null for none.
+     * @param centerInset Dp padding between the inner ring edge and the center text content.
+     *   Default `8.dp` keeps the text comfortably clear of the ring. Increase for more
+     *   breathing room; set `0.dp` to maximize available text area (autoscale will use
+     *   the full inscribed-square chord).
      */
     @Immutable
     data class Donut(
@@ -157,6 +207,7 @@ sealed class PopChartStyle {
         val strokeRatio: Float = 0.218f,
         val total: Float? = null,
         val activeIndex: Int? = null,
+        val centerInset: Dp = 8.dp,
     ) : PopChartStyle()
 
     /** Curve algorithm for [Line.smoothness]. */
@@ -258,12 +309,14 @@ fun PopChart(
                             }
                         }
                         if (style.centerValue != null || style.centerLabel != null) {
-                            // Constrain the center text box to a chord inside the donut hole so
-                            // long values (e.g. "$1.2K") don't overflow the inner ring. Width =
-                            // 70% of the inner-hole diameter — comfortably inside the inscribed
-                            // square (side ≈ innerDiameter / √2 ≈ 0.707 × innerDiameter).
+                            // Constrain the center text box to the inscribed square inside the
+                            // donut hole (minus centerInset on each side) so long values like
+                            // "$1.2K" can't overflow the inner ring. Inscribed-square side =
+                            // effectiveInnerDiameter / √2 ≈ 0.7071 × effectiveInnerDiameter.
                             val innerDiameter = chartHeight * (1f - 2f * style.strokeRatio)
-                            val centerBoxWidth = innerDiameter * 0.7f
+                            val effectiveInnerDiameter =
+                                (innerDiameter - style.centerInset * 2).coerceAtLeast(0.dp)
+                            val centerBoxWidth = effectiveInnerDiameter * 0.7071f
                             val valueStyle = MaterialTheme.typography.displayLarge.copy(
                                 fontStyle = FontStyle.Italic,
                                 fontWeight = FontWeight.Black,
