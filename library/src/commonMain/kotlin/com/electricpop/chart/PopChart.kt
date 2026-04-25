@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.electricpop.foundation.PopSurface
 import com.electricpop.foundation.PopSurfaceTone
 import com.electricpop.theme.ElectricPopTheme
@@ -254,18 +258,35 @@ fun PopChart(
                             }
                         }
                         if (style.centerValue != null || style.centerLabel != null) {
+                            // Constrain the center text box to a chord inside the donut hole so
+                            // long values (e.g. "$1.2K") don't overflow the inner ring. Width =
+                            // 70% of the inner-hole diameter — comfortably inside the inscribed
+                            // square (side ≈ innerDiameter / √2 ≈ 0.707 × innerDiameter).
+                            val innerDiameter = chartHeight * (1f - 2f * style.strokeRatio)
+                            val centerBoxWidth = innerDiameter * 0.7f
+                            val valueStyle = MaterialTheme.typography.displayLarge.copy(
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.Black,
+                                color = colorScheme.onSurface,
+                                textAlign = TextAlign.Center,
+                            )
                             Column(
+                                modifier = Modifier.width(centerBoxWidth),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center,
                             ) {
                                 if (style.centerValue != null) {
-                                    Text(
+                                    // Prefer displayLarge; autoscale down to 14sp only if the
+                                    // text would otherwise overflow the inner-hole chord.
+                                    BasicText(
                                         text = style.centerValue,
-                                        style = MaterialTheme.typography.displayLarge.copy(
-                                            fontStyle = FontStyle.Italic,
-                                            fontWeight = FontWeight.Black,
+                                        style = valueStyle,
+                                        maxLines = 1,
+                                        autoSize = TextAutoSize.StepBased(
+                                            minFontSize = 14.sp,
+                                            maxFontSize = valueStyle.fontSize,
+                                            stepSize = 1.sp,
                                         ),
-                                        color = colorScheme.onSurface,
                                     )
                                 }
                                 if (style.centerLabel != null) {
