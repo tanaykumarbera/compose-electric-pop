@@ -473,6 +473,104 @@ class PopChartTest {
         val (lo, _) = computeStackedYBounds(series)
         assertEquals(0f, lo, 1e-3f)
     }
+
+    // ── computeDonutSlices ───────────────────────────────────────────────────
+
+    @Test
+    fun donut_emptySeries_returnsEmpty() {
+        val result = computeDonutSlices(emptyList(), null)
+        assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun donut_allZeroValues_returnsEmpty() {
+        val series = listOf(
+            PopChartSeries("a", listOf(0f)),
+            PopChartSeries("b", listOf(0f)),
+        )
+        val result = computeDonutSlices(series, null)
+        assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun donut_singleSlice_implicitTotal_sweeps360() {
+        val series = listOf(PopChartSeries("a", listOf(50f)))
+        val result = computeDonutSlices(series, null)
+        assertEquals(1, result.size)
+        assertEquals(360f, result[0].sweepAngleDeg, 1e-3f)
+    }
+
+    @Test
+    fun donut_explicitTotalLargerThanSum_leavesGap() {
+        // One slice of value 50 with total = 100 → sweep = 180°
+        val series = listOf(PopChartSeries("a", listOf(50f)))
+        val result = computeDonutSlices(series, 100f)
+        assertEquals(1, result.size)
+        assertEquals(180f, result[0].sweepAngleDeg, 1e-3f)
+    }
+
+    @Test
+    fun donut_multiSlicesAdjacent_startAnglesAccumulate() {
+        // [10, 20, 30] total = 60 → sweeps [60°, 120°, 180°], starts [0°, 60°, 180°]
+        val series = listOf(
+            PopChartSeries("a", listOf(10f)),
+            PopChartSeries("b", listOf(20f)),
+            PopChartSeries("c", listOf(30f)),
+        )
+        val result = computeDonutSlices(series, null)
+        assertEquals(3, result.size)
+        // Sweeps
+        assertEquals(60f, result[0].sweepAngleDeg, 1e-3f)
+        assertEquals(120f, result[1].sweepAngleDeg, 1e-3f)
+        assertEquals(180f, result[2].sweepAngleDeg, 1e-3f)
+        // Start angles accumulate
+        assertEquals(0f, result[0].startAngleDeg, 1e-3f)
+        assertEquals(60f, result[1].startAngleDeg, 1e-3f)
+        assertEquals(180f, result[2].startAngleDeg, 1e-3f)
+    }
+
+    // ── donutTotal fallback ──────────────────────────────────────────────────
+
+    @Test
+    fun donutTotal_explicitNull_usesSliceSum() {
+        assertEquals(100f, donutTotal(null, sliceSum = 100f), 1e-3f)
+    }
+
+    @Test
+    fun donutTotal_explicitLessThanSum_fallsBackToSum() {
+        // explicit total < slice sum → we can never let a slice exceed the ring
+        assertEquals(100f, donutTotal(50f, sliceSum = 100f), 1e-3f)
+    }
+
+    // ── negative-value clamp ─────────────────────────────────────────────────
+
+    @Test
+    fun donut_negativeValuesClampedToZero() {
+        // Negative series value clamped to 0; only "b" with value 10 contributes
+        val series = listOf(
+            PopChartSeries("a", listOf(-5f)),
+            PopChartSeries("b", listOf(10f)),
+        )
+        val result = computeDonutSlices(series, null)
+        assertEquals(1, result.size)
+        assertEquals(1, result[0].seriesIndex)  // "b" at index 1
+        assertEquals(360f, result[0].sweepAngleDeg, 1e-3f)
+    }
+
+    // ── NaN-value clamp ──────────────────────────────────────────────────────
+
+    @Test
+    fun donut_nanValuesFiltered() {
+        // NaN series value filtered; only "b" with value 10 contributes
+        val series = listOf(
+            PopChartSeries("a", listOf(Float.NaN)),
+            PopChartSeries("b", listOf(10f)),
+        )
+        val result = computeDonutSlices(series, null)
+        assertEquals(1, result.size)
+        assertEquals(1, result[0].seriesIndex)  // "b" at index 1
+        assertEquals(360f, result[0].sweepAngleDeg, 1e-3f)
+    }
 }
 
 // Helper for float comparison with tolerance

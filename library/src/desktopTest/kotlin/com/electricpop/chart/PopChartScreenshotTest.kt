@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.runDesktopComposeUiTest
@@ -23,7 +24,7 @@ class PopChartScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_light() = runDesktopComposeUiTest(width = 460, height = 4200) {
+    fun allVariants_light() = runDesktopComposeUiTest(width = 460, height = 5400) {
         setContent { PopChartContent(darkTheme = false) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopChart_allVariants_light.png",
@@ -32,7 +33,7 @@ class PopChartScreenshotTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun allVariants_dark() = runDesktopComposeUiTest(width = 460, height = 4200) {
+    fun allVariants_dark() = runDesktopComposeUiTest(width = 460, height = 5400) {
         setContent { PopChartContent(darkTheme = true) }
         onRoot().captureRoboImage(
             filePath = "src/desktopTest/snapshots/PopChart_allVariants_dark.png",
@@ -228,6 +229,97 @@ private fun PopChartContent(darkTheme: Boolean) {
                     xLabels = xLabels,
                     title = "Year Comparison",
                     subtitle = "Stacked",
+                )
+
+                Spacer(modifier = Modifier.height(spacing.sm))
+
+                // ── DONUT section ────────────────────────────────────────────
+                Text(
+                    "DONUT",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+
+                // Variant 11: Gauge · 72%
+                Text(
+                    "GAUGE · 72%",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                PopChart(
+                    series = listOf(PopChartSeries("Spent", listOf(72f))),
+                    style = PopChartStyle.Donut(
+                        total = 100f,
+                        centerValue = "72%",
+                        centerLabel = "Active Cap",
+                    ),
+                    title = "Budget Remaining",
+                    subtitle = "Gauge · 72%",
+                    chartHeight = 220.dp,
+                )
+
+                // Variant 12: Gauge · Active
+                Text(
+                    "GAUGE · ACTIVE",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                PopChart(
+                    series = listOf(PopChartSeries("Spent", listOf(72f))),
+                    style = PopChartStyle.Donut(
+                        total = 100f,
+                        centerValue = "72%",
+                        centerLabel = "Active Cap",
+                        activeIndex = 0,
+                    ),
+                    title = "Budget Remaining",
+                    subtitle = "Gauge · Active",
+                    chartHeight = 220.dp,
+                )
+
+                // Variant 13: Pie · 4 slices
+                Text(
+                    "PIE · 4 SLICES",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                PopChart(
+                    series = listOf(
+                        PopChartSeries("Marketing", listOf(38f)),
+                        PopChartSeries("Engineering", listOf(27f)),
+                        PopChartSeries("Ops", listOf(21f)),
+                        PopChartSeries("Reserve", listOf(14f)),
+                    ),
+                    style = PopChartStyle.Donut(
+                        centerValue = "\$1.2K",
+                        centerLabel = "Total",
+                    ),
+                    title = "Allocation",
+                    subtitle = "Pie · 4 slices",
+                    chartHeight = 220.dp,
+                )
+
+                // Variant 14: Pie · Active 1 (Engineering)
+                Text(
+                    "PIE · ACTIVE 1",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                PopChart(
+                    series = listOf(
+                        PopChartSeries("Marketing", listOf(38f)),
+                        PopChartSeries("Engineering", listOf(27f)),
+                        PopChartSeries("Ops", listOf(21f)),
+                        PopChartSeries("Reserve", listOf(14f)),
+                    ),
+                    style = PopChartStyle.Donut(
+                        centerValue = "\$1.2K",
+                        centerLabel = "Total",
+                        activeIndex = 1,
+                    ),
+                    title = "Allocation",
+                    subtitle = "Pie · Active 1",
+                    chartHeight = 220.dp,
                 )
             }
         }
