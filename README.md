@@ -43,7 +43,7 @@ ElectricPopTheme(
 }
 ```
 
-## Components (30)
+## Components (26)
 
 ### Foundation (20)
 
@@ -81,13 +81,15 @@ ElectricPopTheme(
 | PopBannerCard | Hero / metric banner with trend chip and overlapping icon cluster |
 | PopImageBannerCard | Big image card with overlay headline and configurable text anchor |
 
-### Chart (3)
+### Chart (1, with 3 styles)
 
-| Component | Description |
-|-----------|-------------|
-| PopLineChart | Trend line with glow on active points |
-| PopBarChart | Comparative bars with active scaling |
-| PopDonutChart | Circular gauge with center text |
+A single `PopChart` composable picks its rendering via `PopChartStyle`.
+
+| Style | Description |
+|-------|-------------|
+| `PopChartStyle.Line` | Trend line with glow on active points |
+| `PopChartStyle.Bar`  | Comparative bars with active scaling |
+| `PopChartStyle.Donut` | Circular gauge with center text and configurable inset |
 
 ## Design System
 
