@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import com.electricpop.theme.ElectricPopTheme
+import kotlin.jvm.JvmName
 
 /**
  * A data class representing a single icon entry in a [PopIconRow].
