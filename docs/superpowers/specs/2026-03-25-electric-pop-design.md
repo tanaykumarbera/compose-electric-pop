@@ -143,7 +143,7 @@ These rules are baked into every component. They are not optional.
 
 ### 6.2 Composite (6 components)
 
-> **Revised 2026-04-18 — see spec `2026-04-18-banner-card-refactor`.**
+> **Revised 2026-04-18 — composite tier rebalanced: PopMetricCard renamed to PopBannerCard (enhanced chip + single-row icons); old numeric PopBannerCard deleted; new PopImageBannerCard added.**
 > **Revised 2026-04-25 — PopFeatureCard dropped; its hero-spotlight role is fulfilled by PopBannerCard (renamed from the earlier PopMetricCard in commit `92d5ec4`).**
 
 | # | Component | Composed From | Description |

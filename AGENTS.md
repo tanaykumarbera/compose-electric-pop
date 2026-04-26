@@ -1,7 +1,9 @@
 # Electric Pop — Agent Guide
 
 > **TL;DR for fresh sessions:**
-> - **To build a component:** Use `/build-component <ComponentName>` in a normal `claude` session. The skill orchestrates planner → implementor → reviewer subagents and handles Telegram/GitHub/Stitch MCP from the main session.
+> - **Library is feature-complete.** Current track is repo cleanup + Maven Central publishing. Read `docs/superpowers/plans/SESSION-RESUME.md` first for next-step status; full plan at `docs/superpowers/plans/repo-cleanup-plan.md`.
+> - **For project context that's not in code:** Consult the auto-memory index at `~/.claude/projects/-mnt-workspace-mobile-apps-ui-electric-pop/memory/MEMORY.md` (loaded automatically each session). Notable entries: release-readiness state, no-AI-branding rule, Telegram update rule, Stitch-review rule.
+> - **To build a new component (rare now):** Use `/build-component <ComponentName>`. The skill orchestrates planner → implementor → reviewer subagents and handles Telegram/GitHub/Stitch MCP from the main session.
 > - **For ad-hoc tasks:** Dispatch `pixy-planner`, `pixy-implementor`, or `pixy-reviewer` directly via the Agent tool as needed.
 > - **Avoid:** Running `claude --agent pixy` or `Agent(pixy)` — MCP tools don't propagate reliably to agent sessions (known Claude Code bug, anthropics/claude-code#30280).
 
@@ -12,7 +14,7 @@ Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pul
 - **Repo:** github.com/tanaykumarbera/compose-electric-pop
 - **Design:** [Stitch project 7983075619754946215](https://stitch.withgoogle.com/projects/7983075619754946215)
 - **Spec:** `docs/superpowers/specs/2026-03-25-electric-pop-design.md`
-- **Plan:** `docs/superpowers/plans/2026-03-25-electric-pop-implementation.md`
+- **Release track:** `docs/superpowers/plans/SESSION-RESUME.md` (status) · `docs/superpowers/plans/repo-cleanup-plan.md` (full plan)
 - **CLAUDE.md:** Project coding rules, SOP, and 7 design rules
 - **Targets:** Android (API 24+), iOS, Desktop JVM
 - **Stack:** Kotlin 2.3.20, Compose Multiplatform 1.10.3, AGP 8.7.3
