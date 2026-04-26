@@ -7,7 +7,7 @@ Electric Pop is a Compose Multiplatform UI component library implementing the "K
 - **Repo:** github.com/tanaykumarbera/compose-electric-pop
 - **Design source:** [Stitch project 7983075619754946215](https://stitch.withgoogle.com/projects/7983075619754946215)
 - **Spec:** `docs/superpowers/specs/2026-03-25-electric-pop-design.md`
-- **Plan:** `docs/superpowers/plans/2026-03-25-electric-pop-implementation.md`
+- **Release track:** `docs/superpowers/plans/SESSION-RESUME.md` (status) · `docs/superpowers/plans/repo-cleanup-plan.md` (full plan)
 - **Targets:** Android (API 24+, compileSdk 36), iOS (arm64 + simulatorArm64), Desktop (JVM)
 - **Stack:** Kotlin 2.3.20, Compose Multiplatform 1.10.3, AGP 8.7.3
 - **Fonts:** Space Grotesk (headlines) + Manrope (body/labels) — bundled as Compose resources
