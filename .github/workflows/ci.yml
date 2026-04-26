@@ -38,6 +38,9 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
+      - name: Lint + format check (Detekt + Spotless)
+        run: ./gradlew detekt spotlessCheck --stacktrace
+
       - name: Compile desktop + Android
         run: ./gradlew :library:compileKotlinDesktop :library:assembleRelease :demo:compileKotlinDesktop --stacktrace
 
