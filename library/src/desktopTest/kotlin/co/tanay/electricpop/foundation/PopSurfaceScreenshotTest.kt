@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onRoot
@@ -45,7 +44,7 @@ class PopSurfaceScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopSurface_allTones_light.png"
+            filePath = "src/desktopTest/snapshots/PopSurface_allTones_light.png",
         )
     }
 
@@ -75,7 +74,7 @@ class PopSurfaceScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopSurface_allTones_dark.png"
+            filePath = "src/desktopTest/snapshots/PopSurface_allTones_dark.png",
         )
     }
 
@@ -103,7 +102,7 @@ class PopSurfaceScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopSurface_ghostBorder_light.png"
+            filePath = "src/desktopTest/snapshots/PopSurface_ghostBorder_light.png",
         )
     }
 
@@ -131,7 +130,7 @@ class PopSurfaceScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopSurface_ghostBorder_dark.png"
+            filePath = "src/desktopTest/snapshots/PopSurface_ghostBorder_dark.png",
         )
     }
 }

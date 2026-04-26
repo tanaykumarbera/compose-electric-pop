@@ -102,7 +102,7 @@ class PopDisplayTextScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopDisplayText_allVariants_light.png"
+            filePath = "src/desktopTest/snapshots/PopDisplayText_allVariants_light.png",
         )
     }
 
@@ -192,7 +192,7 @@ class PopDisplayTextScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopDisplayText_allVariants_dark.png"
+            filePath = "src/desktopTest/snapshots/PopDisplayText_allVariants_dark.png",
         )
     }
 }

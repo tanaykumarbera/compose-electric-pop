@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +26,6 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
@@ -371,7 +371,7 @@ fun PopChart(
                             )
                             return@Canvas
                         }
-                        drawLineChart(series, style, colorScheme, density)
+                        drawLineChart(series, style, colorScheme)
                     }
                     // X-axis labels for Line
                     if (xLabels.isNotEmpty()) {
@@ -458,7 +458,6 @@ private fun DrawScope.drawLineChart(
     series: List<PopChartSeries>,
     style: PopChartStyle.Line,
     colorScheme: ColorScheme,
-    density: androidx.compose.ui.unit.Density,
 ) {
     val (yMin, yMax) = computeYBounds(series)
     series.forEachIndexed { seriesIdx, s ->
@@ -527,6 +526,7 @@ private fun DrawScope.drawLineChart(
 
 // --- Bar chart drawing ---
 
+@Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "LoopWithTooManyJumpStatements")
 private fun DrawScope.drawBarChart(
     series: List<PopChartSeries>,
     style: PopChartStyle.Bar,
@@ -561,8 +561,11 @@ private fun DrawScope.drawBarChart(
 
     fun yFor(value: Float): Float {
         val yRange = yMax - yMin
-        return if (yRange == 0f) size.height * 0.5f
-        else size.height - ((value - yMin) / yRange) * size.height
+        return if (yRange == 0f) {
+            size.height * 0.5f
+        } else {
+            size.height - ((value - yMin) / yRange) * size.height
+        }
     }
 
     val baselineY = yFor(max(0f, yMin))
@@ -720,9 +723,9 @@ private fun DrawScope.drawBar(
  */
 internal data class DonutSlice(
     val seriesIndex: Int,
-    val color: Color?,          // null → resolve via defaultSeriesColor at draw time
-    val startAngleDeg: Float,   // 0° = top of circle (12 o'clock); CW positive
-    val sweepAngleDeg: Float,   // strictly > 0 for slices that draw
+    val color: Color?, // null → resolve via defaultSeriesColor at draw time
+    val startAngleDeg: Float, // 0° = top of circle (12 o'clock); CW positive
+    val sweepAngleDeg: Float, // strictly > 0 for slices that draw
 )
 
 /**
@@ -824,7 +827,7 @@ private fun DrawScope.drawDonutChart(
 
     // 3. Compute slices
     val slices = computeDonutSlices(series, style.total)
-    if (slices.isEmpty()) return  // track-only placeholder
+    if (slices.isEmpty()) return // track-only placeholder
 
     // 5. Determine active slice
     val activeClamped = clampActiveIndex(style.activeIndex, slices.size)
@@ -1053,12 +1056,10 @@ internal fun monotoneCubicTangents(points: List<Offset>): List<Offset> {
  * - 2 → `secondaryContainer` (Magenta)
  * - 3+ → cycles back (index % 3)
  */
-internal fun defaultSeriesColor(index: Int, scheme: ColorScheme): Color {
-    return when (index % 3) {
-        0 -> scheme.primaryContainer
-        1 -> scheme.tertiaryContainer
-        else -> scheme.secondaryContainer
-    }
+internal fun defaultSeriesColor(index: Int, scheme: ColorScheme): Color = when (index % 3) {
+    0 -> scheme.primaryContainer
+    1 -> scheme.tertiaryContainer
+    else -> scheme.secondaryContainer
 }
 
 /**

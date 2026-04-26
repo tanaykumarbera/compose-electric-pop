@@ -100,7 +100,7 @@ class PopTextFieldScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopTextField_allVariants_light.png"
+            filePath = "src/desktopTest/snapshots/PopTextField_allVariants_light.png",
         )
     }
 
@@ -188,7 +188,7 @@ class PopTextFieldScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopTextField_allVariants_dark.png"
+            filePath = "src/desktopTest/snapshots/PopTextField_allVariants_dark.png",
         )
     }
 }

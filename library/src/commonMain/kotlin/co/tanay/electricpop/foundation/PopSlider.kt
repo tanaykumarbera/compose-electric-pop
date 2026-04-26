@@ -185,7 +185,7 @@ fun PopSlider(
                             }
                     } else {
                         Modifier
-                    }
+                    },
                 ),
             contentAlignment = Alignment.CenterStart,
         ) {
@@ -241,15 +241,13 @@ fun PopSlider(
  * Formats a slider value for display.
  * Shows integers without decimals, floats with up to 1 decimal place.
  */
-internal fun formatSliderValue(value: Float): String {
-    return if (value == value.toInt().toFloat()) {
-        value.toInt().toString()
+internal fun formatSliderValue(value: Float): String = if (value == value.toInt().toFloat()) {
+    value.toInt().toString()
+} else {
+    val rounded = (value * 10).roundToInt() / 10f
+    if (rounded == rounded.toInt().toFloat()) {
+        rounded.toInt().toString()
     } else {
-        val rounded = (value * 10).roundToInt() / 10f
-        if (rounded == rounded.toInt().toFloat()) {
-            rounded.toInt().toString()
-        } else {
-            rounded.toString()
-        }
+        rounded.toString()
     }
 }

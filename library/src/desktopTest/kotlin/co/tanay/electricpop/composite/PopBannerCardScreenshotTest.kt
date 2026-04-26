@@ -58,55 +58,55 @@ private fun BannerCardContent(darkTheme: Boolean) {
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(spacing.md),
             ) {
-            // 1. Hero + badge + icons (Slot C)
-            PopBannerCard(
-                label = "Total Ecosystem Value",
-                mainText = "\$42,069",
-                fractionalText = ".42",
-                badgeValue = "+12.4%",
-                badgeDirection = PopBadgeDirection.Up,
-                icons = listOf(
-                    PopIconItem(PopIcons.Bolt, "Speed"),
-                    PopIconItem(PopIcons.Sparkle, "Quality"),
-                    PopIconItem(PopIcons.Layers, "Depth"),
-                ),
-                style = PopBannerCardStyle.Hero,
-            )
-            // 2. Hero with >5 icons (overflow)
-            PopBannerCard(
-                label = "Network Health",
-                mainText = "\$88,200",
-                fractionalText = ".00",
-                badgeValue = "+8.1%",
-                badgeDirection = PopBadgeDirection.Up,
-                icons = listOf(
-                    PopIconItem(PopIcons.Bolt, "Speed"),
-                    PopIconItem(PopIcons.Sparkle, "Quality"),
-                    PopIconItem(PopIcons.Layers, "Depth"),
-                    PopIconItem(PopIcons.Heart, "Health"),
-                    PopIconItem(PopIcons.Star, "Rating"),
-                    PopIconItem(PopIcons.CheckCircle, "Verified"),
-                    PopIconItem(PopIcons.Home, "Home"),
-                ),
-                style = PopBannerCardStyle.Hero,
-            )
-            // 3. Surface + badge (negative)
-            PopBannerCard(
-                label = "Monthly Revenue",
-                mainText = "\$8,421",
-                fractionalText = ".00",
-                badgeValue = "-3.2%",
-                badgeDirection = PopBadgeDirection.Down,
-                displayDirection = PopDisplayTextDirection.Negative,
-                style = PopBannerCardStyle.Surface,
-            )
-            // 4. Surface, no badge, small size
-            PopBannerCard(
-                label = "Active Users",
-                mainText = "1,247",
-                displaySize = PopDisplayTextSize.Small,
-                style = PopBannerCardStyle.Surface,
-            )
+                // 1. Hero + badge + icons (Slot C)
+                PopBannerCard(
+                    label = "Total Ecosystem Value",
+                    mainText = "\$42,069",
+                    fractionalText = ".42",
+                    badgeValue = "+12.4%",
+                    badgeDirection = PopBadgeDirection.Up,
+                    icons = listOf(
+                        PopIconItem(PopIcons.Bolt, "Speed"),
+                        PopIconItem(PopIcons.Sparkle, "Quality"),
+                        PopIconItem(PopIcons.Layers, "Depth"),
+                    ),
+                    style = PopBannerCardStyle.Hero,
+                )
+                // 2. Hero with >5 icons (overflow)
+                PopBannerCard(
+                    label = "Network Health",
+                    mainText = "\$88,200",
+                    fractionalText = ".00",
+                    badgeValue = "+8.1%",
+                    badgeDirection = PopBadgeDirection.Up,
+                    icons = listOf(
+                        PopIconItem(PopIcons.Bolt, "Speed"),
+                        PopIconItem(PopIcons.Sparkle, "Quality"),
+                        PopIconItem(PopIcons.Layers, "Depth"),
+                        PopIconItem(PopIcons.Heart, "Health"),
+                        PopIconItem(PopIcons.Star, "Rating"),
+                        PopIconItem(PopIcons.CheckCircle, "Verified"),
+                        PopIconItem(PopIcons.Home, "Home"),
+                    ),
+                    style = PopBannerCardStyle.Hero,
+                )
+                // 3. Surface + badge (negative)
+                PopBannerCard(
+                    label = "Monthly Revenue",
+                    mainText = "\$8,421",
+                    fractionalText = ".00",
+                    badgeValue = "-3.2%",
+                    badgeDirection = PopBadgeDirection.Down,
+                    displayDirection = PopDisplayTextDirection.Negative,
+                    style = PopBannerCardStyle.Surface,
+                )
+                // 4. Surface, no badge, small size
+                PopBannerCard(
+                    label = "Active Users",
+                    mainText = "1,247",
+                    displaySize = PopDisplayTextSize.Small,
+                    style = PopBannerCardStyle.Surface,
+                )
             }
         }
     }

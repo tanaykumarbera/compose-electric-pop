@@ -54,7 +54,7 @@ class PopSwitchScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopSwitch_allVariants_light.png"
+            filePath = "src/desktopTest/snapshots/PopSwitch_allVariants_light.png",
         )
     }
 
@@ -96,7 +96,7 @@ class PopSwitchScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopSwitch_allVariants_dark.png"
+            filePath = "src/desktopTest/snapshots/PopSwitch_allVariants_dark.png",
         )
     }
 }

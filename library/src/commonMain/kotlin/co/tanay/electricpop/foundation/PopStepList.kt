@@ -30,9 +30,7 @@ data class PopStep(
 /**
  * Formats a 1-based step index as a zero-padded two-digit string.
  */
-internal fun formatStepNumber(index: Int): String {
-    return index.toString().padStart(2, '0')
-}
+internal fun formatStepNumber(index: Int): String = index.toString().padStart(2, '0')
 
 /**
  * Displays a vertical list of steps with optional numbers and icons, labels, and descriptions.

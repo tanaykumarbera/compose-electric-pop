@@ -23,14 +23,14 @@ fun PopCodeBlockDemo() {
 val theme = ElectricPopTheme {
     colorScheme = darkColorScheme()
 }
-""".trimIndent()
+    """.trimIndent()
 
     val jsonSnippet = """
 {
   "component": "PopCodeBlock",
   "tier": "foundation"
 }
-""".trimIndent()
+    """.trimIndent()
 
     Column(
         modifier = Modifier

@@ -80,7 +80,7 @@ class PopSliderScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopSlider_allVariants_light.png"
+            filePath = "src/desktopTest/snapshots/PopSlider_allVariants_light.png",
         )
     }
 
@@ -147,7 +147,7 @@ class PopSliderScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopSlider_allVariants_dark.png"
+            filePath = "src/desktopTest/snapshots/PopSlider_allVariants_dark.png",
         )
     }
 }

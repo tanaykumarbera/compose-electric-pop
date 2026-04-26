@@ -37,8 +37,10 @@ import co.tanay.electricpop.theme.PopShapeFull
 enum class PopChipColor {
     /** Electric Lime — primaryContainer / onPrimaryContainer */
     Primary,
+
     /** Neon Magenta — secondaryContainer / onSecondaryContainer */
     Secondary,
+
     /** Cyber Cyan — tertiaryContainer / onTertiaryContainer */
     Tertiary,
 }

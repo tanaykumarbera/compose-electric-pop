@@ -21,8 +21,10 @@ import co.tanay.electricpop.theme.PopShapeFull
 enum class PopBadgeDirection {
     /** Positive trend — green (primaryContainer) with TrendUp icon */
     Up,
+
     /** Negative trend — red (errorContainer) with TrendDown icon */
     Down,
+
     /** No trend — neutral (surfaceContainerHigh) with no icon */
     Neutral,
 }
