@@ -27,9 +27,9 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import co.tanay.electricpop.theme.ElectricPopTheme
+import co.tanay.electricpop.theme.JetBrainsMonoFontFamily
 import co.tanay.electricpop.theme.PopShapeFull
 
 /**
@@ -64,6 +64,7 @@ fun PopCodeBlock(
     shape: Shape = MaterialTheme.shapes.small,
 ) {
     val spacing = ElectricPopTheme.spacing
+    val monoFamily = JetBrainsMonoFontFamily()
     val showHeader = label != null || onCopy != null
 
     Column(
@@ -111,7 +112,7 @@ fun PopCodeBlock(
             SelectionContainer {
                 Text(
                     text = code,
-                    style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                    style = MaterialTheme.typography.bodySmall.copy(fontFamily = monoFamily),
                     color = contentColor,
                 )
             }
