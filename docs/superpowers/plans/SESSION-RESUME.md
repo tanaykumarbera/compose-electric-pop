@@ -90,26 +90,36 @@ Detekt 1.23.6 + Spotless 6.25.0 + ktlint 1.3.1 wired as a required ubuntu CI che
 
 ---
 
-### [ ] 3. `feat/dokka-pages`
+### [x] 3. `feat/dokka-pages` — PR #51 (open)
 
-Stand up Dokka HTML output and serve it from GitHub Pages alongside the existing site. **No screenshot embeds yet** — that's step 4.
+Stood up Dokka HTML output and wired it through the existing GitHub Pages workflow at `/api/`. **No screenshot embeds yet** — that's step 4.
 
 **Library setup (`library/build.gradle.kts`):**
-- Add Dokka 2.0.0 plugin
-- Configure `dokkaHtml`: module name `compose-electric-pop`, source link to GitHub at the current commit, public symbols only
-- Skip custom CSS / logo for v1 (defer to a polish pass after the track lands)
+- Dokka 2.0.0 plugin (alias `libs.plugins.dokka`)
+- DGP v2 syntax — opted in via `org.jetbrains.dokka.experimental.gradle.pluginMode=V2Enabled` in `gradle.properties` (V2 is opt-in in 2.0.0; default in 2.2+; warning suppressed via `.noWarn=true`)
+- `moduleName = "compose-electric-pop"`; `dokkaSourceSets.configureEach` → `documentedVisibilities = {Public}`, `skipEmptyPackages = true`
+- `sourceLink` maps `localDirectory = rootProject.projectDir` → `https://github.com/.../blob/<sha>` so KMP source sets all resolve under one base URL. SHA is computed from `git rev-parse HEAD` at configure time, falling back to `main` if git isn't available
+- No custom CSS / logo (deferred to a polish pass)
+
+**Task name gotcha:** Dokka 2.x uses `dokkaGenerate` (or `dokkaGeneratePublicationHtml`) — the v1 `dokkaHtml` task does not exist. Workflow runs `./gradlew :library:dokkaGenerate`; output still lands at `library/build/dokka/html/`.
 
 **Pages workflow (`.github/workflows/pages.yml`):**
-- Expand trigger paths to `["docs/**", "library/src/**", "**/build.gradle.kts", "gradle/libs.versions.toml"]`
-- Set up JDK 21
-- Run `./gradlew :library:dokkaHtml`
-- Upload artifact = `docs/` ∪ `library/build/dokka/html/` merged. Layout:
-  - `/` → existing `docs/index.html`
-  - `/api/` → Dokka HTML output
+- Trigger paths expanded to `["docs/**", "library/src/**", "**/build.gradle.kts", "gradle/libs.versions.toml"]` + `workflow_dispatch`
+- Setup JDK 21 (zulu) + Gradle (`gradle/actions/setup-gradle@v4`)
+- Run `./gradlew :library:dokkaGenerate`
+- Stage merged artifact under `build/pages/`:
+  - `cp -R docs/. build/pages/` → `/`
+  - `cp -R library/build/dokka/html/. build/pages/api/` → `/api/`
+- `concurrency: group: pages, cancel-in-progress: false` — don't cancel an in-flight deploy
 
-**Update `docs/index.html`:** add a link to `/api/` so the landing page surfaces the reference.
+**`docs/index.html`:** old "View Components" badge (which pointed at the GitHub Wiki) now points at `api/`; secondary "GitHub" badge added next to it.
 
-**Done when:** push to main rebuilds Dokka; `tanaykumarbera.github.io/compose-electric-pop/api/` shows the API reference for all 27 components.
+**Verified locally:**
+- `./gradlew :library:dokkaGenerate` produces `library/build/dokka/html/` with all 27 component pages (foundation, composite, chart packages)
+- Staging step (`cp -R docs/. + cp -R dokka/html/. → /api/`) produces a clean tree
+- `./gradlew detekt spotlessCheck` passes with the new Gradle code
+
+**Done when:** PR #51 merges → push to main rebuilds Dokka → `tanaykumarbera.github.io/compose-electric-pop/api/` shows the reference.
 
 ---
 
@@ -285,7 +295,7 @@ mavenPublishing {
 
 ## Notes for next session
 
-- **Next up: step 3** (`feat/dokka-pages`). Branch off `main` once #49 merges. Stand up Dokka HTML and serve from GitHub Pages alongside `docs/`. **No screenshot embeds yet** — that's step 4. Pages workflow trigger paths expand to `["docs/**", "library/src/**", "**/build.gradle.kts", "gradle/libs.versions.toml"]`; artifact = `docs/` ∪ `library/build/dokka/html/` mapped to `/api/`.
+- **Next up: step 4** (`feat/screenshot-codegen`). Branch off `main` once #51 merges. Add the `:library:syncScreenshotKdoc` Gradle task, the delimited `<!-- screenshots:start --> ... <!-- screenshots:end -->` block in every component file, and the pre-commit hook + CI guard. Pages workflow already publishes `/api/` (step 3); this PR additionally copies `library/src/desktopTest/snapshots/*.png` into the artifact at `/snapshots/` so the absolute URLs in KDoc resolve. See step 4 above for full spec.
 - Use **GitHub MCP** (`mcp__plugin_github_github__*`), not `gh` CLI (not installed).
 - Use `ToolSearch(query="select:<tool>", max_results=1)` to load deferred MCP tool schemas before calling.
 - Telegram `chat_id 1402731017` — notify on PR creation, step completion, blockers, and decision-needed checkpoints. Do **not** notify for sub-step build output.
