@@ -30,6 +30,16 @@ allprojects {
             md.required.set(false)
         }
     }
+
+    // KMP source sets aren't picked up by the default `detekt` task (NO-SOURCE).
+    // Point it at every src/* directory so it scans the whole project once.
+    plugins.withId("io.gitlab.arturbosch.detekt") {
+        tasks.named<io.gitlab.arturbosch.detekt.Detekt>("detekt").configure {
+            setSource(files(layout.projectDirectory.dir("src")))
+            include("**/*.kt")
+            exclude("**/build/**", "**/resources/**", "**/generated/**")
+        }
+    }
 }
 
 spotless {

@@ -371,7 +371,7 @@ fun PopChart(
                             )
                             return@Canvas
                         }
-                        drawLineChart(series, style, colorScheme, density)
+                        drawLineChart(series, style, colorScheme)
                     }
                     // X-axis labels for Line
                     if (xLabels.isNotEmpty()) {
@@ -458,7 +458,6 @@ private fun DrawScope.drawLineChart(
     series: List<PopChartSeries>,
     style: PopChartStyle.Line,
     colorScheme: ColorScheme,
-    density: androidx.compose.ui.unit.Density,
 ) {
     val (yMin, yMax) = computeYBounds(series)
     series.forEachIndexed { seriesIdx, s ->
@@ -527,6 +526,7 @@ private fun DrawScope.drawLineChart(
 
 // --- Bar chart drawing ---
 
+@Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "LoopWithTooManyJumpStatements")
 private fun DrawScope.drawBarChart(
     series: List<PopChartSeries>,
     style: PopChartStyle.Bar,
