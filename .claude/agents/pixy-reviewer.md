@@ -102,7 +102,7 @@ For EACH rule applicable to this component, verify:
 - **Acid test:** would every test in this file STILL PASS if the component source were deleted? If yes → FAIL.
 
 ### E. Screenshot tests (**critical**)
-- File at `library/src/desktopTest/kotlin/com/electricpop/{tier}/{ComponentName}ScreenshotTest.kt`
+- File at `library/src/desktopTest/kotlin/co/tanay/electricpop/{tier}/{ComponentName}ScreenshotTest.kt`
 - Uses `runDesktopComposeUiTest` + `captureRoboImage` (roborazzi)
 - At minimum light AND dark theme screenshots
 - All variants shown

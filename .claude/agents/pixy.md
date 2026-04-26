@@ -50,11 +50,11 @@ Project context (design system, 7 design rules, coding rules, component SOP, bui
 
 ## Key paths
 
-- Component source: `library/src/commonMain/kotlin/com/electricpop/{tier}/`
-- Tests: `library/src/commonTest/kotlin/com/electricpop/{tier}/`
-- Screenshot tests: `library/src/desktopTest/kotlin/com/electricpop/{tier}/`
-- Demo: `demo/src/commonMain/kotlin/com/electricpop/demo/components/`
-- Catalog: `demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt`
+- Component source: `library/src/commonMain/kotlin/co/tanay/electricpop/{tier}/`
+- Tests: `library/src/commonTest/kotlin/co/tanay/electricpop/{tier}/`
+- Screenshot tests: `library/src/desktopTest/kotlin/co/tanay/electricpop/{tier}/`
+- Demo: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/`
+- Catalog: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt`
 - Goldens: `library/src/desktopTest/snapshots/`
 - Plans: `.pixy/plans/`
 - Stitch project: `7983075619754946215`

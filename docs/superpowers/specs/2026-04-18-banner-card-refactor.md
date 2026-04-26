@@ -32,7 +32,7 @@ Three specific issues surfaced in review:
 
 ## 4. Architecture
 
-Both banner-tier composites live in `com.electricpop.composite` and compose from existing foundation primitives. No new foundation component is needed.
+Both banner-tier composites live in `co.tanay.electricpop.composite` and compose from existing foundation primitives. No new foundation component is needed.
 
 ```
 composite/
@@ -216,10 +216,10 @@ Re-recorded after enhancements 1 & 2 and the dark-bg test wrapper (Section 8) ar
 ### 7.1 File operations
 
 **Delete:**
-- `library/src/commonMain/kotlin/com/electricpop/composite/PopBannerCard.kt` (current numeric impl)
-- `library/src/commonTest/kotlin/com/electricpop/composite/PopBannerCardTest.kt`
-- `library/src/desktopTest/kotlin/com/electricpop/composite/PopBannerCardScreenshotTest.kt`
-- `demo/src/commonMain/kotlin/com/electricpop/demo/components/PopBannerCardDemo.kt`
+- `library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopBannerCard.kt` (current numeric impl)
+- `library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopBannerCardTest.kt`
+- `library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopBannerCardScreenshotTest.kt`
+- `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopBannerCardDemo.kt`
 - `library/src/desktopTest/snapshots/PopBannerCard_allVariants_light.png`
 - `library/src/desktopTest/snapshots/PopBannerCard_allVariants_dark.png`
 
@@ -234,17 +234,17 @@ Re-recorded after enhancements 1 & 2 and the dark-bg test wrapper (Section 8) ar
 - `library/src/desktopTest/snapshots/PopMetricCard_allVariants_dark.png`
 
 **Create:**
-- `library/src/commonMain/kotlin/com/electricpop/composite/PopImageBannerCard.kt`
-- `library/src/commonTest/kotlin/com/electricpop/composite/PopImageBannerCardTest.kt`
-- `library/src/desktopTest/kotlin/com/electricpop/composite/PopImageBannerCardScreenshotTest.kt`
-- `demo/src/commonMain/kotlin/com/electricpop/demo/components/PopImageBannerCardDemo.kt`
+- `library/src/commonMain/kotlin/co/tanay/electricpop/composite/PopImageBannerCard.kt`
+- `library/src/commonTest/kotlin/co/tanay/electricpop/composite/PopImageBannerCardTest.kt`
+- `library/src/desktopTest/kotlin/co/tanay/electricpop/composite/PopImageBannerCardScreenshotTest.kt`
+- `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopImageBannerCardDemo.kt`
 - `library/src/commonMain/composeResources/drawable/pop_banner_hero.png`
 - `library/src/desktopTest/snapshots/PopImageBannerCard_*.png` (5 variants × 2 themes = 10 goldens)
 - `library/src/desktopTest/snapshots/PopBannerCard_*.png` (4 variants × 2 themes = 8 goldens, re-recorded)
 
 ### 7.2 CatalogScreen update
 
-`demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt`:
+`demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt`:
 - Remove both current entries: `PopBannerCard` (numeric) and `PopMetricCard`.
 - Add `PopBannerCard` (renamed, enhanced).
 - Add `PopImageBannerCard` (new).
@@ -261,7 +261,7 @@ Re-recorded after enhancements 1 & 2 and the dark-bg test wrapper (Section 8) ar
 | `.execution-history/execution-summary-phase-1-2.md` | Append one-line historical note at the end. Do not rewrite past entries. |
 | `docs/superpowers/plans/2026-03-25-electric-pop-implementation.md` | Append a one-line historical note near the banner/metric rows. Original plan content left intact. |
 | `docs/superpowers/specs/2026-03-25-electric-pop-design.md` | Section 6.2 table: update `PopBannerCard` row description, replace `PopMetricCard` row with `PopImageBannerCard`. Add a dated note at the section header: "Revised 2026-04-18 — see spec 2026-04-18-banner-card-refactor." |
-| `library/src/commonMain/kotlin/com/electricpop/foundation/PopSurface.kt` | Line 84 comment: `PopMetricCard` → `PopBannerCard`. |
+| `library/src/commonMain/kotlin/co/tanay/electricpop/foundation/PopSurface.kt` | Line 84 comment: `PopMetricCard` → `PopBannerCard`. |
 
 ## 8. pixy-implementor agent change
 

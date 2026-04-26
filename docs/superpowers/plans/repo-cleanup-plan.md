@@ -42,7 +42,7 @@ Self-hosted runners would only be worth it if we needed (a) pre-warmed Gradle ca
 | CI workflow | `.github/workflows/ci.yml` | runs `:library:build`, `:demo:build`, `:library:allTests` on `macos-latest` for push/PR to `main` | works, but pays macOS multiplier for everything; no coverage, no screenshot verify, no lint |
 | Release workflow | `.github/workflows/release.yml` | tag-triggered (`v*`), publishes to Maven Central via `vanniktech/gradle-maven-publish-plugin`, creates GitHub release with auto notes | works in principle; secrets stubbed; needs Sonatype Central Portal target, signing verification, changelog generator |
 | Pages workflow | `.github/workflows/pages.yml` | deploys `docs/` to GitHub Pages | works but currently publishes the spec; we'll repurpose for Dokka HTML later |
-| Maven publish plugin | `vanniktech/gradle-maven-publish-plugin` 0.28 wired in `library/build.gradle.kts` | coordinates `com.electricpop:electric-pop:0.1.0`, POM has license/dev/SCM | needs explicit `publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)` call |
+| Maven publish plugin | `vanniktech/gradle-maven-publish-plugin` 0.28 wired in `library/build.gradle.kts` | coordinates `co.tanay:compose-electric-pop:0.1.0`, POM has license/dev/SCM | needs explicit `publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)` call |
 | Screenshot tests | Roborazzi 1.59 with goldens for all 26 components | `library/src/desktopTest/snapshots/` | not run in CI today |
 | Tests | `kotlin("test")` in commonTest, Compose UI tests in desktopTest | passes locally | runs in CI |
 | Coverage | none | — | gap |
@@ -85,7 +85,7 @@ Grouped by intent:
 After the CI/release infra exists, add a badge row at the top of the README. Concrete badges:
 
 ```markdown
-[![Maven Central](https://img.shields.io/maven-central/v/com.electricpop/electric-pop?label=Maven%20Central)](https://central.sonatype.com/artifact/com.electricpop/electric-pop)
+[![Maven Central](https://img.shields.io/maven-central/v/co.tanay/compose-electric-pop?label=Maven%20Central)](https://central.sonatype.com/artifact/co.tanay/compose-electric-pop)
 [![CI](https://github.com/tanaykumarbera/compose-electric-pop/actions/workflows/ci.yml/badge.svg)](https://github.com/tanaykumarbera/compose-electric-pop/actions/workflows/ci.yml)
 [![Coverage](https://codecov.io/gh/tanaykumarbera/compose-electric-pop/branch/main/graph/badge.svg)](https://codecov.io/gh/tanaykumarbera/compose-electric-pop)
 [![Kotlin](https://img.shields.io/badge/kotlin-2.3.20-7f52ff?logo=kotlin)](https://kotlinlang.org)
@@ -294,8 +294,8 @@ mavenPublishing {
     signAllPublications()
 
     coordinates(
-        groupId = "com.electricpop",
-        artifactId = "electric-pop",
+        groupId = "co.tanay.electricpop",
+        artifactId = "compose-electric-pop",
         version = providers.gradleProperty("VERSION_NAME").orElse("0.1.0-SNAPSHOT").get(),
     )
     // ... existing pom
@@ -312,7 +312,7 @@ Release job (driven by tag) overrides via `-PVERSION_NAME=${tag#v}`.
 
 **User actions before this PR can be merged + tagged:**
 
-1. **Claim namespace** on Sonatype Central Portal (https://central.sonatype.com/) — verify ownership of `com.electricpop` (or switch to a verified group like `io.github.tanaykumarbera`).
+1. **Claim namespace** on Sonatype Central Portal (https://central.sonatype.com/) — verify ownership of `co.tanay.electricpop` (or switch to a verified group like `io.github.tanaykumarbera`).
 2. **Generate a User Token** in Central Portal account settings; store as `MAVEN_CENTRAL_USERNAME` + `MAVEN_CENTRAL_PASSWORD` secrets. (release.yml already references these names.)
 3. **Generate a GPG key** dedicated to release signing:
    ```bash
@@ -323,7 +323,7 @@ Release job (driven by tag) overrides via `-PVERSION_NAME=${tag#v}`.
    ```
    Store as `GPG_SIGNING_KEY` (entire armored file content), `GPG_KEY_ID` (long-form ID), `GPG_KEY_PASSWORD` (empty if no passphrase). release.yml already references these names.
 
-**Group decision:** the current group `com.electricpop` requires DNS verification of `electricpop.com`. If you don't own that domain, switch to `io.github.tanaykumarbera` which Sonatype verifies via your GitHub account — much simpler. **This is the single largest decision in the plan; please pick one before PR 5.**
+**Group decision:** the current group `co.tanay.electricpop` requires DNS verification of `electricpop.com`. If you don't own that domain, switch to `io.github.tanaykumarbera` which Sonatype verifies via your GitHub account — much simpler. **This is the single largest decision in the plan; please pick one before PR 5.**
 
 **Verification:** dry-run `./gradlew :library:publishToMavenLocal` produces signed artifacts in `~/.m2/repository/`.
 
@@ -349,7 +349,7 @@ jobs:
       - uses: googleapis/release-please-action@v4
         with:
           release-type: simple
-          package-name: electric-pop
+          package-name: compose-electric-pop
 ```
 
 Configure via `release-please-config.json`:
@@ -422,7 +422,7 @@ By the time PR 6 merges:
 
 Decisions needed before PR 1 starts:
 
-1. **Group ID.** Stick with `com.electricpop` (needs DNS verification of `electricpop.com`) or switch to `io.github.tanaykumarbera` (verified via GitHub username, zero domain setup)? Switching is a one-line change in `library/build.gradle.kts` plus updating README install snippet. **Recommendation: switch to `io.github.tanaykumarbera` unless you actively want the `com.electricpop` brand on Maven Central.**
+1. **Group ID.** Stick with `co.tanay.electricpop` (needs DNS verification of `electricpop.com`) or switch to `io.github.tanaykumarbera` (verified via GitHub username, zero domain setup)? Switching is a one-line change in `library/build.gradle.kts` plus updating README install snippet. **Recommendation: switch to `io.github.tanaykumarbera` unless you actively want the `co.tanay.electricpop` brand on Maven Central.**
 2. **Conventional Commits enforcement.** Should we require `feat:`/`fix:`/`chore:` prefixes via PR-title lint? Required for release-please to bump versions correctly. **Recommendation: yes, advisory at first then required.**
 3. **First public version.** Tag the existing `0.1.0` as a real release once PR 6 lands, or jump to `0.2.0` to mark the docs-cleaned milestone? **Recommendation: tag the existing as `0.1.0` to preserve commit history, then let release-please drive `0.2.0` from the next feature commit.**
 4. **Snapshot publishing.** Worth setting up `0.x-SNAPSHOT` builds on every `main` push? Useful if external testers want bleeding-edge before tags. **Recommendation: defer to PR 8 unless someone asks for it.**
@@ -439,7 +439,7 @@ After all PRs merged, the green-flag checklist:
 - [ ] Detekt + Spotless run advisory and clean
 - [ ] Merging a `feat:` PR opens a release-please PR within 30s
 - [ ] Merging that release PR cuts a `vX.Y.Z` tag, which triggers release.yml
-- [ ] Within ~30 min the artifact appears at https://central.sonatype.com/artifact/{group}/electric-pop
+- [ ] Within ~30 min the artifact appears at https://central.sonatype.com/artifact/{group}/compose-electric-pop
 - [ ] GitHub release page shows changelog entries grouped by type
 - [ ] README badges render: build status green, coverage %, latest version, license, platforms
 - [ ] Dependabot opens its first weekly PR within a week

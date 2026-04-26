@@ -2,7 +2,7 @@
 
 ## Component Overview
 
-This plan **adds a third style** — `PopChartStyle.Donut` — to the existing unified `PopChart` sealed-style API in `library/src/commonMain/kotlin/com/electricpop/chart/PopChart.kt`. `Line` and `Bar` (already shipped on `feat/pop-donut-chart`) are **not** modified — no signature changes, no helper changes, no golden churn for line/bar regions. The donut renders inside the same `PopSurface` chrome (title block + canvas + optional center labels) and reuses `PopChartSeries` so callers can keep one data type across all three styles. The component dispatches `when (style) { Line -> ...; Bar -> ...; Donut -> ... }` with a new private `drawDonutChart(...)` and a new private composable `DonutChartContent(...)` that overlays center text on the canvas via a `Box`.
+This plan **adds a third style** — `PopChartStyle.Donut` — to the existing unified `PopChart` sealed-style API in `library/src/commonMain/kotlin/co/tanay/electricpop/chart/PopChart.kt`. `Line` and `Bar` (already shipped on `feat/pop-donut-chart`) are **not** modified — no signature changes, no helper changes, no golden churn for line/bar regions. The donut renders inside the same `PopSurface` chrome (title block + canvas + optional center labels) and reuses `PopChartSeries` so callers can keep one data type across all three styles. The component dispatches `when (style) { Line -> ...; Bar -> ...; Donut -> ... }` with a new private `drawDonutChart(...)` and a new private composable `DonutChartContent(...)` that overlays center text on the canvas via a `Box`.
 
 The donut is dual-mode in a single style:
 - **Gauge mode** — single-value series + an explicit `total` → fills `value/total` of the ring against a tonal track. Mirrors the Stitch "Budget Remaining 72%" card exactly.
@@ -10,20 +10,20 @@ The donut is dual-mode in a single style:
 
 ## Files
 
-- **Modify** `library/src/commonMain/kotlin/com/electricpop/chart/PopChart.kt`
+- **Modify** `library/src/commonMain/kotlin/co/tanay/electricpop/chart/PopChart.kt`
   - Add `PopChartStyle.Donut` data class to the existing sealed hierarchy.
   - Add private `drawDonutChart(...)` `DrawScope` extension.
   - Add internal helpers `computeDonutSlices(...)`, `donutTotal(...)` for unit testing.
   - Replace the `Canvas { when (style) { ... } }` block with a `Box` wrapper that overlays a center-text `Column` when `style is Donut` (line/bar paths unchanged).
   - Donut ignores `xLabels` (it has no x-axis); document this in the `xLabels` KDoc.
-- **Modify** `library/src/commonTest/kotlin/com/electricpop/chart/PopChartTest.kt`
+- **Modify** `library/src/commonTest/kotlin/co/tanay/electricpop/chart/PopChartTest.kt`
   - Keep all 37 existing tests untouched.
   - Add 9 new tests for donut math (slice angle math, total fallback, gauge clamping, edge cases). Total → 46.
-- **Modify** `library/src/desktopTest/kotlin/com/electricpop/chart/PopChartScreenshotTest.kt`
+- **Modify** `library/src/desktopTest/kotlin/co/tanay/electricpop/chart/PopChartScreenshotTest.kt`
   - Append a `DONUT` section after `BAR` with 4 new variants.
   - Bump canvas height from `460×4200` to **`460×5400`** (≈+1200 to fit 4 donut cards × ~280dp each + section header + labels + spacing).
 - **Re-record** `library/src/desktopTest/snapshots/PopChart_allVariants_light.png` + `_dark.png`.
-- **Modify** `demo/src/commonMain/kotlin/com/electricpop/demo/components/PopChartDemo.kt`
+- **Modify** `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/PopChartDemo.kt`
   - Add `DONUT` section with the same 4 variants (after `BAR`, before `EMBEDDED`).
 - **No changes** to `CatalogScreen.kt` — `PopChart` already registered.
 

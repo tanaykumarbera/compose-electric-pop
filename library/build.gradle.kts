@@ -12,7 +12,7 @@ kover {
     reports {
         filters {
             excludes {
-                packages("com.electricpop.demo.*")
+                packages("co.tanay.electricpop.demo.*")
             }
         }
     }
@@ -71,7 +71,7 @@ compose.resources {
 }
 
 android {
-    namespace = "com.electricpop"
+    namespace = "co.tanay.electricpop"
     compileSdk = 36
 
     defaultConfig {
@@ -85,7 +85,7 @@ android {
 }
 
 mavenPublishing {
-    coordinates("com.electricpop", "electric-pop", "0.1.0")
+    coordinates("co.tanay", "compose-electric-pop", "0.1.0")
 
     pom {
         name.set("Electric Pop")

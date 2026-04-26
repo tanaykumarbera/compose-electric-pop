@@ -33,13 +33,13 @@ The repo uses the Gradle wrapper, so you do not need a system Gradle install.
 ## Project layout
 
 ```
-library/src/commonMain/kotlin/com/electricpop/
+library/src/commonMain/kotlin/co/tanay/electricpop/
 ├── theme/        ElectricPopTheme, color, typography, shape, spacing
 ├── foundation/   20 primitive components
 ├── composite/    6 composite components
 └── chart/        PopChart with PopChartStyle.Line / Bar / Donut
 
-demo/src/commonMain/kotlin/com/electricpop/demo/
+demo/src/commonMain/kotlin/co/tanay/electricpop/demo/
 ├── App.kt              Root demo app
 ├── CatalogScreen.kt    Component catalog
 └── components/         Per-component demo pages
@@ -90,7 +90,7 @@ PRs that re-record goldens must explain why in the PR description and include be
 
 ## Demo app
 
-If you add a component, register it in `demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt` and add a `*Demo.kt` file under `demo/.../components/` showing every variant.
+If you add a component, register it in `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt` and add a `*Demo.kt` file under `demo/.../components/` showing every variant.
 
 Verify the demo renders correctly in both light and dark themes before requesting review.
 

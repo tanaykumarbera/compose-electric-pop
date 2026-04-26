@@ -15,7 +15,7 @@ Bold typography. Kinetic interactions. Neon-saturated design system.
 ```gradle
 // In your build.gradle.kts
 dependencies {
-    implementation("com.electricpop:electric-pop:0.1.0")
+    implementation("co.tanay:compose-electric-pop:0.1.0")
 }
 ```
 

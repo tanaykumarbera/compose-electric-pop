@@ -47,11 +47,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.electricpop.demo"
+    namespace = "co.tanay.electricpop.demo"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.electricpop.demo"
+        applicationId = "co.tanay.electricpop.demo"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -67,7 +67,7 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "com.electricpop.demo.MainKt"
+        mainClass = "co.tanay.electricpop.demo.MainKt"
     }
 }
 

@@ -34,7 +34,7 @@ compose-electric-pop/
 ├── library/
 │   ├── build.gradle.kts
 │   └── src/
-│       ├── commonMain/kotlin/com/electricpop/
+│       ├── commonMain/kotlin/co/tanay/electricpop/
 │       │   ├── theme/
 │       │   │   ├── ElectricPopTheme.kt     # Theme composable + CompositionLocals
 │       │   │   ├── Color.kt               # Light + dark color schemes
@@ -44,30 +44,30 @@ compose-electric-pop/
 │       │   ├── foundation/                # 20 foundation components (one file each)
 │       │   ├── composite/                 # 7 composite components (one file each)
 │       │   └── chart/                     # 3 chart components (one file each)
-│       ├── commonTest/kotlin/com/electricpop/
+│       ├── commonTest/kotlin/co/tanay/electricpop/
 │       │   └── theme/
 │       │       └── ElectricPopThemeTest.kt
-│       ├── androidMain/kotlin/com/electricpop/
+│       ├── androidMain/kotlin/co/tanay/electricpop/
 │       │   └── Platform.android.kt
-│       ├── iosMain/kotlin/com/electricpop/
+│       ├── iosMain/kotlin/co/tanay/electricpop/
 │       │   └── Platform.ios.kt
-│       └── desktopMain/kotlin/com/electricpop/
+│       └── desktopMain/kotlin/co/tanay/electricpop/
 │           └── Platform.desktop.kt
 ├── demo/
 │   ├── build.gradle.kts
 │   └── src/
-│       ├── commonMain/kotlin/com/electricpop/demo/
+│       ├── commonMain/kotlin/co/tanay/electricpop/demo/
 │       │   ├── App.kt                     # Root app with theme toggle
 │       │   ├── CatalogScreen.kt           # Component catalog list
 │       │   └── components/                # Per-component demo pages
 │       ├── androidMain/
-│       │   └── kotlin/com/electricpop/demo/
+│       │   └── kotlin/co/tanay/electricpop/demo/
 │       │       └── MainActivity.kt
 │       ├── iosMain/
-│       │   └── kotlin/com/electricpop/demo/
+│       │   └── kotlin/co/tanay/electricpop/demo/
 │       │       └── MainViewController.kt
 │       └── desktopMain/
-│           └── kotlin/com/electricpop/demo/
+│           └── kotlin/co/tanay/electricpop/demo/
 │               └── Main.kt
 ├── AGENTS.md                               # Agent context + instructions
 ├── CLAUDE.md                               # Claude Code project instructions
@@ -204,10 +204,10 @@ git commit -m "feat: initialize Gradle project skeleton with version catalog"
 
 **Files:**
 - Create: `library/build.gradle.kts`
-- Create: `library/src/commonMain/kotlin/com/electricpop/Platform.kt`
-- Create: `library/src/androidMain/kotlin/com/electricpop/Platform.android.kt`
-- Create: `library/src/iosMain/kotlin/com/electricpop/Platform.ios.kt`
-- Create: `library/src/desktopMain/kotlin/com/electricpop/Platform.desktop.kt`
+- Create: `library/src/commonMain/kotlin/co/tanay/electricpop/Platform.kt`
+- Create: `library/src/androidMain/kotlin/co/tanay/electricpop/Platform.android.kt`
+- Create: `library/src/iosMain/kotlin/co/tanay/electricpop/Platform.ios.kt`
+- Create: `library/src/desktopMain/kotlin/co/tanay/electricpop/Platform.desktop.kt`
 - Create: `library/src/androidMain/AndroidManifest.xml`
 
 - [ ] **Step 1: Create `library/build.gradle.kts`**
@@ -264,7 +264,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.electricpop"
+    namespace = "co.tanay.electricpop"
     compileSdk = 35
 
     defaultConfig {
@@ -278,7 +278,7 @@ android {
 }
 
 mavenPublishing {
-    coordinates("com.electricpop", "electric-pop", "0.1.0")
+    coordinates("co.tanay", "compose-electric-pop", "0.1.0")
 
     pom {
         name.set("Electric Pop")
@@ -317,30 +317,30 @@ mavenPublishing {
 
 - [ ] **Step 3: Create platform expect/actual stubs**
 
-`library/src/commonMain/kotlin/com/electricpop/Platform.kt`:
+`library/src/commonMain/kotlin/co/tanay/electricpop/Platform.kt`:
 ```kotlin
-package com.electricpop
+package co.tanay.electricpop
 
 expect val platformName: String
 ```
 
-`library/src/androidMain/kotlin/com/electricpop/Platform.android.kt`:
+`library/src/androidMain/kotlin/co/tanay/electricpop/Platform.android.kt`:
 ```kotlin
-package com.electricpop
+package co.tanay.electricpop
 
 actual val platformName: String = "Android"
 ```
 
-`library/src/iosMain/kotlin/com/electricpop/Platform.ios.kt`:
+`library/src/iosMain/kotlin/co/tanay/electricpop/Platform.ios.kt`:
 ```kotlin
-package com.electricpop
+package co.tanay.electricpop
 
 actual val platformName: String = "iOS"
 ```
 
-`library/src/desktopMain/kotlin/com/electricpop/Platform.desktop.kt`:
+`library/src/desktopMain/kotlin/co/tanay/electricpop/Platform.desktop.kt`:
 ```kotlin
-package com.electricpop
+package co.tanay.electricpop
 
 actual val platformName: String = "Desktop"
 ```
@@ -363,11 +363,11 @@ git commit -m "feat: add KMP library module with Android, iOS, Desktop targets"
 
 **Files:**
 - Create: `demo/build.gradle.kts`
-- Create: `demo/src/commonMain/kotlin/com/electricpop/demo/App.kt`
-- Create: `demo/src/androidMain/kotlin/com/electricpop/demo/MainActivity.kt`
+- Create: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/App.kt`
+- Create: `demo/src/androidMain/kotlin/co/tanay/electricpop/demo/MainActivity.kt`
 - Create: `demo/src/androidMain/AndroidManifest.xml`
-- Create: `demo/src/iosMain/kotlin/com/electricpop/demo/MainViewController.kt`
-- Create: `demo/src/desktopMain/kotlin/com/electricpop/demo/Main.kt`
+- Create: `demo/src/iosMain/kotlin/co/tanay/electricpop/demo/MainViewController.kt`
+- Create: `demo/src/desktopMain/kotlin/co/tanay/electricpop/demo/Main.kt`
 
 - [ ] **Step 1: Create `demo/build.gradle.kts`**
 
@@ -418,11 +418,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.electricpop.demo"
+    namespace = "co.tanay.electricpop.demo"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.electricpop.demo"
+        applicationId = "co.tanay.electricpop.demo"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -437,7 +437,7 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "com.electricpop.demo.MainKt"
+        mainClass = "co.tanay.electricpop.demo.MainKt"
     }
 }
 ```
@@ -464,16 +464,16 @@ compose.desktop {
 
 - [ ] **Step 3: Create shared App composable**
 
-`demo/src/commonMain/kotlin/com/electricpop/demo/App.kt`:
+`demo/src/commonMain/kotlin/co/tanay/electricpop/demo/App.kt`:
 ```kotlin
-package com.electricpop.demo
+package co.tanay.electricpop.demo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.electricpop.platformName
+import co.tanay.electricpop.platformName
 
 @Composable
 fun App() {
@@ -488,9 +488,9 @@ fun App() {
 
 - [ ] **Step 4: Create platform entry points**
 
-`demo/src/androidMain/kotlin/com/electricpop/demo/MainActivity.kt`:
+`demo/src/androidMain/kotlin/co/tanay/electricpop/demo/MainActivity.kt`:
 ```kotlin
-package com.electricpop.demo
+package co.tanay.electricpop.demo
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -504,18 +504,18 @@ class MainActivity : ComponentActivity() {
 }
 ```
 
-`demo/src/iosMain/kotlin/com/electricpop/demo/MainViewController.kt`:
+`demo/src/iosMain/kotlin/co/tanay/electricpop/demo/MainViewController.kt`:
 ```kotlin
-package com.electricpop.demo
+package co.tanay.electricpop.demo
 
 import androidx.compose.ui.window.ComposeUIViewController
 
 fun MainViewController() = ComposeUIViewController { App() }
 ```
 
-`demo/src/desktopMain/kotlin/com/electricpop/demo/Main.kt`:
+`demo/src/desktopMain/kotlin/co/tanay/electricpop/demo/Main.kt`:
 ```kotlin
-package com.electricpop.demo
+package co.tanay.electricpop.demo
 
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -547,16 +547,16 @@ git commit -m "feat: add demo app module with Android, iOS, Desktop entry points
 ### Task 4: Set up theme skeleton with design tokens
 
 **Files:**
-- Create: `library/src/commonMain/kotlin/com/electricpop/theme/Color.kt`
-- Create: `library/src/commonMain/kotlin/com/electricpop/theme/Typography.kt`
-- Create: `library/src/commonMain/kotlin/com/electricpop/theme/Shape.kt`
-- Create: `library/src/commonMain/kotlin/com/electricpop/theme/Spacing.kt`
-- Create: `library/src/commonMain/kotlin/com/electricpop/theme/ElectricPopTheme.kt`
+- Create: `library/src/commonMain/kotlin/co/tanay/electricpop/theme/Color.kt`
+- Create: `library/src/commonMain/kotlin/co/tanay/electricpop/theme/Typography.kt`
+- Create: `library/src/commonMain/kotlin/co/tanay/electricpop/theme/Shape.kt`
+- Create: `library/src/commonMain/kotlin/co/tanay/electricpop/theme/Spacing.kt`
+- Create: `library/src/commonMain/kotlin/co/tanay/electricpop/theme/ElectricPopTheme.kt`
 
 - [ ] **Step 1: Create `Color.kt` with light + dark schemes**
 
 ```kotlin
-package com.electricpop.theme
+package co.tanay.electricpop.theme
 
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -682,7 +682,7 @@ Note: `Color.compositeOver` import: `import androidx.compose.ui.graphics.composi
 - [ ] **Step 2: Create `Typography.kt`**
 
 ```kotlin
-package com.electricpop.theme
+package co.tanay.electricpop.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -794,7 +794,7 @@ val ElectricPopTypography = Typography(
 - [ ] **Step 3: Create `Shape.kt`**
 
 ```kotlin
-package com.electricpop.theme
+package co.tanay.electricpop.theme
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Shapes
@@ -816,7 +816,7 @@ Note: Verify the `com.stoyanvuchev.squircleshape` import path against squircle-s
 - [ ] **Step 4: Create `Spacing.kt`**
 
 ```kotlin
-package com.electricpop.theme
+package co.tanay.electricpop.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -841,7 +841,7 @@ val LocalElectricPopSpacing = staticCompositionLocalOf { ElectricPopSpacing() }
 - [ ] **Step 5: Create `ElectricPopTheme.kt`**
 
 ```kotlin
-package com.electricpop.theme
+package co.tanay.electricpop.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -894,9 +894,9 @@ Expected: BUILD SUCCESSFUL
 
 - [ ] **Step 7: Wire theme into demo app**
 
-Update `demo/src/commonMain/kotlin/com/electricpop/demo/App.kt`:
+Update `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/App.kt`:
 ```kotlin
-package com.electricpop.demo
+package co.tanay.electricpop.demo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -906,7 +906,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.electricpop.theme.ElectricPopTheme
+import co.tanay.electricpop.theme.ElectricPopTheme
 
 @Composable
 fun App() {
@@ -942,7 +942,7 @@ Expected: BUILD SUCCESSFUL
 - [ ] **Step 9: Commit**
 
 ```bash
-git add library/src/commonMain/kotlin/com/electricpop/theme/ demo/src/commonMain/
+git add library/src/commonMain/kotlin/co/tanay/electricpop/theme/ demo/src/commonMain/
 git commit -m "feat: add Electric Pop theme system with color, typography, shape, spacing tokens"
 ```
 
@@ -951,12 +951,12 @@ git commit -m "feat: add Electric Pop theme system with color, typography, shape
 ### Task 5: Set up testing infrastructure
 
 **Files:**
-- Create: `library/src/commonTest/kotlin/com/electricpop/theme/ElectricPopThemeTest.kt`
+- Create: `library/src/commonTest/kotlin/co/tanay/electricpop/theme/ElectricPopThemeTest.kt`
 
 - [ ] **Step 1: Write theme smoke test**
 
 ```kotlin
-package com.electricpop.theme
+package co.tanay.electricpop.theme
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -1227,7 +1227,7 @@ Electric Pop is a Compose Multiplatform UI component library. Single module, pac
 - Reference Stitch design: https://stitch.withgoogle.com/projects/7983075619754946215
 
 ### 2. Implement
-- File: `library/src/commonMain/kotlin/com/electricpop/{tier}/{ComponentName}.kt`
+- File: `library/src/commonMain/kotlin/co/tanay/electricpop/{tier}/{ComponentName}.kt`
 - One file per component
 - Components MUST read colors/typography from MaterialTheme, not hardcoded values
 - Components MUST use ElectricPopTheme.spacing for spacing values
@@ -1235,12 +1235,12 @@ Electric Pop is a Compose Multiplatform UI component library. Single module, pac
 - Follow the 7 design rules (no borders, tonal shadows, neon glow, kinetic interactions, squircle radii, typography impact, ghost border fallback)
 
 ### 3. Test
-- Unit test: `library/src/commonTest/kotlin/com/electricpop/{tier}/{ComponentName}Test.kt`
+- Unit test: `library/src/commonTest/kotlin/co/tanay/electricpop/{tier}/{ComponentName}Test.kt`
 - Test all variants and states
 - Run: `./gradlew :library:allTests`
 
 ### 4. Demo
-- Add demo page: `demo/src/commonMain/kotlin/com/electricpop/demo/components/{ComponentName}Demo.kt`
+- Add demo page: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/{ComponentName}Demo.kt`
 - Register in catalog: update `CatalogScreen.kt`
 - Show all variants with sample data
 - Verify light + dark themes
@@ -1363,13 +1363,13 @@ git commit -m "docs: add AGENTS.md with Pixy orchestrator and agent hierarchy"
 ### Task 10: Create demo app catalog scaffold
 
 **Files:**
-- Create: `demo/src/commonMain/kotlin/com/electricpop/demo/CatalogScreen.kt`
-- Modify: `demo/src/commonMain/kotlin/com/electricpop/demo/App.kt`
+- Create: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt`
+- Modify: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/App.kt`
 
 - [ ] **Step 1: Create CatalogScreen**
 
 ```kotlin
-package com.electricpop.demo
+package co.tanay.electricpop.demo
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -1454,7 +1454,7 @@ fun CatalogScreen(onSelect: (CatalogEntry) -> Unit) {
 - [ ] **Step 2: Update App.kt with navigation and theme toggle**
 
 ```kotlin
-package com.electricpop.demo
+package co.tanay.electricpop.demo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -1462,7 +1462,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.electricpop.theme.ElectricPopTheme
+import co.tanay.electricpop.theme.ElectricPopTheme
 
 @Composable
 fun App() {
@@ -1657,7 +1657,7 @@ Bold typography. Kinetic interactions. Neon-saturated design system.
 ```gradle
 // In your build.gradle.kts
 dependencies {
-    implementation("com.electricpop:electric-pop:0.1.0")
+    implementation("co.tanay:compose-electric-pop:0.1.0")
 }
 ```
 

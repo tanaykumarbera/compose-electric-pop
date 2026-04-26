@@ -19,7 +19,7 @@ Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pul
 
 ## Component Inventory (30 total)
 
-### Foundation (20) — `com.electricpop.foundation`
+### Foundation (20) — `co.tanay.electricpop.foundation`
 | # | Component | Variants | Key Notes |
 |---|-----------|----------|-----------|
 | 1 | PopButton | Primary, Secondary, Ghost × XL/Large/Small; Icon | Neon glow on primary, kinetic hover/active |
@@ -43,7 +43,7 @@ Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pul
 | 19 | PopBottomBar | Icons, Icons+text, active | Glassmorphic, backdrop-blur |
 | 20 | PopDropdown | Selector + expand icon | Primary accent |
 
-### Composite (6) — `com.electricpop.composite`
+### Composite (6) — `co.tanay.electricpop.composite`
 | # | Component | Composes | Description |
 |---|-----------|----------|-------------|
 | 1 | PopCarouselCard | PopIcon, PopChip, PopDisplayText, PopSurface | Horizontal scroll cards |
@@ -53,7 +53,7 @@ Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pul
 | 5 | PopBannerCard | PopBadgeDirection, PopDisplayText, PopIcon, PopSurface | Hero / metric banner: label + value + trend chip + overlapping icon cluster (Hero/Surface styles). |
 | 6 | PopImageBannerCard | PopSurface + Image | Big image card with overlaid headline, configurable text anchor + scrim. |
 
-### Chart (3) — `com.electricpop.chart`
+### Chart (3) — `co.tanay.electricpop.chart`
 | # | Component | Description |
 |---|-----------|-------------|
 | 1 | PopLineChart | Trend line, glow on active points |
@@ -103,7 +103,7 @@ Each subagent can also be dispatched directly via the Agent tool for ad-hoc task
 - This prevents the garbage tests we saw in the initial pipeline test
 
 **Icons — PopIcons (not material-icons-core):**
-- The library provides `PopIcons` in `com.electricpop.foundation` with 16 built-in `ImageVector` icons
+- The library provides `PopIcons` in `co.tanay.electricpop.foundation` with 16 built-in `ImageVector` icons
 - All demos, tests, and screenshot tests MUST use `PopIcons.*` (e.g., `PopIcons.Star`, `PopIcons.Check`)
 - NEVER add `material-icons-core` or `material-icons-extended` as a dependency
 - Available icons: Star, Check, Close, Info, Warning, Heart, Home, Search, Settings, Add, ArrowUp, ArrowDown, ArrowBack, ArrowForward, Person, TrendUp, TrendDown, Bolt, Sparkle, CheckCircle, Layers, Puzzle, Tokens, Menu
