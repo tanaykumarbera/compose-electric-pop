@@ -1,0 +1,22 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{kt,kts}]
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+# @Composable functions are PascalCase by convention
+ktlint_standard_function-naming = disabled
+# Compose code is verbose; relaxing line length keeps signatures readable
+ktlint_standard_max-line-length = disabled
+# Wildcard imports are idiomatic for Compose (layout.*, material3.*, runtime.*)
+ktlint_standard_no-wildcard-imports = disabled
