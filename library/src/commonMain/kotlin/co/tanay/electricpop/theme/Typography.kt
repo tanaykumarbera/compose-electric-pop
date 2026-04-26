@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import compose_electric_pop.library.generated.resources.Res
+import compose_electric_pop.library.generated.resources.jetbrains_mono
 import compose_electric_pop.library.generated.resources.manrope
 import compose_electric_pop.library.generated.resources.space_grotesk
 import org.jetbrains.compose.resources.Font
@@ -37,6 +38,23 @@ fun ManropeFontFamily(): FontFamily = FontFamily(
     Font(Res.font.manrope, weight = FontWeight.Medium),
     Font(Res.font.manrope, weight = FontWeight.Bold),
     Font(Res.font.manrope, weight = FontWeight.ExtraBold),
+)
+
+/**
+ * Creates the JetBrains Mono [FontFamily] from bundled resources.
+ *
+ * JetBrains Mono is the monospace face used by [co.tanay.electricpop.foundation.PopCodeBlock]
+ * and any other code/IDE-style surface in the design system. Bundling it (rather than relying
+ * on `FontFamily.Monospace`, which resolves to a platform default) gives byte-identical
+ * rendering on Android, Desktop, and iOS — a hard requirement for the screenshot test suite.
+ *
+ * JetBrains Mono is a variable font; a single file covers Thin → ExtraBold.
+ */
+@Composable
+fun JetBrainsMonoFontFamily(): FontFamily = FontFamily(
+    Font(Res.font.jetbrains_mono, weight = FontWeight.Normal),
+    Font(Res.font.jetbrains_mono, weight = FontWeight.Medium),
+    Font(Res.font.jetbrains_mono, weight = FontWeight.Bold),
 )
 
 /**
