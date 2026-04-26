@@ -11,7 +11,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import co.tanay.electricpop.theme.ElectricPopTheme
 
 /**
  * Tonal levels for [PopSurface], mapping to the Material3 surface color hierarchy.
@@ -23,16 +22,22 @@ import co.tanay.electricpop.theme.ElectricPopTheme
 enum class PopSurfaceTone {
     /** `surfaceContainer` — default card-level surface */
     Default,
+
     /** `surfaceContainerLow` — slightly lighter than default */
     Low,
+
     /** `surfaceContainerLowest` — lightest surface level (white in light theme) */
     Lowest,
+
     /** `surfaceContainerHigh` — slightly darker than default */
     High,
+
     /** `surfaceContainerHighest` — darkest container level */
     Highest,
+
     /** `surfaceBright` — bright variant */
     Bright,
+
     /** `surfaceDim` — dim variant */
     Dim,
 }
@@ -59,14 +64,12 @@ fun PopSurfaceTone.toColor(): Color {
  *
  * Used internally to compute tonal shadow colors per Design Rule 2.
  */
-internal fun Color.darken(fraction: Float): Color {
-    return Color(
-        red = red * (1f - fraction),
-        green = green * (1f - fraction),
-        blue = blue * (1f - fraction),
-        alpha = alpha,
-    )
-}
+internal fun Color.darken(fraction: Float): Color = Color(
+    red = red * (1f - fraction),
+    green = green * (1f - fraction),
+    blue = blue * (1f - fraction),
+    alpha = alpha,
+)
 
 /**
  * A themed container with squircle shape and tonal shadow.

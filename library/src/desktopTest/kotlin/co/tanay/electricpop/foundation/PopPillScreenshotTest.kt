@@ -21,7 +21,7 @@ class PopPillScreenshotTest {
             ElectricPopTheme(darkTheme = false) {
                 Column(
                     modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     PopPillColor.entries.forEach { color ->
                         PopPill(label = color.name, color = color)
@@ -30,7 +30,7 @@ class PopPillScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopPill_allPresets_light.png"
+            filePath = "src/desktopTest/snapshots/PopPill_allPresets_light.png",
         )
     }
 
@@ -41,7 +41,7 @@ class PopPillScreenshotTest {
             ElectricPopTheme(darkTheme = true) {
                 Column(
                     modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     PopPillColor.entries.forEach { color ->
                         PopPill(label = color.name, color = color)
@@ -50,7 +50,7 @@ class PopPillScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopPill_allPresets_dark.png"
+            filePath = "src/desktopTest/snapshots/PopPill_allPresets_dark.png",
         )
     }
 }

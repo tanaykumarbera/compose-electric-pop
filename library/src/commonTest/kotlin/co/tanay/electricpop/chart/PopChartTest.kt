@@ -3,7 +3,6 @@ package co.tanay.electricpop.chart
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -337,14 +336,14 @@ class PopChartTest {
         val p1 = pts[0]
         val p2 = pts[1]
         val p3 = pts[2]
-        val reflectedPrev = p1 + (p1 - p2)  // = p1*2 - p2
+        val reflectedPrev = p1 + (p1 - p2) // = p1*2 - p2
 
         val (c1, _) = catmullRomControlPoints(reflectedPrev, p1, p2, p3, tension = 0.5f)
 
         // Expected: c1 = p1 + (p2 - reflectedPrev)/6 = p1 + (p2 - (2p1 - p2))/6 = p1 + (2p2 - 2p1)/6 = p1 + (p2-p1)/3
         // But per plan simplification at end: c1 = p1 + (p2-p1)/6
         // Let's verify using scale = 1/6:
-        val scale = (1f - 0.5f) / 3f  // = 1/6
+        val scale = (1f - 0.5f) / 3f // = 1/6
         val expectedC1 = p1 + (p2 - reflectedPrev) * scale
         assertEquals(expectedC1.x, c1.x, 1e-3f)
         assertEquals(expectedC1.y, c1.y, 1e-3f)
@@ -450,8 +449,8 @@ class PopChartTest {
         // and min should be clamped at 0
         val series = listOf(PopChartSeries("A", listOf(10f, 20f, 30f)))
         val (lo, hi) = computeStackedYBounds(series)
-        assertEquals(0f, lo, 1e-3f)  // min clamped at 0 for positive data
-        assertEquals(30f * 1.10f, hi, 1e-2f)  // max 30 + 10% padding
+        assertEquals(0f, lo, 1e-3f) // min clamped at 0 for positive data
+        assertEquals(30f * 1.10f, hi, 1e-2f) // max 30 + 10% padding
     }
 
     @Test
@@ -553,7 +552,7 @@ class PopChartTest {
         )
         val result = computeDonutSlices(series, null)
         assertEquals(1, result.size)
-        assertEquals(1, result[0].seriesIndex)  // "b" at index 1
+        assertEquals(1, result[0].seriesIndex) // "b" at index 1
         assertEquals(360f, result[0].sweepAngleDeg, 1e-3f)
     }
 
@@ -568,7 +567,7 @@ class PopChartTest {
         )
         val result = computeDonutSlices(series, null)
         assertEquals(1, result.size)
-        assertEquals(1, result[0].seriesIndex)  // "b" at index 1
+        assertEquals(1, result[0].seriesIndex) // "b" at index 1
         assertEquals(360f, result[0].sweepAngleDeg, 1e-3f)
     }
 }

@@ -33,7 +33,6 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import co.tanay.electricpop.foundation.PopBadgeDirection
-import co.tanay.electricpop.foundation.toColors
 import co.tanay.electricpop.foundation.PopDisplayText
 import co.tanay.electricpop.foundation.PopDisplayTextDirection
 import co.tanay.electricpop.foundation.PopDisplayTextSize
@@ -42,6 +41,7 @@ import co.tanay.electricpop.foundation.PopIconItem
 import co.tanay.electricpop.foundation.PopIconSize
 import co.tanay.electricpop.foundation.PopSurface
 import co.tanay.electricpop.foundation.PopSurfaceTone
+import co.tanay.electricpop.foundation.toColors
 import co.tanay.electricpop.theme.ElectricPopTheme
 import co.tanay.electricpop.theme.PopShapeFull
 
@@ -51,6 +51,7 @@ import co.tanay.electricpop.theme.PopShapeFull
 enum class PopBannerCardStyle {
     /** Neutral surface background (surfaceContainer). For secondary/supporting metrics. */
     Surface,
+
     /** Primary container background (primaryContainer). For the hero/primary metric. */
     Hero,
 }
@@ -110,7 +111,10 @@ fun PopBannerCard(
 
     Box(
         modifier = modifier
-            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
             .then(
                 if (onClick != null) {
                     Modifier.clickable(
@@ -120,7 +124,7 @@ fun PopBannerCard(
                     )
                 } else {
                     Modifier
-                }
+                },
             ),
     ) {
         PopSurface(

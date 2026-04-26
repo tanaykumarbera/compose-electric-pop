@@ -11,7 +11,6 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.runDesktopComposeUiTest
 import androidx.compose.ui.unit.dp
 import co.tanay.electricpop.theme.ElectricPopTheme
-import co.tanay.electricpop.foundation.PopIcons
 import io.github.takahirom.roborazzi.captureRoboImage
 import kotlin.test.Test
 

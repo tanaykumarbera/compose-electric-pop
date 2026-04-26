@@ -268,7 +268,9 @@ fun <T> PopDropdown(
                                     tint = scheme.primary,
                                 )
                             }
-                        } else null,
+                        } else {
+                            null
+                        },
                     )
                 }
             }

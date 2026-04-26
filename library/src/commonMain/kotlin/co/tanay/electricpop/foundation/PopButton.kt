@@ -42,8 +42,10 @@ import co.tanay.electricpop.theme.PopShapeFull
 enum class PopButtonStyle {
     /** Electric Lime filled button with neon glow. Primary CTA. */
     Primary,
+
     /** Neon Magenta filled button. Secondary CTA. */
     Secondary,
+
     /** Transparent button with ghost border. Tertiary action. */
     Ghost,
 }
@@ -54,8 +56,10 @@ enum class PopButtonStyle {
 enum class PopButtonSize {
     /** 56dp height, xl horizontal padding */
     XL,
+
     /** 48dp height, lg horizontal padding */
     Large,
+
     /** 36dp height, md horizontal padding */
     Small,
 }

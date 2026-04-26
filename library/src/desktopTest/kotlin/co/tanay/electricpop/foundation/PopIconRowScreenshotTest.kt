@@ -58,7 +58,7 @@ private fun AllVariantsColumn() {
                 PopIconItem(PopIcons.Star, "Star"),
                 PopIconItem(PopIcons.Heart, "Heart"),
                 PopIconItem(PopIcons.Bolt, "Bolt"),
-            )
+            ),
         )
 
         // 5 icons Medium
@@ -70,7 +70,7 @@ private fun AllVariantsColumn() {
                 PopIconItem(PopIcons.Bolt),
                 PopIconItem(PopIcons.Sparkle),
                 PopIconItem(PopIcons.CheckCircle),
-            )
+            ),
         )
 
         // 3 icons Small

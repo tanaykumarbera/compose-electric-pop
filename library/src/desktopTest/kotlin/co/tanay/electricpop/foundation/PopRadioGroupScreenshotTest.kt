@@ -64,7 +64,7 @@ class PopRadioGroupScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopRadioGroup_allVariants_light.png"
+            filePath = "src/desktopTest/snapshots/PopRadioGroup_allVariants_light.png",
         )
     }
 
@@ -114,7 +114,7 @@ class PopRadioGroupScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopRadioGroup_allVariants_dark.png"
+            filePath = "src/desktopTest/snapshots/PopRadioGroup_allVariants_dark.png",
         )
     }
 }

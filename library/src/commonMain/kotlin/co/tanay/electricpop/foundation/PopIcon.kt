@@ -19,8 +19,10 @@ import androidx.compose.ui.unit.dp
 enum class PopIconSize {
     /** 16 dp — inline / badge usage */
     Small,
+
     /** 24 dp — default, matches opsz:24 spec */
     Medium,
+
     /** 32 dp — emphasis / header usage */
     Large,
 }
@@ -29,9 +31,9 @@ enum class PopIconSize {
  * Resolves a [PopIconSize] to its corresponding [Dp] value.
  */
 internal fun PopIconSize.toDp(): Dp = when (this) {
-    PopIconSize.Small  -> 16.dp
+    PopIconSize.Small -> 16.dp
     PopIconSize.Medium -> 24.dp
-    PopIconSize.Large  -> 32.dp
+    PopIconSize.Large -> 32.dp
 }
 
 /**

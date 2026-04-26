@@ -32,7 +32,6 @@ fun PopChartDemo() {
             .padding(spacing.lg),
         verticalArrangement = Arrangement.spacedBy(spacing.lg),
     ) {
-
         // ── LINE ─────────────────────────────────────────────────────────────
         Text(
             "LINE",

@@ -39,9 +39,15 @@ import co.tanay.electricpop.theme.ElectricPopTheme
  * Anchor position for the text block inside [PopImageBannerCard].
  */
 enum class PopImageBannerTextAnchor {
-    TopStart, TopCenter, TopEnd,
-    CenterStart, Center, CenterEnd,
-    BottomStart, BottomCenter, BottomEnd,
+    TopStart,
+    TopCenter,
+    TopEnd,
+    CenterStart,
+    Center,
+    CenterEnd,
+    BottomStart,
+    BottomCenter,
+    BottomEnd,
 }
 
 /**
@@ -111,7 +117,10 @@ fun PopImageBannerCard(
 
     Box(
         modifier = modifier
-            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
             .clip(shape)
             .aspectRatio(aspect, matchHeightConstraintsFirst = true)
             .then(
@@ -123,14 +132,14 @@ fun PopImageBannerCard(
                     )
                 } else {
                     Modifier
-                }
+                },
             )
             .then(
                 if (contentDescription != null) {
                     Modifier.semantics { this.contentDescription = contentDescription }
                 } else {
                     Modifier
-                }
+                },
             ),
     ) {
         Image(
@@ -197,31 +206,40 @@ internal fun alignmentFor(anchor: PopImageBannerTextAnchor): Alignment = when (a
 internal fun horizontalAlignmentFor(anchor: PopImageBannerTextAnchor): Alignment.Horizontal = when (anchor) {
     PopImageBannerTextAnchor.TopEnd,
     PopImageBannerTextAnchor.CenterEnd,
-    PopImageBannerTextAnchor.BottomEnd -> Alignment.End
+    PopImageBannerTextAnchor.BottomEnd,
+    -> Alignment.End
     PopImageBannerTextAnchor.TopCenter,
     PopImageBannerTextAnchor.Center,
-    PopImageBannerTextAnchor.BottomCenter -> Alignment.CenterHorizontally
+    PopImageBannerTextAnchor.BottomCenter,
+    -> Alignment.CenterHorizontally
     else -> Alignment.Start
 }
 
 internal fun scrimBrush(anchor: PopImageBannerTextAnchor, color: Color): Brush = when (anchor) {
     PopImageBannerTextAnchor.TopStart,
     PopImageBannerTextAnchor.TopCenter,
-    PopImageBannerTextAnchor.TopEnd -> Brush.verticalGradient(
-        0f to color, 0.6f to Color.Transparent,
+    PopImageBannerTextAnchor.TopEnd,
+    -> Brush.verticalGradient(
+        0f to color,
+        0.6f to Color.Transparent,
     )
     PopImageBannerTextAnchor.BottomStart,
     PopImageBannerTextAnchor.BottomCenter,
-    PopImageBannerTextAnchor.BottomEnd -> Brush.verticalGradient(
-        0.4f to Color.Transparent, 1f to color,
+    PopImageBannerTextAnchor.BottomEnd,
+    -> Brush.verticalGradient(
+        0.4f to Color.Transparent,
+        1f to color,
     )
     PopImageBannerTextAnchor.CenterStart -> Brush.horizontalGradient(
-        0f to color, 0.6f to Color.Transparent,
+        0f to color,
+        0.6f to Color.Transparent,
     )
     PopImageBannerTextAnchor.CenterEnd -> Brush.horizontalGradient(
-        0.4f to Color.Transparent, 1f to color,
+        0.4f to Color.Transparent,
+        1f to color,
     )
     PopImageBannerTextAnchor.Center -> Brush.radialGradient(
-        0f to color, 1f to Color.Transparent,
+        0f to color,
+        1f to Color.Transparent,
     )
 }

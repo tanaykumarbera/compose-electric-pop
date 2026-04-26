@@ -32,7 +32,7 @@ private val TRACK_WIDTH = 52.dp
 private val TRACK_HEIGHT = 32.dp
 private val THUMB_DIAMETER = 24.dp
 private val THUMB_OFFSET_UNCHECKED = 4.dp
-private val THUMB_OFFSET_CHECKED = 24.dp   // = TRACK_WIDTH - THUMB_DIAMETER - THUMB_OFFSET_UNCHECKED
+private val THUMB_OFFSET_CHECKED = 24.dp // = TRACK_WIDTH - THUMB_DIAMETER - THUMB_OFFSET_UNCHECKED
 
 /**
  * On/off toggle switch following the Kinetic Pulse design system.

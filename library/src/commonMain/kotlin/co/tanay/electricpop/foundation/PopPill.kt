@@ -22,12 +22,16 @@ import co.tanay.electricpop.theme.PopShapeFull
 enum class PopPillColor {
     /** Electric Lime — primaryContainer / onPrimaryContainer */
     Primary,
+
     /** Neon Magenta — secondaryContainer / onSecondaryContainer */
     Secondary,
+
     /** Cyber Cyan — tertiaryContainer / onTertiaryContainer */
     Tertiary,
+
     /** Error — errorContainer / onErrorContainer */
     Error,
+
     /** Neutral — surfaceContainerHigh / onSurface */
     Neutral,
 }

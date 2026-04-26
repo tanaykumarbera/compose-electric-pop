@@ -117,7 +117,10 @@ fun PopDashboardCard(
 
     Box(
         modifier = modifier
-            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
             .then(
                 if (onClick != null) {
                     Modifier.clickable(

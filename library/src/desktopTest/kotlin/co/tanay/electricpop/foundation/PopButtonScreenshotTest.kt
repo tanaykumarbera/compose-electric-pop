@@ -63,7 +63,7 @@ class PopButtonScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopButton_allVariants_light.png"
+            filePath = "src/desktopTest/snapshots/PopButton_allVariants_light.png",
         )
     }
 
@@ -111,7 +111,7 @@ class PopButtonScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopButton_allVariants_dark.png"
+            filePath = "src/desktopTest/snapshots/PopButton_allVariants_dark.png",
         )
     }
 }

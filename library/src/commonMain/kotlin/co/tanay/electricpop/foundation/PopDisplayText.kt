@@ -14,8 +14,10 @@ import androidx.compose.ui.text.TextStyle
 enum class PopDisplayTextDirection {
     /** Positive/green — uses primary color */
     Positive,
+
     /** Negative/red — uses error color */
     Negative,
+
     /** No direction — uses onSurface (default text color) */
     Neutral,
 }
@@ -24,12 +26,10 @@ enum class PopDisplayTextDirection {
  * Resolves a [PopDisplayTextDirection] to a theme-based color.
  */
 @Composable
-fun PopDisplayTextDirection.toColor(): Color {
-    return when (this) {
-        PopDisplayTextDirection.Positive -> MaterialTheme.colorScheme.primary
-        PopDisplayTextDirection.Negative -> MaterialTheme.colorScheme.error
-        PopDisplayTextDirection.Neutral -> MaterialTheme.colorScheme.onSurface
-    }
+fun PopDisplayTextDirection.toColor(): Color = when (this) {
+    PopDisplayTextDirection.Positive -> MaterialTheme.colorScheme.primary
+    PopDisplayTextDirection.Negative -> MaterialTheme.colorScheme.error
+    PopDisplayTextDirection.Neutral -> MaterialTheme.colorScheme.onSurface
 }
 
 /**
@@ -38,8 +38,10 @@ fun PopDisplayTextDirection.toColor(): Color {
 enum class PopDisplayTextSize {
     /** displayLarge (57sp main) — for primary hero metrics */
     Large,
+
     /** displayMedium (45sp main) — for secondary metrics */
     Medium,
+
     /** displaySmall (36sp main) — for tertiary/inline metrics */
     Small,
 }

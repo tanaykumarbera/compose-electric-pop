@@ -51,10 +51,13 @@ import co.tanay.electricpop.theme.ElectricPopTheme
 enum class PopCarouselCardStyle {
     /** Neutral — surfaceContainerLowest background */
     Surface,
+
     /** Electric Lime — primaryContainer background */
     Primary,
+
     /** Neon Magenta — secondaryContainer background */
     Secondary,
+
     /** Cyber Cyan — tertiaryContainer background */
     Tertiary,
 }
@@ -178,7 +181,10 @@ fun PopCarouselCard(
 
     Box(
         modifier = modifier
-            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
             .then(
                 if (item.onClick != null) {
                     Modifier.clickable(
@@ -188,7 +194,7 @@ fun PopCarouselCard(
                     )
                 } else {
                     Modifier
-                }
+                },
             ),
     ) {
         PopSurface(

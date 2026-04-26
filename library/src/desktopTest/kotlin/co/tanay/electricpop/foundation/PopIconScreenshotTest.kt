@@ -44,7 +44,7 @@ private fun AllIconsGrid() {
     val cs = androidx.compose.material3.MaterialTheme.colorScheme
     Column(
         modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         // Row 1: Sizes
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {

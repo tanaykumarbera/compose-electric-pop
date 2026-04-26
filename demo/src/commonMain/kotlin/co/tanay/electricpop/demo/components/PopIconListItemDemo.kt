@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import co.tanay.electricpop.foundation.PopIconListItem
 import co.tanay.electricpop.foundation.PopIconSize
-import co.tanay.electricpop.theme.ElectricPopTheme
 import co.tanay.electricpop.foundation.PopIcons
+import co.tanay.electricpop.theme.ElectricPopTheme
 
 @Composable
 fun PopIconListItemDemo() {

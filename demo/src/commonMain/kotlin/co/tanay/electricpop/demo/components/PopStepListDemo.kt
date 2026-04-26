@@ -7,10 +7,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import co.tanay.electricpop.foundation.PopIcons
 import co.tanay.electricpop.foundation.PopStep
 import co.tanay.electricpop.foundation.PopStepList
 import co.tanay.electricpop.theme.ElectricPopTheme
-import co.tanay.electricpop.foundation.PopIcons
 
 @Composable
 fun PopStepListDemo() {

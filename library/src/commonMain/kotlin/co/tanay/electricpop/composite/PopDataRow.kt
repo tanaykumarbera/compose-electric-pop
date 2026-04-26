@@ -164,7 +164,10 @@ fun PopDataRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .graphicsLayer { scaleX = scale; scaleY = scale }
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
             .clip(MaterialTheme.shapes.small)
             .background(backgroundColor)
             .then(clickModifier)

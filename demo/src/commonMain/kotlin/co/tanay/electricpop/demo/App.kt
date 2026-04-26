@@ -5,8 +5,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import co.tanay.electricpop.foundation.PopIcon
-import co.tanay.electricpop.foundation.PopIcons
 import co.tanay.electricpop.foundation.PopIconSize
+import co.tanay.electricpop.foundation.PopIcons
 import co.tanay.electricpop.theme.ElectricPopTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -46,7 +46,7 @@ fun PopIconRowDemo() {
                 PopIconItem(PopIcons.Star, "Star"),
                 PopIconItem(PopIcons.Heart, "Heart"),
                 PopIconItem(PopIcons.Bolt, "Bolt"),
-            )
+            ),
         )
 
         // Section: 5 icons Medium
@@ -62,7 +62,7 @@ fun PopIconRowDemo() {
                 PopIconItem(PopIcons.Bolt),
                 PopIconItem(PopIcons.Sparkle),
                 PopIconItem(PopIcons.CheckCircle),
-            )
+            ),
         )
 
         // Section: Small size

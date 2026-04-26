@@ -21,7 +21,7 @@ class PopChipScreenshotTest {
             ElectricPopTheme(darkTheme = false) {
                 Column(
                     modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     // Color presets
                     PopChipColor.entries.forEach { color ->
@@ -47,7 +47,7 @@ class PopChipScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopChip_allVariants_light.png"
+            filePath = "src/desktopTest/snapshots/PopChip_allVariants_light.png",
         )
     }
 
@@ -58,7 +58,7 @@ class PopChipScreenshotTest {
             ElectricPopTheme(darkTheme = true) {
                 Column(
                     modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     // Color presets
                     PopChipColor.entries.forEach { color ->
@@ -84,7 +84,7 @@ class PopChipScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopChip_allVariants_dark.png"
+            filePath = "src/desktopTest/snapshots/PopChip_allVariants_dark.png",
         )
     }
 }

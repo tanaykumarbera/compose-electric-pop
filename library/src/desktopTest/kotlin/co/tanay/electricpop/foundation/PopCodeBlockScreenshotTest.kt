@@ -20,14 +20,14 @@ class PopCodeBlockScreenshotTest {
 val theme = ElectricPopTheme {
     colorScheme = darkColorScheme()
 }
-""".trimIndent()
+    """.trimIndent()
 
     private val jsonSnippet = """
 {
   "component": "PopCodeBlock",
   "tier": "foundation"
 }
-""".trimIndent()
+    """.trimIndent()
 
     @OptIn(ExperimentalTestApi::class)
     @Test

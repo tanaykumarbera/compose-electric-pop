@@ -57,7 +57,7 @@ class PopDropdownScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopDropdown_allVariants_light.png"
+            filePath = "src/desktopTest/snapshots/PopDropdown_allVariants_light.png",
         )
     }
 
@@ -103,7 +103,7 @@ class PopDropdownScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopDropdown_allVariants_dark.png"
+            filePath = "src/desktopTest/snapshots/PopDropdown_allVariants_dark.png",
         )
     }
 
@@ -128,7 +128,7 @@ class PopDropdownScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopDropdown_expandedTrigger_light.png"
+            filePath = "src/desktopTest/snapshots/PopDropdown_expandedTrigger_light.png",
         )
     }
 
@@ -151,7 +151,7 @@ class PopDropdownScreenshotTest {
             }
         }
         onRoot().captureRoboImage(
-            filePath = "src/desktopTest/snapshots/PopDropdown_expandedTrigger_dark.png"
+            filePath = "src/desktopTest/snapshots/PopDropdown_expandedTrigger_dark.png",
         )
     }
 }
