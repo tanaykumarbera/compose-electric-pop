@@ -1,3 +1,6 @@
+import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
+import java.net.URI
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.compose.multiplatform)
@@ -6,6 +9,39 @@ plugins {
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.roborazzi)
     alias(libs.plugins.kover)
+    alias(libs.plugins.dokka)
+}
+
+val gitCommitSha: String by lazy {
+    runCatching {
+        ProcessBuilder("git", "rev-parse", "HEAD")
+            .directory(rootProject.projectDir)
+            .redirectErrorStream(true)
+            .start()
+            .inputStream
+            .bufferedReader()
+            .readText()
+            .trim()
+            .ifBlank { "main" }
+    }.getOrDefault("main")
+}
+
+dokka {
+    moduleName.set("compose-electric-pop")
+    dokkaPublications.html {
+        suppressInheritedMembers.set(true)
+        suppressObviousFunctions.set(true)
+    }
+    dokkaSourceSets.configureEach {
+        documentedVisibilities.set(setOf(VisibilityModifier.Public))
+        skipDeprecated.set(false)
+        skipEmptyPackages.set(true)
+        sourceLink {
+            localDirectory.set(rootProject.projectDir)
+            remoteUrl.set(URI("https://github.com/tanaykumarbera/compose-electric-pop/blob/$gitCommitSha"))
+            remoteLineSuffix.set("#L")
+        }
+    }
 }
 
 kover {
