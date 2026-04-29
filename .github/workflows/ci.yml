@@ -49,6 +49,9 @@ jobs:
             exit 1
           fi
 
+      - name: Every component has light + dark snapshots
+        run: ./gradlew :library:checkScreenshotPresence --stacktrace
+
       - name: Compile desktop + Android
         run: ./gradlew :library:compileKotlinDesktop :library:assembleRelease :demo:compileKotlinDesktop --stacktrace
 
