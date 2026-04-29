@@ -123,7 +123,7 @@ Stood up Dokka HTML output and wired it through the existing GitHub Pages workfl
 
 ---
 
-### [ ] 4. `feat/screenshot-codegen`
+### [x] 4. `feat/screenshot-codegen` — PR #53 (open)
 
 Convention-based KDoc rewriter so screenshots appear inline in every component's reference page — **zero hand maintenance**.
 
@@ -295,7 +295,7 @@ mavenPublishing {
 
 ## Notes for next session
 
-- **Next up: step 4** (`feat/screenshot-codegen`). Branch off `main` once #51 merges. Add the `:library:syncScreenshotKdoc` Gradle task, the delimited `<!-- screenshots:start --> ... <!-- screenshots:end -->` block in every component file, and the pre-commit hook + CI guard. Pages workflow already publishes `/api/` (step 3); this PR additionally copies `library/src/desktopTest/snapshots/*.png` into the artifact at `/snapshots/` so the absolute URLs in KDoc resolve. See step 4 above for full spec.
+- **Next up: step 5** (`feat/screenshot-presence-check`). Branch off `main` once #53 merges. Add the `:library:checkScreenshotPresence` Gradle task that scans every public `Pop\w+` composable and asserts a matching `_light` + `_dark` snapshot pair exists. Allowlist is `library/screenshot-allowlist.txt` (empty for now). Wire into the ubuntu CI job as a required check. See step 5 above for full spec.
 - Use **GitHub MCP** (`mcp__plugin_github_github__*`), not `gh` CLI (not installed).
 - Use `ToolSearch(query="select:<tool>", max_results=1)` to load deferred MCP tool schemas before calling.
 - Telegram `chat_id 1402731017` — notify on PR creation, step completion, blockers, and decision-needed checkpoints. Do **not** notify for sub-step build output.
