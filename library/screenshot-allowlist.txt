@@ -1,0 +1,4 @@
+# Allowlist for :library:checkScreenshotPresence.
+# One component name per line (e.g. PopFoo). Comments (#) and blank lines
+# are ignored. Add an entry here only when a Pop* component legitimately
+# has no Roborazzi snapshot pair. Empty by default.
