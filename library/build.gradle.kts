@@ -181,6 +181,101 @@ tasks.register("syncScreenshotKdoc") {
     }
 }
 
+// ---------------------------------------------------------------------------
+// checkScreenshotPresence — guardrail asserting every component file has a
+// matching pair of light + dark Roborazzi snapshots. Filename-based: a file
+// PopXxx.kt is checked iff it declares a top-level public `@Composable fun
+// PopXxx(`. Sibling public composables in the same file (e.g. PopIconButton
+// in PopButton.kt) are implicitly covered by the parent's snapshot — see
+// SESSION-RESUME step 5 decision log. Allowlist at library/screenshot-allowlist.txt.
+// ---------------------------------------------------------------------------
+
+fun declaresPublicComposable(source: String, name: String): Boolean {
+    val funPattern = Regex("""^fun ${Regex.escape(name)}\s*[(<]""")
+    val lines = source.lines()
+    val funIdx = lines.indexOfFirst { funPattern.containsMatchIn(it) }
+    if (funIdx < 0) return false
+    var i = funIdx - 1
+    while (i >= 0) {
+        val trimmed = lines[i].trim()
+        if (trimmed.isEmpty()) {
+            i--
+            continue
+        }
+        if (trimmed.startsWith("@Composable")) return true
+        if (trimmed.startsWith("@")) {
+            i--
+            continue
+        }
+        return false
+    }
+    return false
+}
+
+tasks.register("checkScreenshotPresence") {
+    group = "verification"
+    description = "Assert each Pop component file has matching light + dark Roborazzi snapshots."
+
+    val snapshotsDir = layout.projectDirectory.dir("src/desktopTest/snapshots")
+    val componentRoot = layout.projectDirectory.dir("src/commonMain/kotlin/co/tanay/electricpop")
+    val allowlistFile = layout.projectDirectory.file("screenshot-allowlist.txt")
+    val tiers = listOf("foundation", "composite", "chart")
+
+    inputs.dir(snapshotsDir).withPropertyName("snapshots")
+    tiers.forEach { tier ->
+        inputs.dir(componentRoot.dir(tier)).withPropertyName("components-$tier")
+    }
+    inputs.files(allowlistFile).withPropertyName("allowlist").optional(true)
+
+    doLast {
+        val allowlist = if (allowlistFile.asFile.exists()) {
+            allowlistFile.asFile.readLines()
+                .map { it.substringBefore('#').trim() }
+                .filter { it.isNotEmpty() }
+                .toSet()
+        } else {
+            emptySet()
+        }
+
+        val snapshotNames = snapshotsDir.asFile.listFiles().orEmpty()
+            .filter { it.isFile && it.extension == "png" }
+            .map { it.name }
+
+        val componentFiles = tiers
+            .flatMap { tier -> componentRoot.dir(tier).asFile.listFiles().orEmpty().toList() }
+            .filter { it.isFile && it.extension == "kt" && it.name.startsWith("Pop") }
+
+        val components = componentFiles
+            .mapNotNull { file ->
+                val name = file.nameWithoutExtension
+                if (declaresPublicComposable(file.readText(), name)) name else null
+            }
+            .sorted()
+
+        val misses = mutableListOf<String>()
+        components.forEach { component ->
+            if (component in allowlist) return@forEach
+            val prefix = "${component}_"
+            val hasLight = snapshotNames.any { it.startsWith(prefix) && it.endsWith("_light.png") }
+            val hasDark = snapshotNames.any { it.startsWith(prefix) && it.endsWith("_dark.png") }
+            when {
+                !hasLight && !hasDark -> misses += "$component (no _light, no _dark)"
+                !hasLight -> misses += "$component (no _light)"
+                !hasDark -> misses += "$component (no _dark)"
+            }
+        }
+
+        if (misses.isNotEmpty()) {
+            throw GradleException("Missing snapshots: ${misses.joinToString(", ")}")
+        }
+
+        logger.lifecycle(
+            "checkScreenshotPresence: ${components.size} components verified " +
+                "(${allowlist.size} allowlisted)",
+        )
+    }
+}
+
 kover {
     reports {
         filters {
