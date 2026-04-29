@@ -164,21 +164,23 @@ Convention-based KDoc rewriter so screenshots appear inline in every component's
 
 ---
 
-### [ ] 5. `feat/screenshot-presence-check`
+### [x] 5. `feat/screenshot-presence-check` — PR #54 (open)
 
-Companion guardrail: every public Pop composable must have at least one matching pair of light + dark snapshots.
+Companion guardrail to step 4. Filename-based scan: a file `PopXxx.kt` is checked iff it declares a top-level public `@Composable fun PopXxx(`. Sibling public composables in the same file (`PopIconButton` in `PopButton.kt`, `PopPasswordField` in `PopTextField.kt`, `PopDashboardStatusPill` in `PopDashboardCard.kt`, `PopCarouselCardStrip` in `PopCarouselCard.kt`) ride along with the parent's snapshot — same convention as `syncScreenshotKdoc` (step 4).
 
-**Gradle task `:library:checkScreenshotPresence`:**
-- Scan `library/src/commonMain/kotlin/co/tanay/electricpop/{foundation,composite,chart}/*.kt`
-- For each top-level public `@Composable fun Pop\w+\(` (skip `private`/`internal` helpers and trivial overload variants)
-- Assert at least one `{Component}_*_light.png` AND `{Component}_*_dark.png` exists in `library/src/desktopTest/snapshots/`
-- On miss, fail with: `Missing snapshots: PopXxx (no _light), PopYyy (no _dark)`
+**Gradle task `:library:checkScreenshotPresence` (`library/build.gradle.kts`):**
+- Scans `library/src/commonMain/kotlin/co/tanay/electricpop/{foundation,composite,chart}/*.kt`
+- For each `Pop*.kt`, detects a top-level public `@Composable fun {filename}(` via the `declaresPublicComposable` helper (walks back through annotation lines from the `fun` line)
+- Asserts at least one `{filename}_*_light.png` AND `{filename}_*_dark.png` exists in `library/src/desktopTest/snapshots/`
+- On miss, throws `GradleException("Missing snapshots: PopXxx (no _light), PopYyy (no _dark)")`
 
-**Allowlist:** `library/screenshot-allowlist.txt`, one component name per line, for any component that legitimately has no screenshot. Empty for now.
+**Allowlist `library/screenshot-allowlist.txt`:** one name per line; `#` comments and blank lines ignored. Empty (header-only) for now.
 
-**Wire into CI matrix:** `./gradlew checkScreenshotPresence` on the ubuntu job. Required check.
+**CI:** new `./gradlew :library:checkScreenshotPresence` step on the ubuntu job in `.github/workflows/ci.yml`, between the `syncScreenshotKdoc` check and the compile step.
 
-**Done when:** CI fails on a hypothetical PR that adds a `Pop*` composable without snapshots.
+**Verified locally:** task passes (`27 components verified (0 allowlisted)`); renaming `PopButton_allVariants_light.png` aside produces `Missing snapshots: PopButton (no _light)`; an allowlist entry suppresses the failure.
+
+**Done when:** PR #54 merged.
 
 ---
 
@@ -295,7 +297,7 @@ mavenPublishing {
 
 ## Notes for next session
 
-- **Next up: step 5** (`feat/screenshot-presence-check`). Branch off `main` once #53 merges. Add the `:library:checkScreenshotPresence` Gradle task that scans every public `Pop\w+` composable and asserts a matching `_light` + `_dark` snapshot pair exists. Allowlist is `library/screenshot-allowlist.txt` (empty for now). Wire into the ubuntu CI job as a required check. See step 5 above for full spec.
+- **Next up: step 6** (`chore/scrub-plan-refs`). Branch off `main` once #54 merges. Extract the load-bearing pieces of `docs/superpowers/specs/2026-03-25-electric-pop-design.md` into a top-level `DESIGN.md` (~200 lines: 7 design rules + theme philosophy + token list), then delete the entire `docs/superpowers/` tree (this file included; git history preserves it). Rewrite `AGENTS.md`, `CLAUDE.md`, `README.md` to drop the inventory tables (now in Pages) and repoint to `DESIGN.md` + the Pages reference site. Acceptance: `grep -rn "docs/superpowers" --exclude-dir=.history --exclude-dir=.git` returns empty. See step 6 above for full spec.
 - Use **GitHub MCP** (`mcp__plugin_github_github__*`), not `gh` CLI (not installed).
 - Use `ToolSearch(query="select:<tool>", max_results=1)` to load deferred MCP tool schemas before calling.
 - Telegram `chat_id 1402731017` — notify on PR creation, step completion, blockers, and decision-needed checkpoints. Do **not** notify for sub-step build output.
