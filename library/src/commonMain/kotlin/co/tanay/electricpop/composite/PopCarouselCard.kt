@@ -155,6 +155,12 @@ private fun PopCarouselCardStyle.toColors(): CarouselCardColors {
  *
  * @param item The [PopCarouselCardItem] data to display.
  * @param modifier Optional [Modifier] for the outer container. Set width for card sizing (default: 300.dp in strip).
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopCarouselCard_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopCarouselCard_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopCarouselCard(

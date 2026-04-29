@@ -36,6 +36,12 @@ data class PopIconItem(
  * @param iconSize Size preset for all icons in the row.
  * @param tint Tint color applied to all icons. Defaults to [MaterialTheme.colorScheme.onSurface].
  * @param spacing Horizontal spacing between icons. Defaults to [ElectricPopTheme.spacing.sm].
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopIconRow_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopIconRow_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopIconRow(

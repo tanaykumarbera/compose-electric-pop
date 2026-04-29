@@ -57,6 +57,13 @@ import co.tanay.electricpop.theme.ElectricPopTheme
  * @param label Optional label displayed above the dropdown.
  * @param placeholder Placeholder text shown when nothing is selected.
  * @param enabled Whether the dropdown is interactive.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopDropdown_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopDropdown_allVariants_dark.png) |
+ * | expandedTrigger | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopDropdown_expandedTrigger_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopDropdown_expandedTrigger_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopDropdown(

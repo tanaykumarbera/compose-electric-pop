@@ -240,6 +240,12 @@ sealed class PopChartStyle {
  * @param contentPadding Padding inside the surface around title/chart/labels.
  *
  * NaN values in series data are filtered at path/bar build stage.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopChart_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopChart_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopChart(

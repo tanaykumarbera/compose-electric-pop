@@ -76,6 +76,12 @@ enum class PopBannerCardStyle {
  *   On Hero style these are tinted with [onPrimaryContainer]; on Surface style with [onSurfaceVariant].
  * @param style [PopBannerCardStyle.Hero] uses primaryContainer background; [PopBannerCardStyle.Surface] uses default surface tone.
  * @param onClick Optional click handler. Enables kinetic hover/press scale animation when set.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopBannerCard_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopBannerCard_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopBannerCard(

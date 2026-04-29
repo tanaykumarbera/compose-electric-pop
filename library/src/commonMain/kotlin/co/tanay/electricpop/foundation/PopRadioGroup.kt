@@ -51,6 +51,12 @@ private val RADIO_STROKE_WIDTH = 2.dp
  * @param onSelectedChange Callback invoked with the index of the newly selected option.
  * @param modifier Optional [Modifier] applied to the root column.
  * @param enabled Whether the radio group is interactive. Disabled reduces opacity to 38%.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopRadioGroup_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopRadioGroup_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopRadioGroup(

@@ -47,6 +47,12 @@ internal fun formatStepNumber(index: Int): String = index.toString().padStart(2,
  * @param showNumbers Whether to show zero-padded step numbers. Defaults to true.
  * @param numberColor Color for the step numbers. Defaults to primary.
  * @param iconTint Tint color for all step icons. Defaults to primary.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopStepList_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopStepList_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopStepList(

@@ -49,6 +49,12 @@ private val THUMB_OFFSET_CHECKED = 24.dp // = TRACK_WIDTH - THUMB_DIAMETER - THU
  * @param modifier Optional [Modifier] applied to the root layout.
  * @param enabled Whether the switch is interactive. Disabled switches reduce opacity to 38%.
  * @param label Optional text label displayed to the left of the switch.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopSwitch_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopSwitch_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopSwitch(

@@ -73,6 +73,12 @@ fun PopBadgeDirection.toColors(): PopBadgeColors {
  * @param value The text to display (e.g., "+12.5%", "-3.2%").
  * @param direction The trend direction determining icon and color.
  * @param modifier Optional [Modifier] for the badge container.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopBadge_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopBadge_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopBadge(

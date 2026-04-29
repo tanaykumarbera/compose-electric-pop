@@ -40,6 +40,12 @@ import co.tanay.electricpop.theme.ElectricPopTheme
  * @param modifier Optional [Modifier] applied to the outer row.
  * @param status Optional right-side status label (e.g., "SYSTEM ACTIVE"). When non-null,
  *   a pulsing dot and the status text are shown on the right side.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopTitleBar_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopTitleBar_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopTitleBar(

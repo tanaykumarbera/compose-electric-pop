@@ -70,6 +70,12 @@ fun PopPillColor.toColors(): PopPillColors {
  * @param label The text to display inside the pill (rendered uppercase).
  * @param modifier Optional [Modifier] for the pill container.
  * @param color A [PopPillColor] preset that determines the container and content colors.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allPresets | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopPill_allPresets_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopPill_allPresets_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopPill(

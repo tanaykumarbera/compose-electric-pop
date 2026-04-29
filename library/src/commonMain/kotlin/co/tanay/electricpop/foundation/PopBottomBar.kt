@@ -53,6 +53,12 @@ import co.tanay.electricpop.theme.PopShapeFull
  *
  * @param modifier Optional [Modifier] applied to the outer container.
  * @param content Slot for [PopBottomBarItem] composables.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopBottomBar_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopBottomBar_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopBottomBar(

@@ -52,6 +52,12 @@ import co.tanay.electricpop.theme.PopShapeFull
  * @param containerColor Background color of the code block container.
  * @param contentColor Color for the code text, label, and copy icon.
  * @param shape Shape applied to the outer container. Defaults to `MaterialTheme.shapes.medium`.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopCodeBlock_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopCodeBlock_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopCodeBlock(

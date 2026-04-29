@@ -59,6 +59,12 @@ enum class PopDisplayTextSize {
  * @param direction Semantic direction that determines the text color. Ignored if [color] is non-null.
  * @param size Size variant controlling the typography scale.
  * @param color Explicit color override. If non-null, overrides [direction] coloring.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopDisplayText_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopDisplayText_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopDisplayText(

@@ -84,6 +84,12 @@ data class PopDashboardItem(
  * @param actionContent Optional FAB-style action slot appended after the last sub-card.
  *   Typically a circular button with a "+" icon. Null = no action button shown.
  * @param onClick Optional click handler for the card; enables kinetic animation when set.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopDashboardCard_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopDashboardCard_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

@@ -41,6 +41,12 @@ data class PopTableRow(
  * @param containerColor Background color of the table container.
  * @param contentColor Text color for title, labels, and values.
  * @param shape Shape of the outer container.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopTable_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopTable_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopTable(

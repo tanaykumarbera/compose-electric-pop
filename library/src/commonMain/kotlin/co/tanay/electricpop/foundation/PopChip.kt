@@ -82,6 +82,12 @@ fun PopChipColor.toColors(): PopChipColors {
  * @param color A [PopChipColor] preset that determines the container and content colors.
  * @param icon Optional leading [ImageVector] icon displayed before the label.
  * @param onClick Optional click handler. When null, the chip is non-interactive.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopChip_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopChip_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopChip(

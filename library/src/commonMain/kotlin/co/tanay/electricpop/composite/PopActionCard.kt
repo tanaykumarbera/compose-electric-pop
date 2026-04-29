@@ -66,6 +66,12 @@ class PopActionCardAction(
  * @param description Optional description text below the title.
  * @param chips Optional composable slot rendered as a horizontal chip row.
  * @param heroContent Optional composable slot rendered between chips and actions.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopActionCard_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopActionCard_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopActionCard(

@@ -48,6 +48,12 @@ internal fun PopIconSize.toDp(): Dp = when (this) {
  * @param modifier Optional [Modifier] applied to the icon.
  * @param size One of [PopIconSize] presets controlling the rendered size.
  * @param tint Icon tint color. Defaults to [MaterialTheme.colorScheme.onSurface].
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopIcon_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopIcon_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopIcon(
