@@ -63,6 +63,12 @@ private val THUMB_BORDER_WIDTH = 4.dp
  * @param steps Number of discrete steps. 0 means continuous.
  * @param label Optional text label displayed above the slider.
  * @param showValue Whether to show the current value display above the thumb.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopSlider_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopSlider_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopSlider(

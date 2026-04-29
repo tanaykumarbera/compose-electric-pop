@@ -110,6 +110,12 @@ object PopDataRowDefaults {
  * @param valueColor Explicit color override for the value text.
  * @param isAlternate If true, uses `surfaceContainerLowest` instead of `surfaceContainerLow`.
  * @param onClick Optional click handler. Enables kinetic hover/press scale animation when set.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopDataRow_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopDataRow_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

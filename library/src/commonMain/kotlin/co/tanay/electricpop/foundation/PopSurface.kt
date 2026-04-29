@@ -97,6 +97,13 @@ internal fun Color.darken(fraction: Float): Color = Color(
  * @param containerColor Optional override for the background color. When null, resolved from [tone].
  * @param contentColor The content color passed through for children to read (informational).
  * @param content The composable content placed inside the surface.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allTones | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopSurface_allTones_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopSurface_allTones_dark.png) |
+ * | ghostBorder | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopSurface_ghostBorder_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopSurface_ghostBorder_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopSurface(

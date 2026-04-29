@@ -40,6 +40,12 @@ import co.tanay.electricpop.theme.PopShapeFull
  * @param titleAccent Optional colored word appended after [title] (e.g., "CARD"). Rendered uppercase in [titleAccentColor].
  * @param titleAccentColor Color for [titleAccent]. Defaults to [MaterialTheme.colorScheme.tertiary].
  * @param description Optional description paragraph rendered in bodyLarge / onSurfaceVariant.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopSectionHeader_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopSectionHeader_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopSectionHeader(

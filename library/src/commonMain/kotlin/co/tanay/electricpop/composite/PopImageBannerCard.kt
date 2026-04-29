@@ -79,6 +79,12 @@ enum class PopImageBannerTextAnchor {
  * @param contentColor Text color; eyebrow/subtitle use softened alpha.
  * @param contentDescription Accessibility description for the image. When null, the image is marked decorative.
  * @param onClick Optional click handler; enables kinetic scale interaction when set.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopImageBannerCard_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopImageBannerCard_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopImageBannerCard(

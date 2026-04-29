@@ -38,13 +38,15 @@ jobs:
       - name: Generate Dokka HTML
         run: ./gradlew :library:dokkaGenerate --stacktrace
 
-      - name: Assemble Pages site (docs/ ∪ Dokka HTML)
+      - name: Assemble Pages site (docs/ ∪ Dokka HTML ∪ snapshots)
         run: |
           rm -rf build/pages
           mkdir -p build/pages
           cp -R docs/. build/pages/
           mkdir -p build/pages/api
           cp -R library/build/dokka/html/. build/pages/api/
+          mkdir -p build/pages/snapshots
+          cp -R library/src/desktopTest/snapshots/. build/pages/snapshots/
 
       - uses: actions/configure-pages@v5
 

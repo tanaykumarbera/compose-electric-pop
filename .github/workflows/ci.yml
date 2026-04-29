@@ -41,6 +41,14 @@ jobs:
       - name: Lint + format check (Detekt + Spotless)
         run: ./gradlew detekt spotlessCheck --stacktrace
 
+      - name: Screenshot KDoc tables in sync
+        run: |
+          ./gradlew :library:syncScreenshotKdoc --stacktrace
+          if ! git diff --exit-code -- library/src/commonMain; then
+            echo "::error::Screenshot KDoc tables are stale. Run ./gradlew :library:syncScreenshotKdoc and commit the result." >&2
+            exit 1
+          fi
+
       - name: Compile desktop + Android
         run: ./gradlew :library:compileKotlinDesktop :library:assembleRelease :demo:compileKotlinDesktop --stacktrace
 

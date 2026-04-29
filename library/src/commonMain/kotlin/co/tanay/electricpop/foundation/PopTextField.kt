@@ -72,6 +72,12 @@ import co.tanay.electricpop.theme.ElectricPopTheme
  * @param keyboardOptions Keyboard options for the input.
  * @param keyboardActions Keyboard actions for the input.
  * @param visualTransformation Visual transformation applied to the input (e.g. password masking).
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopTextField_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopTextField_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopTextField(

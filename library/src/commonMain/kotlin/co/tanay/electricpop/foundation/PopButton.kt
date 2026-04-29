@@ -182,6 +182,12 @@ internal fun kineticScale(
  * @param size Size preset: XL, Large, or Small.
  * @param enabled Whether the button is interactive. Disabled buttons reduce opacity.
  * @param icon Optional leading icon [ImageVector] displayed before the text.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopButton_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopButton_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopButton(

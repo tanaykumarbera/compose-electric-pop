@@ -26,6 +26,12 @@ import co.tanay.electricpop.theme.ElectricPopTheme
  * @param iconSize Size preset for the icon.
  * @param textStyle Text style for the description.
  * @param textColor Text color for the description.
+ *
+ * <!-- screenshots:start (auto-generated, do not edit) -->
+ * | Scenario | Light | Dark |
+ * | --- | --- | --- |
+ * | allVariants | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopIconListItem_allVariants_light.png) | ![](https://tanaykumarbera.github.io/compose-electric-pop/snapshots/PopIconListItem_allVariants_dark.png) |
+ * <!-- screenshots:end -->
  */
 @Composable
 fun PopIconListItem(
