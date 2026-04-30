@@ -36,9 +36,10 @@ Send Telegram notifications at these milestones — the user is NOT watching the
 ## Project Context
 
 Key files (read these FIRST before dispatching any subagent):
-- `CLAUDE.md` — Project rules, SOP, 7 design rules, build commands
-- `docs/superpowers/specs/2026-03-25-electric-pop-design.md` — Full design spec
-- `AGENTS.md` — Component inventory, build order, agent details
+- `CLAUDE.md` — Project rules, SOP, build commands
+- `DESIGN.md` — 7 design rules, theme architecture, color/typography/shape/spacing tokens
+- `AGENTS.md` — Agent dispatch rules, MCP tool usage, branch + commit conventions
+- Pages reference: <https://tanaykumarbera.github.io/compose-electric-pop/api/> — per-component API + screenshots
 
 Key paths:
 - Component source: `library/src/commonMain/kotlin/co/tanay/electricpop/{tier}/`

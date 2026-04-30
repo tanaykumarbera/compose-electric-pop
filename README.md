@@ -7,15 +7,15 @@ Bold typography. Kinetic interactions. Neon-saturated design system.
 ## Platforms
 
 - Android (API 24+)
-- iOS
+- iOS (arm64 + simulatorArm64)
 - Desktop (JVM)
 
 ## Installation
 
-```gradle
-// In your build.gradle.kts
+```kotlin
+// build.gradle.kts
 dependencies {
-    implementation("co.tanay:compose-electric-pop:0.1.0")
+    implementation("co.tanay:compose-electric-pop:0.0.1")
 }
 ```
 
@@ -23,7 +23,7 @@ dependencies {
 
 ```kotlin
 ElectricPopTheme {
-    PopButton(onClick = { }) {
+    PopButton(onClick = { /* … */ }) {
         Text("Get Started")
     }
 }
@@ -43,62 +43,27 @@ ElectricPopTheme(
 }
 ```
 
-## Components (26)
+## Components
 
-### Foundation (20)
+The library ships **27 components** across three tiers:
 
-| Component | Description |
-|-----------|-------------|
-| PopButton | Primary, Secondary, Ghost buttons × XL/Large/Small + Icon variant |
-| PopTextField | Text input with label, error state, password toggle |
-| PopRadioGroup | Radio selection with tonal shift |
-| PopSwitch | On/Off toggle with kinetic animation |
-| PopSlider | Range slider with value display |
-| PopChip | Category tags in primary/secondary/tertiary colors |
-| PopIcon | Material Symbols wrapper |
-| PopSurface | Themed container with squircle corners and tonal shadows |
-| PopBadge | Directional badge (up/down/neutral) with value |
-| PopPill | Small label badges (Active, Locked, Live, etc.) |
-| PopIconRow | Dynamic horizontal icon cluster |
-| PopSectionHeader | Section header with accent label and line |
-| PopTitleBar | Title with inline badge |
-| PopDisplayText | Large emphasized text with fractional part |
-| PopCodeBlock | Pre-formatted code with copy header |
-| PopIconListItem | Icon + description list item |
-| PopTable | Label-value table with alternating tonal rows |
-| PopStepList | Numbered items with icons |
-| PopBottomBar | Glassmorphic navigation bar |
-| PopDropdown | Selector with expand affordance |
+- **20 foundation** (`co.tanay.electricpop.foundation`) — buttons, fields, chips, surfaces, icons, typography primitives.
+- **6 composite** (`co.tanay.electricpop.composite`) — banner cards, dashboard cards, action cards, carousels.
+- **1 chart** (`co.tanay.electricpop.chart`) — `PopChart` with `PopChartStyle.Line`, `Bar`, `Donut`.
 
-### Composite (6)
+For the full component reference — API, parameters, and inline light + dark screenshots — see the published Dokka site:
 
-| Component | Description |
-|-----------|-------------|
-| PopCarouselCard | Horizontal scroll card strip |
-| PopDashboardCard | Data overview card with status pills and data rows |
-| PopDataRow | Icon + title + value row with tonal separation |
-| PopActionCard | Card with input fields and action buttons |
-| PopBannerCard | Hero / metric banner with trend chip and overlapping icon cluster |
-| PopImageBannerCard | Big image card with overlay headline and configurable text anchor |
-
-### Chart (1, with 3 styles)
-
-A single `PopChart` composable picks its rendering via `PopChartStyle`.
-
-| Style | Description |
-|-------|-------------|
-| `PopChartStyle.Line` | Trend line with glow on active points |
-| `PopChartStyle.Bar`  | Comparative bars with active scaling |
-| `PopChartStyle.Donut` | Circular gauge with center text and configurable inset |
+**📖 <https://tanaykumarbera.github.io/compose-electric-pop/api/>**
 
 ## Design System
 
-Based on the "Kinetic Pulse" aesthetic:
+Electric Pop is built on the "Kinetic Pulse" design language: tonal hierarchy instead of borders, glow instead of grey shadow, type as object. The 7 design rules every component enforces — plus the full theme architecture, color palette, typography, shape, and spacing token tables — are documented in [`DESIGN.md`](DESIGN.md).
 
-- **Colors:** Electric Lime (#CAFD00), Neon Magenta (#FFBDF3), Cyber Cyan (#00FFFF)
+Highlights:
+- **Colors:** Electric Lime (`#CAFD00`), Neon Magenta (`#FFBDF3`), Cyber Cyan (`#00FFFF`)
 - **Typography:** Space Grotesk (headlines), Manrope (body)
-- **Shapes:** Squircle corners (continuous curvature)
-- **Interactions:** Kinetic hover/active animations
+- **Shapes:** Squircle corners (continuous curvature, not rounded rectangles)
+- **Interactions:** Kinetic hover (1.05×) and active (0.95×) scaling
 
 ## License
 

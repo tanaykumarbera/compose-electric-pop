@@ -47,7 +47,6 @@ dokka {
 // ---------------------------------------------------------------------------
 // syncScreenshotKdoc — keeps the screenshot table in each component's KDoc in
 // sync with the Roborazzi snapshots on disk. Convention-based, idempotent.
-// See docs/superpowers/plans/SESSION-RESUME.md (step 4) for the full design.
 // ---------------------------------------------------------------------------
 
 val screenshotPagesBaseUrl = "https://tanaykumarbera.github.io/compose-electric-pop/snapshots"
