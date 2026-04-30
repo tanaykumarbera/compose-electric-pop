@@ -1,179 +1,103 @@
 # Electric Pop — Agent Guide
 
-> **TL;DR for fresh sessions:**
-> - **Library is feature-complete.** Current track is repo cleanup + Maven Central publishing. Read `docs/superpowers/plans/SESSION-RESUME.md` first for next-step status; full plan at `docs/superpowers/plans/repo-cleanup-plan.md`.
-> - **For project context that's not in code:** Consult the auto-memory index at `~/.claude/projects/-mnt-workspace-mobile-apps-ui-electric-pop/memory/MEMORY.md` (loaded automatically each session). Notable entries: release-readiness state, no-AI-branding rule, Telegram update rule, Stitch-review rule.
-> - **To build a new component (rare now):** Use `/build-component <ComponentName>`. The skill orchestrates planner → implementor → reviewer subagents and handles Telegram/GitHub/Stitch MCP from the main session.
-> - **For ad-hoc tasks:** Dispatch `pixy-planner`, `pixy-implementor`, or `pixy-reviewer` directly via the Agent tool as needed.
-> - **Avoid:** Running `claude --agent pixy` or `Agent(pixy)` — MCP tools don't propagate reliably to agent sessions (known Claude Code bug, anthropics/claude-code#30280).
+Operating manual for agents (and humans) working in this repo. Library is feature-complete; new component work is rare. The default mode now is targeted maintenance, doc tweaks, and the occasional one-off component.
 
-## Project Context
+## Orientation
 
-Electric Pop is a Compose Multiplatform UI library implementing the "Kinetic Pulse" design system.
+- **Repo:** [github.com/tanaykumarbera/compose-electric-pop](https://github.com/tanaykumarbera/compose-electric-pop)
+- **Design language:** [`DESIGN.md`](DESIGN.md) — the 7 design rules, theme architecture, color/typography/shape/spacing tokens. Read this first if you're touching components.
+- **Component reference:** <https://tanaykumarbera.github.io/compose-electric-pop/api/> — Dokka-generated API docs with inline light + dark screenshots for every component. Authoritative source for "what does PopX look like and accept."
+- **Stitch designs:** [project 7983075619754946215](https://stitch.withgoogle.com/projects/7983075619754946215). Append `=s0` to image URLs for full resolution. Always compare both light and dark screens.
+- **Project context not in code:** Auto-memory at `~/.claude/projects/-mnt-workspace-mobile-apps-ui-electric-pop/memory/MEMORY.md` (loaded each session). Notable entries: no-AI-branding, Telegram update rule, Stitch-review rule.
+- **Build-phase archive:** `.history/2026-04-26-build-phase-summary.md` — distilled retrospective from the original build sprint. The only place that captures "how we got here" prose.
+- **Targets:** Android (API 24+, compileSdk 36), iOS (arm64 + simulatorArm64), Desktop (JVM). Stack: Kotlin 2.3.20, Compose Multiplatform 1.10.3, AGP 8.7.3.
 
-- **Repo:** github.com/tanaykumarbera/compose-electric-pop
-- **Design:** [Stitch project 7983075619754946215](https://stitch.withgoogle.com/projects/7983075619754946215)
-- **Spec:** `docs/superpowers/specs/2026-03-25-electric-pop-design.md`
-- **Release track:** `docs/superpowers/plans/SESSION-RESUME.md` (status) · `docs/superpowers/plans/repo-cleanup-plan.md` (full plan)
-- **CLAUDE.md:** Project coding rules, SOP, and 7 design rules
-- **Targets:** Android (API 24+), iOS, Desktop JVM
-- **Stack:** Kotlin 2.3.20, Compose Multiplatform 1.10.3, AGP 8.7.3
+## Building a Component (rare)
 
-## Component Inventory (30 total)
-
-### Foundation (20) — `co.tanay.electricpop.foundation`
-| # | Component | Variants | Key Notes |
-|---|-----------|----------|-----------|
-| 1 | PopButton | Primary, Secondary, Ghost × XL/Large/Small; Icon | Neon glow on primary, kinetic hover/active |
-| 2 | PopTextField | Standard, Password, Error | Left accent bar on focus, no bottom line |
-| 3 | PopRadioGroup | Tonal shift radio options | No dividers |
-| 4 | PopSwitch | On/Off toggle | secondary_container fill |
-| 5 | PopSlider | Range with value | 24px thumb |
-| 6 | PopChip | Primary/Secondary/Tertiary container colors | Pill shape |
-| 7 | PopIcon | Material Symbols wrapper | Outlined FILL:0 |
-| 8 | PopSurface | Themed container | Squircle, tonal shadow |
-| 9 | PopBadge | Directional + value | Semantic green/red |
-| 10 | PopPill | Label badge | Small colored pill |
-| 11 | PopIconRow | Dynamic 1-N icons | Horizontal cluster |
-| 12 | PopSectionHeader | Accent label + title + line | Numbered variant |
-| 13 | PopTitleBar | Title + inline PopPill | Headline italic |
-| 14 | PopDisplayText | Large text + fractional | Directional coloring |
-| 15 | PopCodeBlock | Pre-formatted code | Monospace, copy header — PR #21 merged |
-| 16 | PopIconListItem | Icon + description | For guidelines/lists |
-| 17 | PopTable | Label-value rows | Alternating tonal, colored variants |
-| 18 | PopStepList | Numbered items + icons | 01/02/03 entries |
-| 19 | PopBottomBar | Icons, Icons+text, active | Glassmorphic, backdrop-blur |
-| 20 | PopDropdown | Selector + expand icon | Primary accent |
-
-### Composite (6) — `co.tanay.electricpop.composite`
-| # | Component | Composes | Description |
-|---|-----------|----------|-------------|
-| 1 | PopCarouselCard | PopIcon, PopChip, PopDisplayText, PopSurface | Horizontal scroll cards |
-| 2 | PopDashboardCard | PopSectionHeader, PopPill, PopDataRow, PopSurface | Data overview |
-| 3 | PopDataRow | PopIcon, PopDisplayText | Icon + label + value |
-| 4 | PopActionCard | PopDropdown, PopDisplayText, PopButton, PopTextField | Input + actions |
-| 5 | PopBannerCard | PopBadgeDirection, PopDisplayText, PopIcon, PopSurface | Hero / metric banner: label + value + trend chip + overlapping icon cluster (Hero/Surface styles). |
-| 6 | PopImageBannerCard | PopSurface + Image | Big image card with overlaid headline, configurable text anchor + scrim. |
-
-### Chart (3) — `co.tanay.electricpop.chart`
-| # | Component | Description |
-|---|-----------|-------------|
-| 1 | PopLineChart | Trend line, glow on active points |
-| 2 | PopBarChart | Comparative bars, active scales 1.02x |
-| 3 | PopDonutChart | Circular gauge, center text |
-
----
-
-## Agent System
-
-### Building Components: `/build-component` Skill
-
-**To build a component end-to-end, use the `/build-component` skill.** This runs the full plan → implement → review pipeline from the main session, where MCP tools (Telegram, GitHub, Stitch) work reliably.
+Use the `/build-component` skill. It runs the full plan → implement → review pipeline from the **main session**, where MCP tools (Telegram, GitHub, Stitch) work reliably.
 
 ```
-/build-component PopCodeBlock foundation "Pre-formatted code block with monospace font and copy header"
+/build-component PopXxx foundation "One-line description"
 ```
 
 The skill orchestrates `pixy-planner` → `pixy-implementor` → `pixy-reviewer` as subagents, handles Telegram notifications, and creates the PR.
 
-### Subagents (independently usable)
+**Do not** run `claude --agent pixy` or `Agent(pixy)` directly — MCP tools don't propagate reliably to top-level agent sessions ([anthropics/claude-code#30280](https://github.com/anthropics/claude-code/issues/30280)).
 
-Each subagent can also be dispatched directly via the Agent tool for ad-hoc tasks:
+## Subagents (independently usable)
 
-| Agent | File | Model | Role | When to use independently |
-|-------|------|-------|------|--------------------------|
-| Planner | `.claude/agents/pixy-planner.md` | opus | Creates implementation plans with Stitch design reference | Planning a component or change without building it yet |
-| Implementor | `.claude/agents/pixy-implementor.md` | sonnet | Writes code, tests, demos; runs builds; commits | Executing a known plan or making targeted code changes |
-| Reviewer | `.claude/agents/pixy-reviewer.md` | opus | Reviews against plan, design rules, and test quality | Reviewing existing code against spec/design rules |
+For ad-hoc tasks that don't need the full pipeline, dispatch one subagent directly via the `Agent` tool:
 
-**Note:** The `pixy.md` agent file is retained for reference but the `/build-component` skill is the preferred orchestration path. The skill runs in the main session where all MCP tools are available, avoiding the known issue where subagents cannot discover deferred MCP tools via ToolSearch.
+| Agent | File | Model | Role | When to use solo |
+|-------|------|-------|------|------------------|
+| Planner | `.claude/agents/pixy-planner.md` | opus | Writes implementation plans, references Stitch + DESIGN.md | Planning a change without building it yet |
+| Implementor | `.claude/agents/pixy-implementor.md` | sonnet | Writes code, tests, demos; runs builds; commits | Executing a known plan, targeted code changes |
+| Reviewer | `.claude/agents/pixy-reviewer.md` | opus | Reviews against plan, design rules, test quality | Auditing existing code before merge |
 
-### Key Design Decisions
+Each subagent has scoped tools (reviewer can't write, planner has Stitch MCP). Models are locked per role. Max-turns guards against runaways.
 
-**Why `/build-component` skill + subagents:**
-- The skill runs in the main session where MCP tools (Telegram, GitHub, Stitch) are reliably available
-- Each subagent has scoped tools (reviewer can't write, planner can access Stitch MCP)
-- Agent definitions are version-controlled and reusable
-- Models are locked per role (opus for planning/review, sonnet for implementation)
-- Max turns prevent runaway agents
-- Subagents can be used independently for ad-hoc tasks (planning, reviewing, fixing)
+## MCP Tools
 
-**Test quality enforcement:**
-- Planner must define what IS and ISN'T testable for each component
-- Implementor has explicit rules against stdlib-only tests
-- Reviewer has an "acid test": would tests pass if component file were deleted?
-- This prevents the garbage tests we saw in the initial pipeline test
+GitHub, Stitch, and Context7 operations all use MCP plugins. **Never** use `gh` CLI (not installed), raw `curl`, or `claude` CLI subprocesses for these.
 
-**Icons — PopIcons (not material-icons-core):**
-- The library provides `PopIcons` in `co.tanay.electricpop.foundation` with 16 built-in `ImageVector` icons
-- All demos, tests, and screenshot tests MUST use `PopIcons.*` (e.g., `PopIcons.Star`, `PopIcons.Check`)
-- NEVER add `material-icons-core` or `material-icons-extended` as a dependency
-- Available icons: Star, Check, Close, Info, Warning, Heart, Home, Search, Settings, Add, ArrowUp, ArrowDown, ArrowBack, ArrowForward, Person, TrendUp, TrendDown, Bolt, Sparkle, CheckCircle, Layers, Puzzle, Tokens, Menu
+- **GitHub:** `mcp__plugin_github_github__*` — PRs, issues, commits, code search.
+- **Stitch:** `mcp__stitch__*` — design screens, project data.
+- **Context7:** `mcp__plugin_context7_context7__*` — library/framework docs.
 
-**Stitch design comparison:**
-- Reviewer agent now fetches Stitch screenshots at full resolution and compares against component output
+MCP tools are **deferred**: their names appear in `<system-reminder>` tags but schemas must be loaded before calling. To load:
+
+```
+ToolSearch(query="select:mcp__plugin_github_github__list_pull_requests", max_results=1)
+```
+
+This returns the schema; after that, call the tool normally as a tool call (not via Bash).
+
+**Common mistakes:**
+- Don't run `claude tools list`, `claude mcp list`, or any `claude` subprocess — these don't work from inside a session.
+- Don't invoke MCP tools through Bash. They're tool calls.
+- Don't fall back to `gh` (not installed) or raw `curl` for GitHub.
+
+## Branching and Commit Rules
+
+- Each unit of work gets its own `feat/...`, `chore/...`, or `docs/...` branch off `main`.
+- Conventional Commits required (Detekt + Spotless are gated; PR-title lint coming in step 8 of the release track).
+- **No AI branding** in commits or PR bodies. No `Co-Authored-By: Claude`, no tool attribution. This is a hard rule.
+- Push the **feature branch only** — never to `main`. Merging is the user's action via PR.
+- All PRs target `main` directly, even when chained off another open branch for code continuity.
+
+## Test Quality Rules
+
+These exist because the initial build pipeline produced stdlib-only "tests" that never touched component code. Reviewer rejects on sight now.
+
+- Planner must declare what IS and ISN'T testable per component.
+- Implementor cannot write tests that exercise only Kotlin stdlib (`String.uppercase()`, etc.).
+- Reviewer's acid test: would the test still pass if the component file were deleted? If yes, the test is fake.
+- For purely visual components, a placeholder test documenting "validation via demo + Roborazzi" is acceptable.
+
+## Stitch Comparison
+
+Reviewer fetches Stitch screenshots at full resolution and compares against the rendered component. This is non-optional — a memory of past slips means we always do the visual diff.
+
+- Project ID: `7983075619754946215`
 - Append `=s0` to Google Photos URLs for original size
-- Stitch project ID: `7983075619754946215`
-
-**Branching and base branch resolution:**
-- Each component gets its own `feat/pop-{name}` branch, chained off the previous component's branch
-- PRs are merged in order; once merged, the base branch is **deleted from origin**
-- When creating a PR, always check `git ls-remote --heads origin` first to confirm the intended base branch still exists on the remote
-- If the base branch has been deleted (merged to main), use `main` as the PR base instead — this is expected behaviour, not an error
-- Example: if `feat/pop-surface` was merged and deleted, `feat/pop-badge` PR should target `main`
-
-**Android build notes:**
-- `compileSdk = 36` required (squircle-shape dependency)
-- Demo lint is disabled (AGP 8.7.3 / Kotlin 2.3.20 incompatibility)
-
----
-
-## Recommended Component Build Order
-
-Build in dependency order — foundations first, then composites that depend on them.
-
-### Wave 1: Core Foundation (no dependencies)
-1. PopPill (simplest — good for testing the pipeline)
-2. PopIcon
-3. PopSurface
-4. PopBadge
-
-### Wave 2: Input Foundation
-5. PopButton
-6. PopTextField
-7. PopSwitch
-8. PopSlider
-9. PopRadioGroup
-10. PopChip
-11. PopDropdown
-
-### Wave 3: Layout Foundation
-12. PopIconRow
-13. PopSectionHeader
-14. PopTitleBar
-15. PopDisplayText
-16. PopIconListItem
-17. PopStepList
-18. PopTable
-19. PopCodeBlock
-20. PopBottomBar
-
-### Wave 4: Composites (depend on foundation)
-21. PopDataRow (needs PopIcon, PopDisplayText)
-22. PopBannerCard (needs PopBadgeDirection, PopDisplayText, PopIcon, PopSurface) — also fills the hero-spotlight slot originally planned as PopFeatureCard
-23. PopDashboardCard (needs PopSectionHeader, PopPill, PopDataRow, PopSurface)
-24. PopCarouselCard (needs PopIcon, PopChip, PopDisplayText, PopSurface)
-25. PopActionCard (needs PopDropdown, PopDisplayText, PopButton, PopTextField)
-26. PopImageBannerCard (needs PopSurface)
-
-### Wave 5: Charts
-27. PopChart with PopChartStyle.Line / Bar / Donut variants
-
----
+- Crop tall images (>4000px) before viewing
+- Always compare BOTH light and dark variants
 
 ## Error Handling Protocol
 
-- **Implementor fails same step twice** → Pixy STOPS, reports to human
-- **Reviewer rejects 3 times** → Pixy STOPS, reports to human
-- **Build fails** → Implementor reads error, attempts fix once, then reports
-- **Never enter blind retry loops** — every retry must have a different approach
+- **Implementor fails the same step twice** → STOP, report to human.
+- **Reviewer rejects 3 times** → STOP, report to human.
+- **Build fails** → Implementor reads error, attempts fix once, then reports.
+- **Never enter blind retry loops.** Every retry must change approach.
+
+## Telegram Notifications
+
+`chat_id: 1402731017` — the user reads progress on Telegram, not the terminal.
+
+**Notify on:**
+- Any PR creation (component, doc, fix — all of them)
+- Wave or checkpoint completion
+- Decision needed from the user
+- Blocker hit after 2–3 failed attempts
+
+**Do not notify on:** intermediate build output, sub-step progress, planner/reviewer dispatches.

@@ -4,22 +4,22 @@
 
 Electric Pop is a Compose Multiplatform UI component library implementing the "Kinetic Pulse" design system. Single Gradle module, package-level separation.
 
-- **Repo:** github.com/tanaykumarbera/compose-electric-pop
-- **Design source:** [Stitch project 7983075619754946215](https://stitch.withgoogle.com/projects/7983075619754946215)
-- **Spec:** `docs/superpowers/specs/2026-03-25-electric-pop-design.md`
-- **Release track:** `docs/superpowers/plans/SESSION-RESUME.md` (status) · `docs/superpowers/plans/repo-cleanup-plan.md` (full plan)
+- **Repo:** [github.com/tanaykumarbera/compose-electric-pop](https://github.com/tanaykumarbera/compose-electric-pop)
+- **Design language:** [`DESIGN.md`](DESIGN.md) — 7 design rules, theme architecture, color/typography/shape/spacing tokens. **Read this before touching components.**
+- **Component reference:** <https://tanaykumarbera.github.io/compose-electric-pop/api/> — Dokka API docs with inline light + dark screenshots for every component.
+- **Stitch designs:** [project 7983075619754946215](https://stitch.withgoogle.com/projects/7983075619754946215)
 - **Targets:** Android (API 24+, compileSdk 36), iOS (arm64 + simulatorArm64), Desktop (JVM)
 - **Stack:** Kotlin 2.3.20, Compose Multiplatform 1.10.3, AGP 8.7.3
 - **Fonts:** Space Grotesk (headlines) + Manrope (body/labels) — bundled as Compose resources
-- **Icons:** Built-in `PopIcons` object — no material-icons-core dependency
+- **Icons:** Built-in `PopIcons` object — no `material-icons-core` dependency
 
 ## Project Structure
 
 ```
 library/src/commonMain/kotlin/co/tanay/electricpop/
 ├── theme/        → ElectricPopTheme, Color, Typography, Shape, Spacing
-├── foundation/   → 20 basic components (PopButton, PopTextField, etc.)
-├── composite/    → 6 composite components (PopBannerCard, PopDataRow, etc.)
+├── foundation/   → 20 basic components (PopButton, PopTextField, …)
+├── composite/    → 6 composite components (PopBannerCard, PopDataRow, …)
 └── chart/        → 1 PopChart with PopChartStyle.Line/Bar/Donut variants
 
 demo/src/commonMain/kotlin/co/tanay/electricpop/demo/
@@ -38,6 +38,10 @@ demo/src/commonMain/kotlin/co/tanay/electricpop/demo/
 ./gradlew :library:desktopTest               # Desktop tests (fastest)
 ./gradlew :library:recordRoborazziDesktop    # Record golden screenshots
 ./gradlew :library:verifyRoborazziDesktop    # Verify screenshots match goldens
+./gradlew :library:syncScreenshotKdoc        # Regenerate inline screenshot tables in KDoc
+./gradlew :library:checkScreenshotPresence   # Assert every public Pop* has light + dark goldens
+./gradlew detekt spotlessCheck               # Lint + format gate (matches CI)
+./gradlew :library:dokkaGenerate             # Build the Dokka HTML site
 ./gradlew :demo:run                          # Run desktop demo
 ```
 
@@ -50,16 +54,16 @@ demo/src/commonMain/kotlin/co/tanay/electricpop/demo/
 - `pixy-implementor` — for writing code, tests, demos (file tools only)
 - `pixy-reviewer` — for reviewing implementations (has Stitch + GitHub MCP)
 
-See `AGENTS.md` for full agent details and component inventory.
+See `AGENTS.md` for full agent details.
 
 ## Component Creation SOP
 
 Every component follows this exact workflow:
 
 ### 1. Understand
-- Read spec section 6 for the component's variants and design notes
-- Reference Stitch designs for visual details (light + dark screens)
-- Check which foundation components a composite depends on
+- Read [`DESIGN.md`](DESIGN.md) for the 7 design rules and theme tokens.
+- Reference Stitch designs for the component's visual details (light + dark screens).
+- For composites, identify which foundation components it depends on.
 
 ### 2. Create Component File
 - Path: `library/src/commonMain/kotlin/co/tanay/electricpop/{tier}/{ComponentName}.kt`
@@ -68,21 +72,21 @@ Every component follows this exact workflow:
 
 ### 3. Coding Rules
 - **MUST** read colors from `MaterialTheme.colorScheme`, NEVER hardcode hex values
-- **MUST** read typography from `MaterialTheme.typography`, NEVER hardcode TextStyles
+- **MUST** read typography from `MaterialTheme.typography`, NEVER hardcode `TextStyle`
 - **MUST** use `ElectricPopTheme.spacing` for spacing values
 - **MUST** use shapes from `MaterialTheme.shapes` or `PopShapeFull`
-- **MUST** follow all 7 design rules (see below)
+- **MUST** follow all 7 design rules in `DESIGN.md`
 - Composites **MUST** compose from foundation components, not duplicate their code
 - **MUST** use `PopIcons.*` for icons in demos/tests — NEVER add `material-icons-core` as a dependency
-- Typography is loaded via `ElectricPopTypography()` (composable function, not a val) — fonts are bundled resources
+- Typography is loaded via `ElectricPopTypography()` (composable function, not a `val`) — fonts are bundled resources
 
 ### 4. Test
 - Path: `library/src/commonTest/kotlin/co/tanay/electricpop/{tier}/{ComponentName}Test.kt`
-- Compose UI tests (runComposeUiTest) are NOT available in commonTest — do NOT use them there
+- Compose UI tests (`runComposeUiTest`) are NOT available in commonTest — do NOT use them there
 - Tests MUST exercise the component's actual code, NOT Kotlin stdlib
 - For components with logic (parsing, formatting, state machines): unit-test that logic
 - For purely visual components: write a minimal placeholder test documenting that visual validation is via demo app
-- NEVER write tests that only call stdlib functions (e.g., String.uppercase()) — these will be rejected
+- NEVER write tests that only call stdlib functions (e.g., `String.uppercase()`) — these will be rejected
 - Run: `./gradlew :library:desktopTest`
 
 ### 4b. Screenshot Test
@@ -92,6 +96,7 @@ Every component follows this exact workflow:
 - Golden images: `library/src/desktopTest/snapshots/{ComponentName}_*.png`
 - Record: `./gradlew :library:recordRoborazziDesktop`
 - Verify: `./gradlew :library:verifyRoborazziDesktop`
+- After recording, run `./gradlew :library:syncScreenshotKdoc` to regenerate the inline screenshot table in the component's KDoc.
 
 ### 5. Demo Page
 - Path: `demo/src/commonMain/kotlin/co/tanay/electricpop/demo/components/{ComponentName}Demo.kt`
@@ -102,38 +107,15 @@ Every component follows this exact workflow:
 ### 6. Branch, Commit, PR
 - Branch from current HEAD: `git checkout -b feat/pop-{component-name-kebab}`
 - Commit format: `feat(foundation): add PopComponentName with variants`
-- No AI branding in commits (no Co-Authored-By, no tool attribution)
+- No AI branding in commits (no `Co-Authored-By`, no tool attribution)
 - One component per branch/PR
 - Push the **feature branch** only — never push to `main`. Merging to main is the user's action via PR.
 - Branch from the previous component's branch (for code continuity), but **all PRs target `main` directly**
 - Never set a feature branch as a PR's base
 
-## 7 Design Rules (Non-Negotiable)
-
-Every component must enforce these. Violation = review rejection.
-
-1. **No-Line Rule** — No 1px borders. Use tonal surface shifts (`surfaceContainer` → `surfaceContainerLow`) and spacing
-2. **Tonal Shadows** — Shadow color matches background, 10% darker, 32px blur, 0 offset. No grey `elevation` shadows
-3. **Ghost Border** — Only for accessibility: `outlineVariant` at 15% opacity
-4. **Neon Glow** — Primary CTAs get 15-20% opacity color spread. Use `Modifier.shadow()` with primary color
-5. **Kinetic Interactions** — Hover: `Modifier.scale(1.05f)` with 200ms ease. Active: `scale(0.95f)`
-6. **Squircle Radii** — Use `ElectricPopShapes` (backed by squircle-shape library), not `RoundedCornerShape`
-7. **Typography Impact** — Headlines: uppercase text via `.uppercase()`, use `headlineLarge` / `displayLarge` styles
-
-## Component Inventory
-
-### Foundation (20)
-PopButton, PopTextField, PopRadioGroup, PopSwitch, PopSlider, PopChip, PopIcon, PopSurface, PopBadge, PopPill, PopIconRow, PopSectionHeader, PopTitleBar, PopDisplayText, PopCodeBlock, PopIconListItem, PopTable, PopStepList, PopBottomBar, PopDropdown
-
-### Composite (6)
-PopCarouselCard, PopDashboardCard, PopDataRow, PopActionCard, PopBannerCard, PopImageBannerCard
-
-### Chart (1, with 3 styles)
-PopChart with `PopChartStyle.Line`, `PopChartStyle.Bar`, `PopChartStyle.Donut`
-
 ## Key Dependencies
 
-- `sv.lib.squircleshape.SquircleShape` — for squircle corner shapes (NOT `com.stoyanvuchev`). Requires compileSdk 36.
+- `sv.lib.squircleshape.SquircleShape` — squircle corner shapes (NOT `com.stoyanvuchev`). Requires compileSdk 36.
 - `compose.material3` — Material3 theming
 - `compose.foundation` — layout primitives
 - `compose.ui` — core UI
@@ -171,7 +153,7 @@ MCP tools are **deferred** — listed by name in `<system-reminder>` tags but th
 
 ## Preferences
 - Single module library — R8 handles tree-shaking
-- Generic component names (Pop* prefix, no domain-specific naming)
+- Generic component names (`Pop*` prefix, no domain-specific naming)
 - Keep things simple — no over-engineering
 - Escalate blockers after 2-3 failed attempts — don't loop endlessly
 

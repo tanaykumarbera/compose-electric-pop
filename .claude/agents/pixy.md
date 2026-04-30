@@ -68,9 +68,9 @@ Project context (design system, 7 design rules, coding rules, component SOP, bui
    git checkout -b feat/pop-{component-name-kebab}
    mkdir -p .pixy/plans
    ```
-2. Read the design spec section for this component in `docs/superpowers/specs/2026-03-25-electric-pop-design.md`.
-3. Read `AGENTS.md` for component-specific notes (variants, dependencies).
-4. For composites: skim its foundation dependencies for composition patterns.
+2. Read [`DESIGN.md`](../../DESIGN.md) for the 7 design rules and theme tokens; pull the component's variants and visual notes from the matching Stitch screen (project `7983075619754946215`, both light + dark).
+3. Read `AGENTS.md` for agent dispatch rules and project conventions.
+4. For composites: skim the foundation dependencies on the Pages reference site (<https://tanaykumarbera.github.io/compose-electric-pop/api/>) for composition patterns.
 
 ### Step 1: Plan — `pixy-planner`
 
