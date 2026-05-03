@@ -20,6 +20,10 @@ jobs:
       version: ${{ steps.parse.outputs.version }}
       is_prerelease: ${{ steps.parse.outputs.is_prerelease }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Parse and validate tag
         id: parse
         run: |
@@ -34,6 +38,16 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "is_prerelease=$IS_PRE" >> "$GITHUB_OUTPUT"
           echo "Tag $TAG → version $VERSION (prerelease=$IS_PRE)"
+
+      - name: Stable releases must be tagged on main
+        if: steps.parse.outputs.is_prerelease == 'false'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Stable release tag must point to a commit on main. $GITHUB_SHA ($GITHUB_REF) is not reachable from origin/main. Tag a commit that is on main, or use a -rc.N suffix for off-main releases."
+            exit 1
+          fi
+          echo "✓ $GITHUB_SHA is reachable from origin/main"
 
       - name: Fail if already on Maven Central
         env:

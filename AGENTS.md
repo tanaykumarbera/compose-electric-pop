@@ -94,7 +94,7 @@ Reviewer fetches Stitch screenshots at full resolution and compares against the 
 
 Releases to Maven Central are tag-driven. Pushing `vX.Y.Z` or `vX.Y.Z-rc.N` to the repo runs `.github/workflows/release.yml`, which is a four-stage pipeline:
 
-1. **precheck** (ubuntu) — validates the tag matches `^v(\d+)\.(\d+)\.(\d+)(-rc\.\d+)?$`, HEAD-checks Maven Central for the version, fails fast on duplicates.
+1. **precheck** (ubuntu) — validates the tag matches `^v(\d+)\.(\d+)\.(\d+)(-rc\.\d+)?$`, asserts stable tags (no `-rc.N`) are on `origin/main` via `git merge-base --is-ancestor`, HEAD-checks Maven Central for the version. RCs may be cut from off-main commits for early-tester builds.
 2. **build-and-test** (macos) — `:library:build :library:allTests :library:verifyRoborazziDesktop detekt spotlessCheck`.
 3. **publish-to-central** (macos, `environment: production`) — manual approval gate. Publishes via `publishAllPublicationsToMavenCentral`. `automaticRelease=false` means artifacts stage on Sonatype Portal pending manual publish, not auto-promote.
 4. **github-release** (ubuntu) — creates the GH release page with auto-notes; prerelease flag from precheck.
