@@ -78,7 +78,16 @@ Settings → Environments → `production`:
 
 Settings → Branches → `main` should be protected: require PR review, require status checks (CI green), require linear history, no force pushes.
 
-Branch protection on `main` does **not** restrict tag creation — tags are independent refs and can point to any commit. The discipline of "tag only commits on main" is currently a maintainer convention, not enforced by the pipeline. A follow-up is planned to add a `git merge-base --is-ancestor` check in the precheck job that fails the workflow if the tagged commit isn't reachable from `main`.
+Branch protection on `main` does **not** restrict tag creation — tags are independent refs and can point to any commit. The pipeline enforces "stable tags must come from main" itself, in the precheck job:
+
+| Tag | Tagged commit on main? | Outcome |
+|---|---|---|
+| `v0.0.1` | yes | passes precheck → continues to build/publish |
+| `v0.0.1` | no (feature branch, fork, etc.) | **rejected at precheck** |
+| `v0.0.1-rc.1` | yes | passes |
+| `v0.0.1-rc.1` | no | passes — RCs are intentionally allowed off-main so early testers can install pre-release builds from feature branches |
+
+The check is `git merge-base --is-ancestor "$GITHUB_SHA" origin/main`, gated by `if: steps.parse.outputs.is_prerelease == 'false'`. Stable releases must be cut from a commit reachable from main; RCs may be cut from anywhere.
 
 ---
 
@@ -136,10 +145,11 @@ git push origin :refs/tags/v0.0.1
 ### precheck (ubuntu, ~30s)
 
 - Validates the tag matches the semver regex above.
+- For **stable** tags (no `-rc.N` suffix): asserts the tagged commit is reachable from `origin/main`. Fails if you tagged a feature branch. RCs skip this check.
 - HEAD-checks `https://repo1.maven.org/maven2/co/tanay/compose-electric-pop/<version>/`. If it returns 200, fails immediately — that version is already on Maven Central.
 - Outputs `version` (no `v` prefix) and `is_prerelease` for downstream jobs.
 
-Failure here means a bad tag. Delete the tag, re-tag with a corrected name.
+Failure here means a bad tag (wrong format, off-main stable tag, or duplicate version). Delete the tag, re-tag with a corrected name or commit.
 
 ### build-and-test (macos)
 
