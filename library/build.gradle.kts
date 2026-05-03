@@ -42,6 +42,10 @@ dokka {
             remoteLineSuffix.set("#L")
         }
     }
+    pluginsConfiguration.html {
+        templatesDir.set(layout.projectDirectory.dir("dokka/templates").asFile)
+        customStyleSheets.from(layout.projectDirectory.file("dokka/assets/star-button.css"))
+    }
 }
 
 // ---------------------------------------------------------------------------
