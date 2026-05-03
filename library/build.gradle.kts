@@ -356,8 +356,12 @@ android {
     }
 }
 
+version = (findProperty("VERSION_NAME") as? String)?.takeIf { it.isNotBlank() } ?: "0.0.0-SNAPSHOT"
+
 mavenPublishing {
-    coordinates("co.tanay", "compose-electric-pop", "0.1.0")
+    coordinates(groupId = "co.tanay", artifactId = "compose-electric-pop")
+    publishToMavenCentral(automaticRelease = false)
+    signAllPublications()
 
     pom {
         name.set("Electric Pop")
