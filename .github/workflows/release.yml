@@ -4,8 +4,56 @@ on:
   push:
     tags: ["v*"]
 
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  publish:
+  # --------------------------------------------------------------------------
+  # 1. precheck — parse tag, validate semver, fail fast if version is taken.
+  # Runs on ubuntu, no Gradle. ~30s. No secrets needed.
+  # --------------------------------------------------------------------------
+  precheck:
+    name: Precheck
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.parse.outputs.version }}
+      is_prerelease: ${{ steps.parse.outputs.is_prerelease }}
+    steps:
+      - name: Parse and validate tag
+        id: parse
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          if [[ ! "$TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?)$ ]]; then
+            echo "::error::Tag $TAG must match v<MAJOR>.<MINOR>.<PATCH> or v<MAJOR>.<MINOR>.<PATCH>-rc.<N>"
+            exit 1
+          fi
+          VERSION="${BASH_REMATCH[1]}"
+          IS_PRE="false"
+          [[ "$VERSION" == *"-rc."* ]] && IS_PRE="true"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "is_prerelease=$IS_PRE" >> "$GITHUB_OUTPUT"
+          echo "Tag $TAG → version $VERSION (prerelease=$IS_PRE)"
+
+      - name: Fail if already on Maven Central
+        env:
+          V: ${{ steps.parse.outputs.version }}
+        run: |
+          URL="https://repo1.maven.org/maven2/co/tanay/compose-electric-pop/$V/"
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+          if [[ "$CODE" == "200" ]]; then
+            echo "::error::Version $V is already published at $URL"
+            exit 1
+          fi
+          echo "Version $V is unused on Maven Central (HTTP $CODE)."
+
+  # --------------------------------------------------------------------------
+  # 2. build-and-test — compile, run all unit tests, screenshot verify, lint.
+  # Fails here = bad code; nothing reaches Sonatype.
+  # --------------------------------------------------------------------------
+  build-and-test:
+    name: Build & test
+    needs: precheck
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,19 +65,58 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Build & test
-        run: ./gradlew :library:build :library:allTests
+      - name: Build, test, verify screenshots, lint
+        run: |
+          ./gradlew \
+            :library:build \
+            :library:allTests \
+            :library:verifyRoborazziDesktop \
+            detekt \
+            spotlessCheck
 
-      - name: Publish to Maven Central
-        run: ./gradlew :library:publishAllPublicationsToMavenCentral --no-configuration-cache
+  # --------------------------------------------------------------------------
+  # 3. publish-to-central — sign, upload to Sonatype Central staging.
+  # Gated by the `production` GitHub Environment (manual approval).
+  # automaticRelease=false (set in build.gradle.kts) means artifacts stage
+  # on the portal for manual inspection rather than auto-promoting.
+  # --------------------------------------------------------------------------
+  publish-to-central:
+    name: Publish to Maven Central
+    needs: [precheck, build-and-test]
+    runs-on: macos-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Publish
         env:
+          ORG_GRADLE_PROJECT_VERSION_NAME: ${{ needs.precheck.outputs.version }}
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.GPG_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_KEY_PASSWORD }}
+        run: ./gradlew :library:publishAllPublicationsToMavenCentral --no-configuration-cache
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+  # --------------------------------------------------------------------------
+  # 4. github-release — create the GitHub Release page with auto-generated
+  # notes. Runs only after the artifacts are staged on Maven Central.
+  # --------------------------------------------------------------------------
+  github-release:
+    name: GitHub release
+    needs: [precheck, publish-to-central]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
+          prerelease: ${{ needs.precheck.outputs.is_prerelease }}
