@@ -90,6 +90,26 @@ Reviewer fetches Stitch screenshots at full resolution and compares against the 
 - **Build fails** → Implementor reads error, attempts fix once, then reports.
 - **Never enter blind retry loops.** Every retry must change approach.
 
+## Release Pipeline
+
+Releases to Maven Central are tag-driven. Pushing `vX.Y.Z` or `vX.Y.Z-rc.N` to the repo runs `.github/workflows/release.yml`, which is a four-stage pipeline:
+
+1. **precheck** (ubuntu) — validates the tag matches `^v(\d+)\.(\d+)\.(\d+)(-rc\.\d+)?$`, HEAD-checks Maven Central for the version, fails fast on duplicates.
+2. **build-and-test** (macos) — `:library:build :library:allTests :library:verifyRoborazziDesktop detekt spotlessCheck`.
+3. **publish-to-central** (macos, `environment: production`) — manual approval gate. Publishes via `publishAllPublicationsToMavenCentral`. `automaticRelease=false` means artifacts stage on Sonatype Portal pending manual publish, not auto-promote.
+4. **github-release** (ubuntu) — creates the GH release page with auto-notes; prerelease flag from precheck.
+
+The version string lives only on the tag, never in code. `library/build.gradle.kts` reads it from the `VERSION_NAME` gradle property at build time, defaulting to `0.0.0-SNAPSHOT` for local builds.
+
+When making release-related changes:
+
+- Don't bump versions in `build.gradle.kts` — there are none to bump.
+- Don't push directly to `main` — the workflow trusts only main-merged commits.
+- Vanniktech maven-publish plugin version lives in `gradle/libs.versions.toml`. AGP 8.7.3 caps it at 0.35.0; bumping to 0.36.0+ requires AGP ≥ 8.13.0.
+- Compose Resources derives its package from `project.group + project.name`. Don't set `project.group` — it must stay defaulted so the package stays `compose_electric_pop.library.generated.resources`. The Maven `groupId` is set on the Vanniktech extension only via `coordinates(groupId = "co.tanay", ...)`.
+
+Maintainer runbook with the full procedure (one-time setup, day-to-day cutting a release, recovery): [`RELEASING.md`](RELEASING.md).
+
 ## Telegram Notifications
 
 `chat_id: 1402731017` — the user reads progress on Telegram, not the terminal.
