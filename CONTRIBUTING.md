@@ -135,6 +135,12 @@ Before requesting review, confirm:
 - [ ] Public APIs are documented with KDoc
 - [ ] Commit message follows Conventional Commits
 
+## Releases
+
+Releases to Maven Central are tag-driven and run from `.github/workflows/release.yml`. Pushing `vX.Y.Z` (or `vX.Y.Z-rc.N`) to `main` triggers a four-stage pipeline (`precheck → build-and-test → publish-to-central → github-release`). The published version comes from the tag — there is no version string in `build.gradle.kts` to bump.
+
+Cutting a release is gated to maintainers via the `production` GitHub Environment. Contributors don't need to do anything release-related when submitting a PR. The full runbook lives in [`RELEASING.md`](RELEASING.md).
+
 ## Reporting bugs and proposing features
 
 Use the issue templates under `.github/ISSUE_TEMPLATE/`. For visual issues, attach a screenshot or screen recording — it speeds triage considerably.
