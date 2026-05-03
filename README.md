@@ -1,5 +1,14 @@
 # Electric Pop
 
+[![Maven Central](https://img.shields.io/maven-central/v/co.tanay/compose-electric-pop.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/co.tanay/compose-electric-pop)
+[![CI](https://github.com/tanaykumarbera/compose-electric-pop/actions/workflows/ci.yml/badge.svg)](https://github.com/tanaykumarbera/compose-electric-pop/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/tanaykumarbera/compose-electric-pop/branch/main/graph/badge.svg)](https://codecov.io/gh/tanaykumarbera/compose-electric-pop)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.3.20-CAFD00?logo=kotlin&logoColor=black)](https://kotlinlang.org)
+[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-1.10.3-CAFD00?logo=jetpackcompose&logoColor=black)](https://www.jetbrains.com/lp/compose-multiplatform/)
+[![Platforms](https://img.shields.io/badge/Platforms-Android%20%7C%20iOS%20%7C%20Desktop-CAFD00)](#platforms)
+[![API docs](https://img.shields.io/badge/API_docs-Dokka-CAFD00)](https://tanaykumarbera.github.io/compose-electric-pop/api/)
+
 A high-energy Compose Multiplatform UI component library.
 
 Bold typography. Kinetic interactions. Neon-saturated design system.
