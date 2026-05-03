@@ -45,6 +45,7 @@ dokka {
     pluginsConfiguration.html {
         templatesDir.set(layout.projectDirectory.dir("dokka/templates").asFile)
         customStyleSheets.from(layout.projectDirectory.file("dokka/assets/star-button.css"))
+        footerMessage.set("Copyright © 2026 @tanaykumarbera · Released under Apache 2.0")
     }
 }
 

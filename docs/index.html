@@ -9,6 +9,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Manrope', sans-serif; background: #0C0F10; color: #F5F6F7; overflow-x: hidden; }
         .hero { min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 1.5rem 2rem; text-align: center; gap: 1.25rem; }
+        .hero-title { display: inline-block; text-align: left; }
+        .eyebrow { display: inline-flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+        .eyebrow-chip { background: #CAFD00; color: #0C0F10; padding: 0.4rem 1rem; border-radius: 9999px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1; }
+        .eyebrow-dash { display: block; width: 56px; height: 2px; background: #CAFD00; }
         h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-style: italic; font-size: clamp(2rem, 8vw, 6rem); text-transform: uppercase; letter-spacing: -0.02em; color: #CAFD00; }
         .subtitle { font-size: 1.25rem; color: #9B9D9E; max-width: 640px; }
         .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 0.5rem; }
@@ -22,71 +26,94 @@
         .marquee:hover .marquee-track { animation-play-state: paused; }
         @keyframes marquee { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
         @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
-        .phone { flex: 0 0 auto; width: 200px; aspect-ratio: 9 / 19.5; background: #050606; border-radius: 30px; padding: 7px; position: relative; box-shadow: 0 22px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06) inset; }
-        .phone img { width: 100%; height: 100%; object-fit: cover; object-position: top center; border-radius: 23px; display: block; }
+        .phone { flex: 0 0 auto; width: 200px; aspect-ratio: 9 / 19.5; background: #050606; padding: 7px; position: relative; display: flex; flex-direction: column; box-shadow: 0 22px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06) inset; border-radius: 30px; }
         .phone--ios { border-radius: 38px; padding: 9px; }
-        .phone--ios img { border-radius: 29px; }
         .phone--ios::before { content: ''; position: absolute; top: 18px; left: 50%; transform: translateX(-50%); width: 70px; height: 18px; background: #000; border-radius: 12px; z-index: 2; }
         .phone--ios::after { content: ''; position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); width: 64px; height: 4px; background: rgba(245,246,247,0.7); border-radius: 2px; z-index: 2; }
         .phone--android::before { content: ''; position: absolute; top: 16px; left: 50%; transform: translateX(-50%); width: 7px; height: 7px; background: #050606; border-radius: 50%; box-shadow: 0 0 0 1.5px rgba(255,255,255,0.08); z-index: 2; }
+        .phone--android { --bar-bg: #FCFCFD; --bar-fg: #0C0F10; }
+        .phone--ios { --bar-bg: #040405; --bar-fg: #F5F6F7; }
+        .bar { flex: 0 0 auto; height: 38px; padding: 0 14px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 600; line-height: 1; border-radius: 23px 23px 0 0; background: var(--bar-bg); color: var(--bar-fg); z-index: 1; }
+        .bar svg { display: block; fill: currentColor; }
+        .phone--ios .bar { height: 44px; padding: 4px 12px 0; border-radius: 29px 29px 0 0; }
+        .phone img { flex: 1 1 0; min-height: 0; width: 100%; object-fit: cover; object-position: top center; display: block; border-radius: 0 0 23px 23px; }
+        .phone--ios img { border-radius: 0 0 29px 29px; }
         .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; padding: 4rem 2rem; max-width: 960px; margin: 0 auto; }
         .card { background: #1a1d1e; border-radius: 2rem; padding: 2rem; }
         .card h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #CAFD00; margin-bottom: 0.5rem; }
         .card p { color: #9B9D9E; line-height: 1.6; }
-        .platforms { color: #595C5D; text-align: center; padding: 2rem; font-size: 0.9rem; }
+        .platforms { color: #595C5D; text-align: center; padding: 2rem 2rem 0.5rem; font-size: 0.9rem; }
+        .copyright { color: #3F4243; text-align: center; padding: 0 2rem 2.5rem; font-size: 0.75rem; letter-spacing: 0.04em; }
+        .copyright a { color: inherit; text-decoration: none; border-bottom: 1px dotted currentColor; }
+        .copyright a:hover { color: #9B9D9E; }
     </style>
 </head>
 <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="i-bat" viewBox="0 0 26 12">
+                <rect x="0.5" y="1" width="22" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1" opacity="0.55"/>
+                <rect x="24" y="4" width="2" height="4" rx="0.5"/>
+                <rect x="2" y="2.5" width="19" height="7" rx="1.2"/>
+            </symbol>
+        </defs>
+    </svg>
     <div class="hero">
-        <h1>Electric Pop</h1>
+        <div class="hero-title">
+            <div class="eyebrow">
+                <span class="eyebrow-chip">Compose Multiplatform</span>
+                <span class="eyebrow-dash" aria-hidden="true"></span>
+            </div>
+            <h1>Electric Pop</h1>
+        </div>
         <p class="subtitle">A high-energy Compose Multiplatform UI component library. Bold typography, kinetic interactions, and a neon-saturated design system.</p>
         <div class="actions">
             <a class="badge" href="api/">API Reference &rarr;</a>
-            <a class="badge secondary" href="https://github.com/tanaykumarbera/compose-electric-pop">GitHub</a>
+            <a class="badge secondary" href="https://github.com/tanaykumarbera/compose-electric-pop">Star on GitHub</a>
         </div>
     </div>
     <section class="showcase">
         <p class="showcase-eyebrow">Design boards · 8 components · Light + Dark</p>
         <div class="marquee">
             <div class="marquee-track">
-                <div class="phone phone--android"><img src="assets/showcase/hero-pulse-card-light.png" alt="Hero Pulse Card · light"></div>
-                <div class="phone phone--ios"><img src="assets/showcase/hero-pulse-card-dark.png" alt="Hero Pulse Card · dark"></div>
-                <div class="phone phone--android"><img src="assets/showcase/action-buttons-light.png" alt="Action Buttons · light"></div>
-                <div class="phone phone--ios"><img src="assets/showcase/action-buttons-dark.png" alt="Action Buttons · dark"></div>
-                <div class="phone phone--android"><img src="assets/showcase/live-ledger-cards-light.png" alt="Live Ledger Cards · light"></div>
-                <div class="phone phone--ios"><img src="assets/showcase/live-ledger-cards-dark.png" alt="Live Ledger Cards · dark"></div>
-                <div class="phone phone--android"><img src="assets/showcase/analytics-charts-light.png" alt="Analytics &amp; Charts · light"></div>
-                <div class="phone phone--ios"><img src="assets/showcase/analytics-charts-dark.png" alt="Analytics &amp; Charts · dark"></div>
-                <div class="phone phone--android"><img src="assets/showcase/transaction-row-light.png" alt="Transaction Row · light"></div>
-                <div class="phone phone--ios"><img src="assets/showcase/transaction-row-dark.png" alt="Transaction Row · dark"></div>
-                <div class="phone phone--android"><img src="assets/showcase/currency-dispatcher-light.png" alt="Currency Dispatcher · light"></div>
-                <div class="phone phone--ios"><img src="assets/showcase/currency-dispatcher-dark.png" alt="Currency Dispatcher · dark"></div>
-                <div class="phone phone--android"><img src="assets/showcase/stash-hub-card-light.png" alt="Stash Hub Card · light"></div>
-                <div class="phone phone--ios"><img src="assets/showcase/stash-hub-card-dark.png" alt="Stash Hub Card · dark"></div>
-                <div class="phone phone--android"><img src="assets/showcase/input-controls-light.png" alt="Input Controls · light"></div>
-                <div class="phone phone--ios"><img src="assets/showcase/input-controls-dark.png" alt="Input Controls · dark"></div>
-                <div class="phone phone--android" aria-hidden="true"><img src="assets/showcase/hero-pulse-card-light.png" alt="" loading="lazy"></div>
-                <div class="phone phone--ios" aria-hidden="true"><img src="assets/showcase/hero-pulse-card-dark.png" alt="" loading="lazy"></div>
-                <div class="phone phone--android" aria-hidden="true"><img src="assets/showcase/action-buttons-light.png" alt="" loading="lazy"></div>
-                <div class="phone phone--ios" aria-hidden="true"><img src="assets/showcase/action-buttons-dark.png" alt="" loading="lazy"></div>
-                <div class="phone phone--android" aria-hidden="true"><img src="assets/showcase/live-ledger-cards-light.png" alt="" loading="lazy"></div>
-                <div class="phone phone--ios" aria-hidden="true"><img src="assets/showcase/live-ledger-cards-dark.png" alt="" loading="lazy"></div>
-                <div class="phone phone--android" aria-hidden="true"><img src="assets/showcase/analytics-charts-light.png" alt="" loading="lazy"></div>
-                <div class="phone phone--ios" aria-hidden="true"><img src="assets/showcase/analytics-charts-dark.png" alt="" loading="lazy"></div>
-                <div class="phone phone--android" aria-hidden="true"><img src="assets/showcase/transaction-row-light.png" alt="" loading="lazy"></div>
-                <div class="phone phone--ios" aria-hidden="true"><img src="assets/showcase/transaction-row-dark.png" alt="" loading="lazy"></div>
-                <div class="phone phone--android" aria-hidden="true"><img src="assets/showcase/currency-dispatcher-light.png" alt="" loading="lazy"></div>
-                <div class="phone phone--ios" aria-hidden="true"><img src="assets/showcase/currency-dispatcher-dark.png" alt="" loading="lazy"></div>
-                <div class="phone phone--android" aria-hidden="true"><img src="assets/showcase/stash-hub-card-light.png" alt="" loading="lazy"></div>
-                <div class="phone phone--ios" aria-hidden="true"><img src="assets/showcase/stash-hub-card-dark.png" alt="" loading="lazy"></div>
-                <div class="phone phone--android" aria-hidden="true"><img src="assets/showcase/input-controls-light.png" alt="" loading="lazy"></div>
-                <div class="phone phone--ios" aria-hidden="true"><img src="assets/showcase/input-controls-dark.png" alt="" loading="lazy"></div>
+                <div class="phone phone--android"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/hero-pulse-card-light.png" alt="Hero Pulse Card · light"></div>
+                <div class="phone phone--ios"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/hero-pulse-card-dark.png" alt="Hero Pulse Card · dark"></div>
+                <div class="phone phone--android"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/action-buttons-light.png" alt="Action Buttons · light"></div>
+                <div class="phone phone--ios"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/action-buttons-dark.png" alt="Action Buttons · dark"></div>
+                <div class="phone phone--android"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/live-ledger-cards-light.png" alt="Live Ledger Cards · light"></div>
+                <div class="phone phone--ios"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/live-ledger-cards-dark.png" alt="Live Ledger Cards · dark"></div>
+                <div class="phone phone--android"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/analytics-charts-light.png" alt="Analytics &amp; Charts · light"></div>
+                <div class="phone phone--ios"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/analytics-charts-dark.png" alt="Analytics &amp; Charts · dark"></div>
+                <div class="phone phone--android"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/transaction-row-light.png" alt="Transaction Row · light"></div>
+                <div class="phone phone--ios"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/transaction-row-dark.png" alt="Transaction Row · dark"></div>
+                <div class="phone phone--android"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/currency-dispatcher-light.png" alt="Currency Dispatcher · light"></div>
+                <div class="phone phone--ios"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/currency-dispatcher-dark.png" alt="Currency Dispatcher · dark"></div>
+                <div class="phone phone--android"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/stash-hub-card-light.png" alt="Stash Hub Card · light"></div>
+                <div class="phone phone--ios"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/stash-hub-card-dark.png" alt="Stash Hub Card · dark"></div>
+                <div class="phone phone--android"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/input-controls-light.png" alt="Input Controls · light"></div>
+                <div class="phone phone--ios"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/input-controls-dark.png" alt="Input Controls · dark"></div>
+                <div class="phone phone--android" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/hero-pulse-card-light.png" alt="" loading="lazy"></div>
+                <div class="phone phone--ios" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/hero-pulse-card-dark.png" alt="" loading="lazy"></div>
+                <div class="phone phone--android" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/action-buttons-light.png" alt="" loading="lazy"></div>
+                <div class="phone phone--ios" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/action-buttons-dark.png" alt="" loading="lazy"></div>
+                <div class="phone phone--android" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/live-ledger-cards-light.png" alt="" loading="lazy"></div>
+                <div class="phone phone--ios" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/live-ledger-cards-dark.png" alt="" loading="lazy"></div>
+                <div class="phone phone--android" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/analytics-charts-light.png" alt="" loading="lazy"></div>
+                <div class="phone phone--ios" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/analytics-charts-dark.png" alt="" loading="lazy"></div>
+                <div class="phone phone--android" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/transaction-row-light.png" alt="" loading="lazy"></div>
+                <div class="phone phone--ios" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/transaction-row-dark.png" alt="" loading="lazy"></div>
+                <div class="phone phone--android" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/currency-dispatcher-light.png" alt="" loading="lazy"></div>
+                <div class="phone phone--ios" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/currency-dispatcher-dark.png" alt="" loading="lazy"></div>
+                <div class="phone phone--android" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/stash-hub-card-light.png" alt="" loading="lazy"></div>
+                <div class="phone phone--ios" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/stash-hub-card-dark.png" alt="" loading="lazy"></div>
+                <div class="phone phone--android" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/input-controls-light.png" alt="" loading="lazy"></div>
+                <div class="phone phone--ios" aria-hidden="true"><span class="bar"><span>9:41</span><svg width="20" height="9"><use href="#i-bat"/></svg></span><img src="assets/showcase/input-controls-dark.png" alt="" loading="lazy"></div>
             </div>
         </div>
     </section>
     <div class="features">
         <div class="card">
-            <h3>30 Components</h3>
+            <h3>27 Components</h3>
             <p>Foundation elements, composite cards, and data visualization — all themed with the Kinetic Pulse aesthetic.</p>
         </div>
         <div class="card">
@@ -99,5 +126,6 @@
         </div>
     </div>
     <p class="platforms">Android (API 24+) &middot; iOS &middot; Desktop JVM &middot; Compose Multiplatform</p>
+    <p class="copyright">Copyright &copy; 2026 <a href="https://github.com/tanaykumarbera">@tanaykumarbera</a> &middot; Released under <a href="https://github.com/tanaykumarbera/compose-electric-pop/blob/main/LICENSE">Apache 2.0</a></p>
 </body>
 </html>
