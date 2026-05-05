@@ -13,6 +13,38 @@ A high-energy Compose Multiplatform UI component library.
 
 Bold typography. Kinetic interactions. Neon-saturated design system.
 
+## Showcase
+
+A few sample screens built entirely from `Pop*` components — each rendered in light and dark themes. The full marquee lives at <https://tanaykumarbera.github.io/compose-electric-pop>.
+
+<table>
+  <tr>
+    <th align="left">Sample</th>
+    <th>Light</th>
+    <th>Dark</th>
+  </tr>
+  <tr>
+    <td><b>Hero Pulse Card</b><br/><sub>Composite banner card with pulse accent.</sub></td>
+    <td><img src="https://raw.githubusercontent.com/tanaykumarbera/compose-electric-pop/main/docs/assets/showcase/hero-pulse-card-light.png" alt="Hero Pulse Card, light theme" width="240"/></td>
+    <td><img src="https://raw.githubusercontent.com/tanaykumarbera/compose-electric-pop/main/docs/assets/showcase/hero-pulse-card-dark.png" alt="Hero Pulse Card, dark theme" width="240"/></td>
+  </tr>
+  <tr>
+    <td><b>Analytics Charts</b><br/><sub><code>PopChart</code> in line, bar, and donut variants.</sub></td>
+    <td><img src="https://raw.githubusercontent.com/tanaykumarbera/compose-electric-pop/main/docs/assets/showcase/analytics-charts-light.png" alt="Analytics Charts, light theme" width="240"/></td>
+    <td><img src="https://raw.githubusercontent.com/tanaykumarbera/compose-electric-pop/main/docs/assets/showcase/analytics-charts-dark.png" alt="Analytics Charts, dark theme" width="240"/></td>
+  </tr>
+  <tr>
+    <td><b>Live Ledger Cards</b><br/><sub>Data rows, badges, and pills composed into a feed.</sub></td>
+    <td><img src="https://raw.githubusercontent.com/tanaykumarbera/compose-electric-pop/main/docs/assets/showcase/live-ledger-cards-light.png" alt="Live Ledger Cards, light theme" width="240"/></td>
+    <td><img src="https://raw.githubusercontent.com/tanaykumarbera/compose-electric-pop/main/docs/assets/showcase/live-ledger-cards-dark.png" alt="Live Ledger Cards, dark theme" width="240"/></td>
+  </tr>
+  <tr>
+    <td><b>Stash Hub Card</b><br/><sub>Dashboard composite with chart, action card, and table.</sub></td>
+    <td><img src="https://raw.githubusercontent.com/tanaykumarbera/compose-electric-pop/main/docs/assets/showcase/stash-hub-card-light.png" alt="Stash Hub Card, light theme" width="240"/></td>
+    <td><img src="https://raw.githubusercontent.com/tanaykumarbera/compose-electric-pop/main/docs/assets/showcase/stash-hub-card-dark.png" alt="Stash Hub Card, dark theme" width="240"/></td>
+  </tr>
+</table>
+
 ## Platforms
 
 - Android (API 24+)
