@@ -62,13 +62,17 @@ jobs:
           echo "Version $V is unused on Maven Central (HTTP $CODE)."
 
   # --------------------------------------------------------------------------
-  # 2. build-and-test — compile, run all unit tests, screenshot verify, lint.
+  # 2. build-and-test — compile, run desktop unit tests, screenshot verify,
+  # lint. MUST run on ubuntu-latest: Roborazzi goldens were recorded on Linux
+  # and Compose Desktop / Skia rasterizes pixels differently on macOS, so any
+  # screenshot verify on macOS produces false diffs. iOS sim tests are not
+  # exercised here — the iOS klib is built and published in publish-to-central.
   # Fails here = bad code; nothing reaches Sonatype.
   # --------------------------------------------------------------------------
   build-and-test:
     name: Build & test
     needs: precheck
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
 
@@ -77,16 +81,40 @@ jobs:
           distribution: zulu
           java-version: 21
 
+      - uses: android-actions/setup-android@v3
+
       - uses: gradle/actions/setup-gradle@v6
 
-      - name: Build, test, verify screenshots, lint
-        run: |
-          ./gradlew \
-            :library:build \
-            :library:allTests \
-            :library:verifyRoborazziDesktop \
-            detekt \
-            spotlessCheck
+      - name: Lint + format check (Detekt + Spotless)
+        run: ./gradlew detekt spotlessCheck --stacktrace
+
+      - name: Every component has light + dark snapshots
+        run: ./gradlew :library:checkScreenshotPresence --stacktrace
+
+      - name: Compile desktop + Android
+        run: ./gradlew :library:compileKotlinDesktop :library:assembleRelease --stacktrace
+
+      - name: Desktop unit tests
+        run: ./gradlew :library:desktopTest --stacktrace
+
+      - name: Verify Roborazzi screenshots
+        run: ./gradlew :library:verifyRoborazziDesktop --stacktrace
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-test-reports
+          path: "**/build/reports/tests/"
+
+      - name: Upload Roborazzi diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-roborazzi-diffs
+          path: |
+            library/build/outputs/roborazzi/
+            library/build/reports/roborazzi/
 
   # --------------------------------------------------------------------------
   # 3. publish-to-central — sign, upload to Sonatype Central staging.
