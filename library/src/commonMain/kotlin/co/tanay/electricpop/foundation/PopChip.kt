@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import co.tanay.electricpop.theme.ElectricPopTheme
 import co.tanay.electricpop.theme.PopShapeFull
@@ -43,6 +44,26 @@ enum class PopChipColor {
 
     /** Cyber Cyan — tertiaryContainer / onTertiaryContainer */
     Tertiary,
+
+    /** Error — errorContainer / onErrorContainer */
+    Error,
+
+    /** Neutral — surfaceContainerHigh / onSurface */
+    Neutral,
+}
+
+/**
+ * Size variant for a [PopChip].
+ */
+enum class PopChipSize {
+    /** Compact uppercase pill — matches the former PopPill appearance. */
+    Small,
+
+    /** Default label chip — as-typed casing. */
+    Medium,
+
+    /** Prominent filter chip — as-typed casing, larger padding and typography. */
+    Large,
 }
 
 /**
@@ -64,6 +85,8 @@ fun PopChipColor.toColors(): PopChipColors {
         PopChipColor.Primary -> PopChipColors(scheme.primaryContainer, scheme.onPrimaryContainer)
         PopChipColor.Secondary -> PopChipColors(scheme.secondaryContainer, scheme.onSecondaryContainer)
         PopChipColor.Tertiary -> PopChipColors(scheme.tertiaryContainer, scheme.onTertiaryContainer)
+        PopChipColor.Error -> PopChipColors(scheme.errorContainer, scheme.onErrorContainer)
+        PopChipColor.Neutral -> PopChipColors(scheme.surfaceContainerHigh, scheme.onSurface)
     }
 }
 
@@ -74,12 +97,18 @@ fun PopChipColor.toColors(): PopChipColors {
  * optional leading icon. It uses [PopShapeFull] for the shape and reads
  * all styling from the theme — no hardcoded colors, typography, or spacing.
  *
+ * Size variants:
+ * - [PopChipSize.Small] — uppercase casing, [labelSmall] typography, compact padding. Replaces the former PopPill.
+ * - [PopChipSize.Medium] — as-typed casing, [labelLarge] typography (default).
+ * - [PopChipSize.Large] — as-typed casing, [titleSmall] typography, wider padding.
+ *
  * Supports kinetic interactions (hover: scale 1.05, press: scale 0.95)
  * when an [onClick] handler is provided.
  *
  * @param label The text to display inside the chip.
  * @param modifier Optional [Modifier] for the chip container.
  * @param color A [PopChipColor] preset that determines the container and content colors.
+ * @param size Size variant; defaults to [PopChipSize.Medium].
  * @param icon Optional leading [ImageVector] icon displayed before the label.
  * @param onClick Optional click handler. When null, the chip is non-interactive.
  *
@@ -94,6 +123,7 @@ fun PopChip(
     label: String,
     modifier: Modifier = Modifier,
     color: PopChipColor = PopChipColor.Primary,
+    size: PopChipSize = PopChipSize.Medium,
     icon: ImageVector? = null,
     onClick: (() -> Unit)? = null,
 ) {
@@ -103,6 +133,7 @@ fun PopChip(
         modifier = modifier,
         containerColor = colors.containerColor,
         contentColor = colors.contentColor,
+        size = size,
         icon = icon,
         onClick = onClick,
     )
@@ -118,6 +149,7 @@ fun PopChip(
  * @param modifier Optional [Modifier] for the chip container.
  * @param containerColor Background color of the chip.
  * @param contentColor Text and icon tint color inside the chip.
+ * @param size Size variant; defaults to [PopChipSize.Medium].
  * @param icon Optional leading [ImageVector] icon displayed before the label.
  * @param onClick Optional click handler. When null, the chip is non-interactive.
  */
@@ -127,6 +159,7 @@ fun PopChip(
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    size: PopChipSize = PopChipSize.Medium,
     icon: ImageVector? = null,
     onClick: (() -> Unit)? = null,
 ) {
@@ -137,8 +170,8 @@ fun PopChip(
 
     // Kinetic Interactions: hover → 1.05x, active → 0.95x (rule 5)
     val targetScale = when {
-        isPressed -> 0.95f
-        isHovered -> 1.05f
+        onClick != null && isPressed -> 0.95f
+        onClick != null && isHovered -> 1.05f
         else -> 1f
     }
     val scale by animateFloatAsState(
@@ -156,6 +189,42 @@ fun PopChip(
         Modifier
     }
 
+    val paddingH: Dp
+    val paddingV: Dp
+    val iconSize: Dp
+    val gap: Dp
+    val displayLabel: String
+
+    when (size) {
+        PopChipSize.Small -> {
+            paddingH = spacing.sm
+            paddingV = spacing.xxs
+            iconSize = 12.dp
+            gap = spacing.xxs
+            displayLabel = label.uppercase()
+        }
+        PopChipSize.Medium -> {
+            paddingH = spacing.md
+            paddingV = spacing.xs
+            iconSize = 16.dp
+            gap = spacing.xs
+            displayLabel = label
+        }
+        PopChipSize.Large -> {
+            paddingH = spacing.lg
+            paddingV = spacing.sm
+            iconSize = 20.dp
+            gap = spacing.sm
+            displayLabel = label
+        }
+    }
+
+    val textStyle = when (size) {
+        PopChipSize.Small -> MaterialTheme.typography.labelSmall
+        PopChipSize.Medium -> MaterialTheme.typography.labelLarge
+        PopChipSize.Large -> MaterialTheme.typography.titleSmall
+    }
+
     Row(
         modifier = modifier
             .scale(scale)
@@ -163,24 +232,24 @@ fun PopChip(
             .background(containerColor)
             .then(clickModifier)
             .padding(
-                horizontal = spacing.md,
-                vertical = spacing.xs,
+                horizontal = paddingH,
+                vertical = paddingV,
             ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spacing.xs),
+        horizontalArrangement = Arrangement.spacedBy(gap),
     ) {
         if (icon != null) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
                 tint = contentColor,
-                modifier = Modifier.size(16.dp),
+                modifier = Modifier.size(iconSize),
             )
         }
         Text(
-            text = label,
+            text = displayLabel,
             color = contentColor,
-            style = MaterialTheme.typography.labelLarge,
+            style = textStyle,
         )
     }
 }

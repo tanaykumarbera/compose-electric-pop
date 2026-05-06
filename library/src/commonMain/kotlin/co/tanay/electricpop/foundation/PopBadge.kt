@@ -12,6 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import co.tanay.electricpop.theme.ElectricPopTheme
 import co.tanay.electricpop.theme.PopShapeFull
 
@@ -27,6 +30,17 @@ enum class PopBadgeDirection {
 
     /** No trend — neutral (surfaceContainerHigh) with no icon */
     Neutral,
+}
+
+/**
+ * Size variant for a [PopBadge].
+ */
+enum class PopBadgeSize {
+    /** Compact badge — labelSmall typography, 8dp/2dp padding, 16dp icon. */
+    Small,
+
+    /** Hero badge — titleLarge italic Black typography, 16dp/8dp padding, 24dp icon. */
+    Large,
 }
 
 /**
@@ -68,11 +82,16 @@ fun PopBadgeDirection.toColors(): PopBadgeColors {
  * and neutral (surfaceContainerHigh). An arrow icon is shown for directional
  * variants. The value text is rendered uppercase in a pill-shaped container.
  *
+ * Size variants:
+ * - [PopBadgeSize.Small] — compact label badge with [labelSmall] typography.
+ * - [PopBadgeSize.Large] — hero badge with italic Black [titleLarge] typography, matching the Stitch hero-banner spec.
+ *
  * Uses [PopShapeFull] for the pill shape and reads all styling from the theme.
  *
  * @param value The text to display (e.g., "+12.5%", "-3.2%").
  * @param direction The trend direction determining icon and color.
  * @param modifier Optional [Modifier] for the badge container.
+ * @param size Size variant; defaults to [PopBadgeSize.Small] for back-compat.
  *
  * <!-- screenshots:start (auto-generated, do not edit) -->
  * | Scenario | Light | Dark |
@@ -85,41 +104,102 @@ fun PopBadge(
     value: String,
     direction: PopBadgeDirection,
     modifier: Modifier = Modifier,
+    size: PopBadgeSize = PopBadgeSize.Small,
 ) {
     val colors = direction.toColors()
+    PopBadge(
+        value = value,
+        direction = direction,
+        containerColor = colors.containerColor,
+        contentColor = colors.contentColor,
+        modifier = modifier,
+        size = size,
+    )
+}
+
+/**
+ * A compact directional badge with explicit container and content colors.
+ *
+ * This overload allows specifying arbitrary colors — used by the Hero card variant
+ * where the badge uses inverted primary colors.
+ *
+ * @param value The text to display (e.g., "+12.5%", "-3.2%").
+ * @param direction The trend direction determining the icon (Up / Down / Neutral).
+ * @param containerColor Background color of the badge.
+ * @param contentColor Text and icon tint color inside the badge.
+ * @param modifier Optional [Modifier] for the badge container.
+ * @param size Size variant; defaults to [PopBadgeSize.Small].
+ */
+@Composable
+fun PopBadge(
+    value: String,
+    direction: PopBadgeDirection,
+    containerColor: Color,
+    contentColor: Color,
+    modifier: Modifier = Modifier,
+    size: PopBadgeSize = PopBadgeSize.Small,
+) {
     val spacing = ElectricPopTheme.spacing
+
+    val paddingH: Dp
+    val paddingV: Dp
+    val iconSize: PopIconSize
+    val gap: Dp
+
+    when (size) {
+        PopBadgeSize.Small -> {
+            paddingH = spacing.sm
+            paddingV = spacing.xxs
+            iconSize = PopIconSize.Small
+            gap = spacing.xxs
+        }
+        PopBadgeSize.Large -> {
+            paddingH = spacing.lg
+            paddingV = spacing.sm
+            iconSize = PopIconSize.Medium
+            gap = spacing.md
+        }
+    }
+
+    val textStyle = when (size) {
+        PopBadgeSize.Small -> MaterialTheme.typography.labelSmall
+        PopBadgeSize.Large -> MaterialTheme.typography.titleLarge.copy(
+            fontStyle = FontStyle.Italic,
+            fontWeight = FontWeight.Black,
+        )
+    }
 
     Row(
         modifier = modifier
             .clip(PopShapeFull)
-            .background(colors.containerColor)
+            .background(containerColor)
             .padding(
-                horizontal = spacing.sm,
-                vertical = spacing.xxs,
+                horizontal = paddingH,
+                vertical = paddingV,
             ),
-        horizontalArrangement = Arrangement.spacedBy(spacing.xxs),
+        horizontalArrangement = Arrangement.spacedBy(gap),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         when (direction) {
             PopBadgeDirection.Up -> PopIcon(
                 imageVector = PopIcons.TrendUp,
                 contentDescription = "Trending up",
-                size = PopIconSize.Small,
-                tint = colors.contentColor,
+                size = iconSize,
+                tint = contentColor,
             )
             PopBadgeDirection.Down -> PopIcon(
                 imageVector = PopIcons.TrendDown,
                 contentDescription = "Trending down",
-                size = PopIconSize.Small,
-                tint = colors.contentColor,
+                size = iconSize,
+                tint = contentColor,
             )
             PopBadgeDirection.Neutral -> { /* No icon for neutral */ }
         }
 
         Text(
             text = value.uppercase(),
-            color = colors.contentColor,
-            style = MaterialTheme.typography.labelSmall,
+            color = contentColor,
+            style = textStyle,
         )
     }
 }

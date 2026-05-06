@@ -29,10 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import co.tanay.electricpop.foundation.PopBadge
 import co.tanay.electricpop.foundation.PopBadgeDirection
+import co.tanay.electricpop.foundation.PopBadgeSize
 import co.tanay.electricpop.foundation.PopDisplayText
 import co.tanay.electricpop.foundation.PopDisplayTextDirection
 import co.tanay.electricpop.foundation.PopDisplayTextSize
@@ -41,9 +41,7 @@ import co.tanay.electricpop.foundation.PopIconItem
 import co.tanay.electricpop.foundation.PopIconSize
 import co.tanay.electricpop.foundation.PopSurface
 import co.tanay.electricpop.foundation.PopSurfaceTone
-import co.tanay.electricpop.foundation.toColors
 import co.tanay.electricpop.theme.ElectricPopTheme
-import co.tanay.electricpop.theme.PopShapeFull
 
 /**
  * Visual style variant for [PopBannerCard].
@@ -179,47 +177,20 @@ fun PopBannerCard(
                         horizontalArrangement = Arrangement.spacedBy(spacing.md),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        if (hasChip) {
-                            val chipBg: Color
-                            val chipContent: Color
+                        if (badgeValue != null) {
                             if (isHero) {
-                                chipBg = MaterialTheme.colorScheme.onPrimaryContainer
-                                chipContent = MaterialTheme.colorScheme.primaryContainer
+                                PopBadge(
+                                    value = badgeValue,
+                                    direction = badgeDirection,
+                                    containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.primaryContainer,
+                                    size = PopBadgeSize.Large,
+                                )
                             } else {
-                                val badgeColors = badgeDirection.toColors()
-                                chipBg = badgeColors.containerColor
-                                chipContent = badgeColors.contentColor
-                            }
-                            Row(
-                                modifier = Modifier
-                                    .clip(PopShapeFull)
-                                    .background(chipBg)
-                                    .padding(horizontal = spacing.md, vertical = spacing.xs),
-                                horizontalArrangement = Arrangement.spacedBy(spacing.xs),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                when (badgeDirection) {
-                                    PopBadgeDirection.Up -> PopIcon(
-                                        imageVector = co.tanay.electricpop.foundation.PopIcons.TrendUp,
-                                        contentDescription = "Trending up",
-                                        size = PopIconSize.Medium,
-                                        tint = chipContent,
-                                    )
-                                    PopBadgeDirection.Down -> PopIcon(
-                                        imageVector = co.tanay.electricpop.foundation.PopIcons.TrendDown,
-                                        contentDescription = "Trending down",
-                                        size = PopIconSize.Medium,
-                                        tint = chipContent,
-                                    )
-                                    PopBadgeDirection.Neutral -> {}
-                                }
-                                Text(
-                                    text = badgeValue!!.uppercase(),
-                                    style = MaterialTheme.typography.titleLarge.copy(
-                                        fontStyle = FontStyle.Italic,
-                                        fontWeight = FontWeight.Black,
-                                    ),
-                                    color = chipContent,
+                                PopBadge(
+                                    value = badgeValue,
+                                    direction = badgeDirection,
+                                    size = PopBadgeSize.Large,
                                 )
                             }
                         }

@@ -26,7 +26,6 @@ import co.tanay.electricpop.demo.components.PopIconDemo
 import co.tanay.electricpop.demo.components.PopIconListItemDemo
 import co.tanay.electricpop.demo.components.PopIconRowDemo
 import co.tanay.electricpop.demo.components.PopImageBannerCardDemo
-import co.tanay.electricpop.demo.components.PopPillDemo
 import co.tanay.electricpop.demo.components.PopRadioGroupDemo
 import co.tanay.electricpop.demo.components.PopSectionHeaderDemo
 import co.tanay.electricpop.demo.components.PopSliderDemo
@@ -48,7 +47,6 @@ data class CatalogEntry(
 //   CatalogEntry("PopButton", "Foundation") { PopButtonDemo() }
 val catalogEntries = listOf<CatalogEntry>(
     // Wave 1: Core Foundation
-    CatalogEntry("PopPill", "Foundation") { PopPillDemo() },
     CatalogEntry("PopIcon", "Foundation") { PopIconDemo() },
     CatalogEntry("PopSurface", "Foundation") { PopSurfaceDemo() },
     CatalogEntry("PopBadge", "Foundation") { PopBadgeDemo() },

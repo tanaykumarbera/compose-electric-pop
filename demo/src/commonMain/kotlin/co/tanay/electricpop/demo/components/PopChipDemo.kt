@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import co.tanay.electricpop.foundation.PopChip
 import co.tanay.electricpop.foundation.PopChipColor
+import co.tanay.electricpop.foundation.PopChipSize
 import co.tanay.electricpop.foundation.PopIcons
 import co.tanay.electricpop.theme.ElectricPopTheme
 
@@ -28,12 +29,8 @@ fun PopChipDemo() {
             .padding(spacing.lg),
         verticalArrangement = Arrangement.spacedBy(spacing.lg),
     ) {
-        // Section: Color Presets
-        Text(
-            text = "COLOR PRESETS",
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        // Section: Color Presets (Medium)
+        SectionLabel("COLOR PRESETS (MEDIUM)")
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(spacing.xs),
             verticalArrangement = Arrangement.spacedBy(spacing.xs),
@@ -41,14 +38,36 @@ fun PopChipDemo() {
             PopChip(label = "Design", color = PopChipColor.Primary)
             PopChip(label = "Engineering", color = PopChipColor.Secondary)
             PopChip(label = "Analytics", color = PopChipColor.Tertiary)
+            PopChip(label = "Failed", color = PopChipColor.Error)
+            PopChip(label = "Locked", color = PopChipColor.Neutral)
+        }
+
+        // Section: Sizes (Primary)
+        SectionLabel("SIZES (PRIMARY)")
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(spacing.xs),
+            verticalArrangement = Arrangement.spacedBy(spacing.xs),
+        ) {
+            PopChip(label = "Small", color = PopChipColor.Primary, size = PopChipSize.Small)
+            PopChip(label = "Medium", color = PopChipColor.Primary, size = PopChipSize.Medium)
+            PopChip(label = "Large", color = PopChipColor.Primary, size = PopChipSize.Large)
+        }
+
+        // Section: Status Pills (Small - replaces PopPill)
+        SectionLabel("STATUS PILLS (SMALL - replaces PopPill)")
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(spacing.xs),
+            verticalArrangement = Arrangement.spacedBy(spacing.xs),
+        ) {
+            PopChip(label = "Active", color = PopChipColor.Primary, size = PopChipSize.Small)
+            PopChip(label = "Live", color = PopChipColor.Secondary, size = PopChipSize.Small)
+            PopChip(label = "Synced", color = PopChipColor.Tertiary, size = PopChipSize.Small)
+            PopChip(label = "Failed", color = PopChipColor.Error, size = PopChipSize.Small)
+            PopChip(label = "Locked", color = PopChipColor.Neutral, size = PopChipSize.Small)
         }
 
         // Section: With Icons
-        Text(
-            text = "WITH ICONS",
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        SectionLabel("WITH ICONS")
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(spacing.xs),
             verticalArrangement = Arrangement.spacedBy(spacing.xs),
@@ -58,12 +77,8 @@ fun PopChipDemo() {
             PopChip(label = "Trending", color = PopChipColor.Tertiary, icon = PopIcons.TrendUp)
         }
 
-        // Section: Clickable Chips (filter use case)
-        Text(
-            text = "CLICKABLE (FILTER)",
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        // Section: Clickable (Filter)
+        SectionLabel("CLICKABLE (FILTER)")
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(spacing.xs),
             verticalArrangement = Arrangement.spacedBy(spacing.xs),
@@ -74,11 +89,7 @@ fun PopChipDemo() {
         }
 
         // Section: Various Lengths
-        Text(
-            text = "VARIOUS LENGTHS",
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        SectionLabel("VARIOUS LENGTHS")
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(spacing.xs),
             verticalArrangement = Arrangement.spacedBy(spacing.xs),
@@ -89,11 +100,7 @@ fun PopChipDemo() {
         }
 
         // Section: Custom Colors
-        Text(
-            text = "CUSTOM COLORS",
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        SectionLabel("CUSTOM COLORS")
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(spacing.xs),
             verticalArrangement = Arrangement.spacedBy(spacing.xs),
@@ -110,4 +117,13 @@ fun PopChipDemo() {
             )
         }
     }
+}
+
+@Composable
+private fun SectionLabel(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
 }
