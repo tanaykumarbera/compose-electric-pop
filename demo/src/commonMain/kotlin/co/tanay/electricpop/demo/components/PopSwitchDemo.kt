@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import co.tanay.electricpop.foundation.PopSwitch
+import co.tanay.electricpop.foundation.PopSwitchColor
 import co.tanay.electricpop.theme.ElectricPopTheme
 
 @Composable
@@ -29,6 +30,11 @@ fun PopSwitchDemo() {
     var notifications by remember { mutableStateOf(false) }
     var darkMode by remember { mutableStateOf(true) }
     var autoSync by remember { mutableStateOf(false) }
+
+    // Interactive state for COLOR PRESETS section
+    var primaryOn by remember { mutableStateOf(true) }
+    var secondaryOn by remember { mutableStateOf(true) }
+    var tertiaryOn by remember { mutableStateOf(true) }
 
     Column(
         modifier = Modifier
@@ -50,6 +56,31 @@ fun PopSwitchDemo() {
         PopSwitch(
             checked = checkedState,
             onCheckedChange = { checkedState = it },
+        )
+
+        // Section: COLOR PRESETS
+        Text(
+            text = "COLOR PRESETS",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        PopSwitch(
+            checked = primaryOn,
+            onCheckedChange = { primaryOn = it },
+            label = "Primary (Lime)",
+            color = PopSwitchColor.Primary,
+        )
+        PopSwitch(
+            checked = secondaryOn,
+            onCheckedChange = { secondaryOn = it },
+            label = "Secondary (Magenta)",
+            color = PopSwitchColor.Secondary,
+        )
+        PopSwitch(
+            checked = tertiaryOn,
+            onCheckedChange = { tertiaryOn = it },
+            label = "Tertiary (Cyan)",
+            color = PopSwitchColor.Tertiary,
         )
 
         // Section: WITH LABEL
