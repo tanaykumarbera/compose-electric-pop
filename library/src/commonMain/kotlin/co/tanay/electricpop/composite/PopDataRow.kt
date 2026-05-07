@@ -34,6 +34,8 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import co.tanay.electricpop.foundation.PopChip
+import co.tanay.electricpop.foundation.PopChipSize
 import co.tanay.electricpop.foundation.PopDisplayTextDirection
 import co.tanay.electricpop.foundation.PopIcon
 import co.tanay.electricpop.foundation.PopIconSize
@@ -223,14 +225,11 @@ fun PopDataRow(
                     verticalArrangement = Arrangement.spacedBy(spacing.xxs),
                 ) {
                     chips.forEach { chip ->
-                        Text(
-                            text = chip.label.uppercase(),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = chip.contentColor,
-                            modifier = Modifier
-                                .clip(PopShapeFull)
-                                .background(chip.containerColor)
-                                .padding(horizontal = spacing.xs, vertical = 2.dp),
+                        PopChip(
+                            label = chip.label,
+                            size = PopChipSize.Small,
+                            containerColor = chip.containerColor,
+                            contentColor = chip.contentColor,
                         )
                     }
                 }
