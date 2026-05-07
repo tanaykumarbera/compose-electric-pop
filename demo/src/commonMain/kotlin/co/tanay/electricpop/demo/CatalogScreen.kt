@@ -24,7 +24,6 @@ import co.tanay.electricpop.demo.components.PopDisplayTextDemo
 import co.tanay.electricpop.demo.components.PopDropdownDemo
 import co.tanay.electricpop.demo.components.PopIconDemo
 import co.tanay.electricpop.demo.components.PopIconListItemDemo
-import co.tanay.electricpop.demo.components.PopIconRowDemo
 import co.tanay.electricpop.demo.components.PopImageBannerCardDemo
 import co.tanay.electricpop.demo.components.PopRadioGroupDemo
 import co.tanay.electricpop.demo.components.PopSectionHeaderDemo
@@ -61,7 +60,6 @@ val catalogEntries = listOf<CatalogEntry>(
     CatalogEntry("PopDropdown", "Foundation") { PopDropdownDemo() },
 
     // Wave 3: Layout Foundation
-    CatalogEntry("PopIconRow", "Foundation") { PopIconRowDemo() },
     CatalogEntry("PopSectionHeader", "Foundation") { PopSectionHeaderDemo() },
     CatalogEntry("PopTitleBar", "Foundation") { PopTitleBarDemo() },
     CatalogEntry("PopDisplayText", "Foundation") { PopDisplayTextDemo() },
