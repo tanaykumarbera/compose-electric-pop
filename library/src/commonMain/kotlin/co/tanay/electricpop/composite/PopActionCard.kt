@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -132,18 +133,20 @@ fun PopActionCard(
             heroContent()
         }
 
-        // Actions row — equal-width buttons
+        // Actions row — natural-width buttons aligned to the end so labels never clip.
+        // Equal-width via weight(1f) breaks the heavier Large-size typography for short
+        // labels with icons (e.g. "TRACK" wrapping to "TRAC" + "K"). Small size keeps the
+        // card compact and lets each button size to its content.
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(spacing.md),
+            horizontalArrangement = Arrangement.spacedBy(spacing.sm, Alignment.End),
         ) {
             actions.forEach { action ->
                 PopButton(
                     text = action.label,
                     onClick = action.onClick,
-                    modifier = Modifier.weight(1f),
                     style = action.style,
-                    size = PopButtonSize.Large,
+                    size = PopButtonSize.Small,
                     icon = action.icon,
                     enabled = action.enabled,
                 )

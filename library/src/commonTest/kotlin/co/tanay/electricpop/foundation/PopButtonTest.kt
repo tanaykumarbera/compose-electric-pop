@@ -2,31 +2,32 @@ package co.tanay.electricpop.foundation
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class PopButtonTest {
 
     @Test
-    fun popButtonStyleHasThreeEntries() {
+    fun popButtonStyle_entries_areStable() {
         val styles = PopButtonStyle.entries
-        assertEquals(3, styles.size)
-        assertTrue(styles.contains(PopButtonStyle.Primary))
-        assertTrue(styles.contains(PopButtonStyle.Secondary))
-        assertTrue(styles.contains(PopButtonStyle.Ghost))
+        assertEquals(4, styles.size)
+        assertEquals(PopButtonStyle.Primary, styles[0])
+        assertEquals(PopButtonStyle.Secondary, styles[1])
+        assertEquals(PopButtonStyle.Tertiary, styles[2])
+        assertEquals(PopButtonStyle.Ghost, styles[3])
     }
 
     @Test
-    fun popButtonSizeHasThreeEntries() {
+    fun popButtonSize_entries_areStable() {
         val sizes = PopButtonSize.entries
         assertEquals(3, sizes.size)
-        assertTrue(sizes.contains(PopButtonSize.XL))
-        assertTrue(sizes.contains(PopButtonSize.Large))
-        assertTrue(sizes.contains(PopButtonSize.Small))
+        assertEquals(PopButtonSize.XL, sizes[0])
+        assertEquals(PopButtonSize.Large, sizes[1])
+        assertEquals(PopButtonSize.Small, sizes[2])
     }
 
     @Test
     fun visualValidationViaDemo() {
         // PopButton visual appearance (neon glow, kinetic animations, theme colors,
-        // pill shape, typography) is validated via the demo app and screenshot tests.
+        // shape, typography per size) is validated via the demo app and Roborazzi
+        // screenshot tests. Color resolution requires MaterialTheme.
     }
 }
