@@ -13,7 +13,6 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -28,11 +27,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import co.tanay.electricpop.theme.ElectricPopTheme
 import co.tanay.electricpop.theme.PopShapeFull
 
@@ -40,32 +44,40 @@ import co.tanay.electricpop.theme.PopShapeFull
  * Button visual style.
  */
 enum class PopButtonStyle {
-    /** Electric Lime filled button with neon glow. Primary CTA. */
+    /** Electric Lime — primary CTA. Gets a neon glow on Primary at XL/Large sizes. */
     Primary,
 
-    /** Neon Magenta filled button. Secondary CTA. */
+    /** Neon Magenta — secondary CTA. */
     Secondary,
 
-    /** Transparent button with ghost border. Tertiary action. */
+    /** Cyber Cyan — tertiary CTA, used for utility actions like "Export". */
+    Tertiary,
+
+    /** Transparent button with a thin ghost border for low-priority/cancel actions. */
     Ghost,
 }
 
 /**
- * Button size presets.
+ * Button size presets matching the Stitch "Action Buttons Doc" spec.
+ *
+ * Each size brings its own padding, typography, shape, and (for filled styles)
+ * its own slot in the color scheme — Large uses the **base** color tokens
+ * (`primary` / `secondary` / `tertiary`) for a heavier, more confident look,
+ * while XL and Small use the **container** color tokens.
  */
 enum class PopButtonSize {
-    /** 56dp height, xl horizontal padding */
+    /** Display — extraLarge squircle, headlineSmall italic Black, 40dp/24dp padding. Container colors. */
     XL,
 
-    /** 48dp height, lg horizontal padding */
+    /** Standard — pill shape, titleMedium italic Bold, 32dp/16dp padding. Base colors (primary/secondary/tertiary). */
     Large,
 
-    /** 36dp height, md horizontal padding */
+    /** Utility — pill shape, labelSmall Black with wide tracking, 20dp/8dp padding. Container colors. */
     Small,
 }
 
 /**
- * Resolved color pair for a button style.
+ * Resolved color pair for a button [PopButtonStyle] at a given [PopButtonSize].
  */
 @Immutable
 data class PopButtonColors(
@@ -74,58 +86,101 @@ data class PopButtonColors(
 )
 
 /**
- * Resolved dimensional properties for a button size.
+ * Resolved dimensional + typographic properties for a button at a given size.
  */
 @Immutable
 internal data class PopButtonDimensions(
-    val height: Dp,
     val horizontalPadding: Dp,
+    val verticalPadding: Dp,
     val iconSize: Dp,
+    val gap: Dp,
+    val shape: Shape,
+    val textStyle: TextStyle,
 )
 
 /**
- * Resolves a [PopButtonStyle] to theme colors.
+ * Resolves a [PopButtonStyle] to theme colors, varying by [PopButtonSize].
+ *
+ * - Large filled styles use the **base** color tokens (`primary` / `secondary` / `tertiary`).
+ * - XL and Small filled styles use the **container** color tokens.
+ * - Ghost is transparent at every size; content color uses `onSurface` at XL,
+ *   `onSurfaceVariant` at Large, and `outline` at Small to match the Stitch spec.
  */
 @Composable
-fun PopButtonStyle.toColors(): PopButtonColors {
+fun PopButtonStyle.toColors(size: PopButtonSize = PopButtonSize.Large): PopButtonColors {
     val scheme = MaterialTheme.colorScheme
+    val useBase = size == PopButtonSize.Large
     return when (this) {
-        PopButtonStyle.Primary -> PopButtonColors(
-            containerColor = scheme.primaryContainer,
-            contentColor = scheme.onPrimaryContainer,
-        )
-        PopButtonStyle.Secondary -> PopButtonColors(
-            containerColor = scheme.secondaryContainer,
-            contentColor = scheme.onSecondaryContainer,
-        )
-        PopButtonStyle.Ghost -> PopButtonColors(
-            containerColor = Color.Transparent,
-            contentColor = scheme.onSurface,
-        )
+        PopButtonStyle.Primary -> if (useBase) {
+            PopButtonColors(scheme.primary, scheme.onPrimary)
+        } else {
+            PopButtonColors(scheme.primaryContainer, scheme.onPrimaryContainer)
+        }
+        PopButtonStyle.Secondary -> if (useBase) {
+            PopButtonColors(scheme.secondary, scheme.onSecondary)
+        } else {
+            PopButtonColors(scheme.secondaryContainer, scheme.onSecondaryContainer)
+        }
+        PopButtonStyle.Tertiary -> if (useBase) {
+            PopButtonColors(scheme.tertiary, scheme.onTertiary)
+        } else {
+            PopButtonColors(scheme.tertiaryContainer, scheme.onTertiaryContainer)
+        }
+        PopButtonStyle.Ghost -> {
+            val ghostContent = when (size) {
+                PopButtonSize.XL -> scheme.onSurface
+                PopButtonSize.Large -> scheme.onSurfaceVariant
+                PopButtonSize.Small -> scheme.outline
+            }
+            PopButtonColors(Color.Transparent, ghostContent)
+        }
     }
 }
 
 /**
- * Resolves a [PopButtonSize] to dimensional properties using theme spacing.
+ * Resolves a [PopButtonSize] to padding, icon size, gap, shape, and typography.
+ *
+ * Values are derived from the Stitch "Action Buttons Doc" spec:
+ * - **XL:** padding(40,24), 24dp icons, 16dp gap, extraLarge squircle, headlineSmall italic Black.
+ * - **Large:** padding(32,16), 20dp icons, 12dp gap, pill, titleMedium italic Bold.
+ * - **Small:** padding(20,8), 14dp icons, 8dp gap, pill, labelSmall Black with +0.05em tracking.
  */
 @Composable
 internal fun PopButtonSize.toDimensions(): PopButtonDimensions {
-    val spacing = ElectricPopTheme.spacing
+    val typography = MaterialTheme.typography
     return when (this) {
         PopButtonSize.XL -> PopButtonDimensions(
-            height = 56.dp,
-            horizontalPadding = spacing.xl,
+            horizontalPadding = 40.dp,
+            verticalPadding = 24.dp,
             iconSize = 24.dp,
+            gap = ElectricPopTheme.spacing.lg,
+            shape = MaterialTheme.shapes.extraLarge,
+            textStyle = typography.headlineSmall.copy(
+                fontStyle = FontStyle.Italic,
+                fontWeight = FontWeight.Black,
+            ),
         )
         PopButtonSize.Large -> PopButtonDimensions(
-            height = 48.dp,
-            horizontalPadding = spacing.lg,
+            horizontalPadding = 32.dp,
+            verticalPadding = 16.dp,
             iconSize = 20.dp,
+            gap = ElectricPopTheme.spacing.md,
+            shape = PopShapeFull,
+            textStyle = typography.titleMedium.copy(
+                fontStyle = FontStyle.Italic,
+                fontWeight = FontWeight.Bold,
+            ),
         )
         PopButtonSize.Small -> PopButtonDimensions(
-            height = 36.dp,
-            horizontalPadding = spacing.md,
-            iconSize = 18.dp,
+            horizontalPadding = 20.dp,
+            verticalPadding = 8.dp,
+            iconSize = 14.dp,
+            gap = ElectricPopTheme.spacing.sm,
+            shape = PopShapeFull,
+            textStyle = typography.labelSmall.copy(
+                fontWeight = FontWeight.Black,
+                letterSpacing = 0.5.sp,
+            ),
         )
     }
 }
@@ -162,23 +217,31 @@ internal fun kineticScale(
 }
 
 /**
- * A styled button following the Kinetic Pulse design system.
+ * A styled button following the Kinetic Pulse design system, sized and shaped per
+ * the Stitch "Action Buttons Doc" spec.
  *
- * PopButton supports three visual styles ([PopButtonStyle.Primary], [Secondary][PopButtonStyle.Secondary],
- * [Ghost][PopButtonStyle.Ghost]) and three sizes ([PopButtonSize.XL], [Large][PopButtonSize.Large],
- * [Small][PopButtonSize.Small]).
+ * Three styles ([PopButtonStyle.Primary], [Secondary][PopButtonStyle.Secondary],
+ * [Tertiary][PopButtonStyle.Tertiary], [Ghost][PopButtonStyle.Ghost]) × three sizes
+ * ([PopButtonSize.XL], [Large][PopButtonSize.Large], [Small][PopButtonSize.Small]).
+ *
+ * Color mapping varies by size:
+ * - **Large** filled styles use the base color tokens (`primary`, `secondary`, `tertiary`)
+ *   for a heavier, more confident look — e.g. dark olive Primary CTA.
+ * - **XL** and **Small** filled styles use the container tokens (lighter, more decorative).
  *
  * Design rules enforced:
- * - **Rule 1 (No-Line):** No 1px borders on Primary/Secondary. Ghost uses Rule 3 ghost border.
- * - **Rule 4 (Neon Glow):** Primary variant gets a glow shadow from primaryContainer at ~20% opacity.
- * - **Rule 5 (Kinetic Interactions):** Hover scales to 1.05x, press compresses to 0.95x, 200ms ease.
- * - **Rule 6 (Squircle Radii):** Uses [PopShapeFull] (pill shape).
- * - **Rule 7 (Typography Impact):** Button text is uppercase.
+ * - **Rule 1 (No-Line):** No 1px borders on filled styles. Ghost uses Rule 3 ghost border.
+ * - **Rule 4 (Neon Glow):** Primary at XL and Large gets a glow shadow tinted with its
+ *   own container at ~15–20% opacity.
+ * - **Rule 5 (Kinetic Interactions):** Hover scales to 1.05x, press compresses to 0.95x.
+ * - **Rule 6 (Squircle Radii):** XL uses [MaterialTheme.shapes.extraLarge]; Large/Small
+ *   use [PopShapeFull].
+ * - **Rule 7 (Typography Impact):** Button text is uppercase. XL/Large render italic.
  *
  * @param text The button label (rendered uppercase).
  * @param onClick Callback when the button is clicked.
  * @param modifier Optional [Modifier] applied to the button.
- * @param style Visual style: Primary (neon glow), Secondary, or Ghost.
+ * @param style Visual style: Primary, Secondary, Tertiary, or Ghost.
  * @param size Size preset: XL, Large, or Small.
  * @param enabled Whether the button is interactive. Disabled buttons reduce opacity.
  * @param icon Optional leading icon [ImageVector] displayed before the text.
@@ -199,36 +262,34 @@ fun PopButton(
     enabled: Boolean = true,
     icon: ImageVector? = null,
 ) {
-    val colors = style.toColors()
+    val colors = style.toColors(size)
     val dimensions = size.toDimensions()
     val interactionSource = remember { MutableInteractionSource() }
     val scale = kineticScale(interactionSource, enabled)
 
     val disabledAlpha = if (enabled) 1f else 0.38f
 
-    val typography = when (size) {
-        PopButtonSize.Small -> MaterialTheme.typography.labelMedium
-        else -> MaterialTheme.typography.labelLarge
-    }
-
-    // Design Rule 3: Ghost border
+    // Design Rule 3: Ghost border at all sizes — kept consistent per project preference.
     val ghostBorderModifier = if (style == PopButtonStyle.Ghost) {
         Modifier.border(
             width = 1.dp,
             color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f),
-            shape = PopShapeFull,
+            shape = dimensions.shape,
         )
     } else {
         Modifier
     }
 
-    // Design Rule 4: Neon glow on Primary
-    val neonGlowModifier = if (style == PopButtonStyle.Primary && enabled) {
+    // Design Rule 4: Neon glow on Primary at XL and Large.
+    val neonGlowModifier = if (style == PopButtonStyle.Primary && enabled && size != PopButtonSize.Small) {
+        val glowColor = MaterialTheme.colorScheme.primaryContainer
+        val glowAlpha = if (size == PopButtonSize.XL) 0.15f else 0.20f
+        val glowElevation = if (size == PopButtonSize.XL) 24.dp else 16.dp
         Modifier.shadow(
-            elevation = 16.dp,
-            shape = PopShapeFull,
-            ambientColor = colors.containerColor.copy(alpha = 0.20f),
-            spotColor = colors.containerColor.copy(alpha = 0.20f),
+            elevation = glowElevation,
+            shape = dimensions.shape,
+            ambientColor = glowColor.copy(alpha = glowAlpha),
+            spotColor = glowColor.copy(alpha = glowAlpha),
         )
     } else {
         Modifier
@@ -236,15 +297,17 @@ fun PopButton(
 
     Box(
         modifier = modifier
-            // Design Rule 5: Kinetic scale
-            .graphicsLayer(
-                scaleX = scale,
-                scaleY = scale,
-            )
+            .graphicsLayer(scaleX = scale, scaleY = scale)
             .then(neonGlowModifier)
             .then(ghostBorderModifier)
-            .clip(PopShapeFull)
-            .background(colors.containerColor.copy(alpha = disabledAlpha))
+            .clip(dimensions.shape)
+            .background(
+                if (colors.containerColor == Color.Transparent) {
+                    Color.Transparent
+                } else {
+                    colors.containerColor.copy(alpha = disabledAlpha)
+                },
+            )
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
@@ -253,13 +316,15 @@ fun PopButton(
                 onClick = onClick,
             )
             .hoverable(interactionSource)
-            .height(dimensions.height)
-            .padding(horizontal = dimensions.horizontalPadding),
+            .padding(
+                horizontal = dimensions.horizontalPadding,
+                vertical = dimensions.verticalPadding,
+            ),
         contentAlignment = Alignment.Center,
     ) {
         if (icon != null) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(ElectricPopTheme.spacing.xs),
+                horizontalArrangement = Arrangement.spacedBy(dimensions.gap),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -271,14 +336,18 @@ fun PopButton(
                 Text(
                     text = text.uppercase(),
                     color = colors.contentColor.copy(alpha = disabledAlpha),
-                    style = typography,
+                    style = dimensions.textStyle,
+                    maxLines = 1,
+                    softWrap = false,
                 )
             }
         } else {
             Text(
                 text = text.uppercase(),
                 color = colors.contentColor.copy(alpha = disabledAlpha),
-                style = typography,
+                style = dimensions.textStyle,
+                maxLines = 1,
+                softWrap = false,
             )
         }
     }
@@ -287,13 +356,15 @@ fun PopButton(
 /**
  * An icon-only button following the Kinetic Pulse design system.
  *
- * Circular shape, consistent styling with [PopButton].
+ * Circular shape, consistent styling with [PopButton]. Uses the Large color mapping
+ * (base color tokens) for filled styles since icon buttons are typically used for
+ * primary actions.
  *
  * @param icon The [ImageVector] to display.
  * @param onClick Callback when the button is clicked.
  * @param modifier Optional [Modifier] applied to the button.
  * @param contentDescription Accessibility description for the icon.
- * @param style Visual style: Primary (neon glow), Secondary, or Ghost.
+ * @param style Visual style: Primary, Secondary, Tertiary, or Ghost.
  * @param enabled Whether the button is interactive.
  */
 @Composable
@@ -305,12 +376,11 @@ fun PopIconButton(
     style: PopButtonStyle = PopButtonStyle.Primary,
     enabled: Boolean = true,
 ) {
-    val colors = style.toColors()
+    val colors = style.toColors(PopButtonSize.Large)
     val interactionSource = remember { MutableInteractionSource() }
     val scale = kineticScale(interactionSource, enabled)
     val disabledAlpha = if (enabled) 1f else 0.38f
 
-    // Design Rule 3: Ghost border
     val ghostBorderModifier = if (style == PopButtonStyle.Ghost) {
         Modifier.border(
             width = 1.dp,
@@ -321,13 +391,13 @@ fun PopIconButton(
         Modifier
     }
 
-    // Design Rule 4: Neon glow on Primary
     val neonGlowModifier = if (style == PopButtonStyle.Primary && enabled) {
+        val glowColor = MaterialTheme.colorScheme.primaryContainer
         Modifier.shadow(
             elevation = 16.dp,
             shape = PopShapeFull,
-            ambientColor = colors.containerColor.copy(alpha = 0.20f),
-            spotColor = colors.containerColor.copy(alpha = 0.20f),
+            ambientColor = glowColor.copy(alpha = 0.20f),
+            spotColor = glowColor.copy(alpha = 0.20f),
         )
     } else {
         Modifier
@@ -335,14 +405,17 @@ fun PopIconButton(
 
     Box(
         modifier = modifier
-            .graphicsLayer(
-                scaleX = scale,
-                scaleY = scale,
-            )
+            .graphicsLayer(scaleX = scale, scaleY = scale)
             .then(neonGlowModifier)
             .then(ghostBorderModifier)
             .clip(PopShapeFull)
-            .background(colors.containerColor.copy(alpha = disabledAlpha))
+            .background(
+                if (colors.containerColor == Color.Transparent) {
+                    Color.Transparent
+                } else {
+                    colors.containerColor.copy(alpha = disabledAlpha)
+                },
+            )
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
