@@ -43,6 +43,25 @@ import co.tanay.electricpop.theme.PopShapeFull
  * This is a slot-based container — place [PopBottomBarItem] composables inside
  * the [content] lambda. Items automatically share equal width via [RowScope].
  *
+ * ## Why custom (not [androidx.compose.material3.NavigationBar])
+ *
+ * PopBottomBar does not wrap Material3's `NavigationBar` because the Electric Pop spec
+ * differs from Material You in ways Material's API does not expose:
+ * - Glassmorphic background (`surfaceBright` at 70% alpha) — `NavigationBar` only takes
+ *   a single opaque `containerColor`.
+ * - Tonal shadow with the surface darkened 10% (Rule 2) — `NavigationBar` uses tonal
+ *   elevation rather than a colored shadow.
+ * - Outer horizontal margin + extended bottom padding so the bar floats above the safe
+ *   area — `NavigationBar` is edge-to-edge by contract.
+ * - Selected-item neon-glow pill with [PopShapeFull] and an 18% colored shadow spread
+ *   (Rule 4) — `NavigationBarItem`'s indicator is a fixed pill with no glow primitive.
+ * - Kinetic 1.05x / 0.95x hover/press scale (Rule 5) — `NavigationBarItem` has a fixed
+ *   ripple-only interaction.
+ *
+ * The accessibility contract (`selectableGroup` on the parent row, `role = Tab` and
+ * `selected = ...` on each item) matches `NavigationBar` exactly, so screen readers and
+ * keyboard navigation behave identically to a Material3 navigation bar.
+ *
  * Design rules enforced:
  * - **Rule 1 (No-Line):** No 1px borders on the bar — tonal surface background used instead.
  * - **Rule 2 (Tonal Shadows):** Shadow color matches surface darkened 10%, 32dp blur, 0 offset.
