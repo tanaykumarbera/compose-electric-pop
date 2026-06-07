@@ -10,9 +10,8 @@
 
 ## Verification
 
-- [ ] `./gradlew :library:build` passes locally
-- [ ] `./gradlew :library:desktopTest` passes
-- [ ] `./gradlew :library:verifyRoborazziDesktop` passes (or goldens re-recorded with justification)
+- [ ] `./scripts/verify-change.sh` passes locally (runs the full CI gate set)
+- [ ] Goldens re-recorded with justification if Roborazzi changed
 - [ ] Demo app launches and the affected screens render correctly in light + dark themes
 
 ## Screenshots (UI changes only)

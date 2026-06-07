@@ -36,9 +36,15 @@ gates; reduce per-task friction; remove sources of agent confusion.
 - [x] Documented in AGENTS.md ("Verifying a Change")
 
 ### Phase 6 — Hygiene
-- [ ] Resolve dead ruflo/claude-flow guidance (`.claude-flow/`, global CLAUDE.md note)
-- [ ] PR-title / Conventional-Commit lint (the deferred "step 8")
-- [ ] Drop stale `.execution-history/` permission entries in `.claude/settings.json`
+- [~] **FLAG TO USER (can't fix here):** dead ruflo/claude-flow guidance lives in the *global*
+      `~/.claude/CLAUDE.md` (tells agents to ToolSearch for ruflo MCP tools that aren't present),
+      and `.claude-flow/` is gitignored scratch. Not this repo's tracked files → user's call to
+      remove the global note / delete the dir.
+- [x] PR-title / Conventional-Commit lint — `.github/workflows/pr-title-lint.yml` (regex-tested)
+- [x] PR template now points at `./scripts/verify-change.sh`
+- [ ] **BLOCKED (settings.json self-modification):** drop stale `.execution-history/` permission
+      entries (lines `Write(.execution-history/)` / `Edit(.execution-history/)`) — `.execution-history/`
+      is gitignored leftover. User to apply alongside the Phase 3 hook wiring.
 
 ### Phase 7 — Observability (optional, last)
 - [ ] Lightweight per-run ledger via Stop hook
