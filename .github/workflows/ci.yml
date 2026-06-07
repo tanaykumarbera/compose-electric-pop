@@ -41,6 +41,9 @@ jobs:
       - name: Lint + format check (Detekt + Spotless)
         run: ./gradlew detekt spotlessCheck --stacktrace
 
+      - name: Design-rule gate (no hardcoded colors / TextStyle / material-icons)
+        run: ./scripts/check-design-rules.sh
+
       - name: Screenshot KDoc tables in sync
         run: |
           ./gradlew :library:syncScreenshotKdoc --stacktrace
