@@ -1,12 +1,15 @@
 package co.tanay.electricpop.demo
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import co.tanay.electricpop.foundation.PopIcon
 import co.tanay.electricpop.foundation.PopIconSize
 import co.tanay.electricpop.foundation.PopIcons
+import co.tanay.electricpop.foundation.PopSwitch
+import co.tanay.electricpop.foundation.PopSwitchColor
 import co.tanay.electricpop.theme.ElectricPopTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -14,8 +17,10 @@ import co.tanay.electricpop.theme.ElectricPopTheme
 fun App() {
     var isDark by remember { mutableStateOf(false) }
     var selectedEntry by remember { mutableStateOf<CatalogEntry?>(null) }
+    val catalogListState = rememberLazyListState()
 
     ElectricPopTheme(darkTheme = isDark) {
+        val spacing = ElectricPopTheme.spacing
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -37,11 +42,13 @@ fun App() {
                         }
                     },
                     actions = {
-                        Text(
-                            if (isDark) "Dark" else "Light",
-                            style = MaterialTheme.typography.labelMedium,
+                        PopSwitch(
+                            checked = isDark,
+                            onCheckedChange = { isDark = it },
+                            label = if (isDark) "Dark" else "Light",
+                            color = PopSwitchColor.Primary,
+                            modifier = Modifier.padding(end = spacing.md),
                         )
-                        Switch(checked = isDark, onCheckedChange = { isDark = it })
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.surface,
@@ -54,7 +61,10 @@ fun App() {
                 if (entry != null) {
                     entry.content()
                 } else {
-                    CatalogScreen(onSelect = { selectedEntry = it })
+                    CatalogScreen(
+                        listState = catalogListState,
+                        onSelect = { selectedEntry = it },
+                    )
                 }
             }
         }

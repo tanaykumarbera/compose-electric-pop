@@ -1,5 +1,6 @@
 package co.tanay.electricpop.foundation
 
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -7,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.isSpecified
 
 /**
  * Direction for [PopDisplayText], determining its semantic text color.
@@ -94,20 +97,55 @@ fun PopDisplayText(
         }
     }
 
-    Row(modifier = modifier) {
-        Text(
-            text = mainText.uppercase(),
-            style = mainStyle,
-            color = resolvedColor,
-            modifier = Modifier.alignByBaseline(),
-        )
-        if (fractionalText != null) {
+    val mainUpper = mainText.uppercase()
+    val fractionalUpper = fractionalText?.uppercase()
+
+    BoxWithConstraints(modifier = modifier) {
+        // Auto-shrink: measure both texts at their base styles and compute a single
+        // scale factor so main + fractional stay visually proportional. Floor at
+        // MIN_AUTO_SCALE to avoid illegibility for absurdly long strings.
+        val measurer = rememberTextMeasurer()
+        val mainMeasured = measurer.measure(text = mainUpper, style = mainStyle)
+        val fractionalMeasured = fractionalUpper?.let {
+            measurer.measure(text = it, style = fractionalStyle)
+        }
+        val naturalWidth = mainMeasured.size.width + (fractionalMeasured?.size?.width ?: 0)
+        val scale = if (constraints.hasBoundedWidth && naturalWidth > constraints.maxWidth) {
+            (constraints.maxWidth.toFloat() / naturalWidth.toFloat())
+                .coerceAtLeast(MIN_AUTO_SCALE)
+        } else {
+            1f
+        }
+
+        val effectiveMainStyle = if (scale < 1f) mainStyle.scaleTypography(scale) else mainStyle
+        val effectiveFractionalStyle = if (scale < 1f) fractionalStyle.scaleTypography(scale) else fractionalStyle
+
+        Row {
             Text(
-                text = fractionalText.uppercase(),
-                style = fractionalStyle,
+                text = mainUpper,
+                style = effectiveMainStyle,
                 color = resolvedColor,
+                maxLines = 1,
+                softWrap = false,
                 modifier = Modifier.alignByBaseline(),
             )
+            if (fractionalUpper != null) {
+                Text(
+                    text = fractionalUpper,
+                    style = effectiveFractionalStyle,
+                    color = resolvedColor,
+                    maxLines = 1,
+                    softWrap = false,
+                    modifier = Modifier.alignByBaseline(),
+                )
+            }
         }
     }
 }
+
+private const val MIN_AUTO_SCALE = 0.5f
+
+private fun TextStyle.scaleTypography(scale: Float): TextStyle = copy(
+    fontSize = if (fontSize.isSpecified) fontSize * scale else fontSize,
+    lineHeight = if (lineHeight.isSpecified) lineHeight * scale else lineHeight,
+)
