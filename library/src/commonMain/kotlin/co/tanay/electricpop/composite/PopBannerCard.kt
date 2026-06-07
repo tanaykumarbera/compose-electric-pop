@@ -183,6 +183,7 @@ fun PopBannerCard(
 
 private val CoinSize: Dp = 48.dp
 private val CoinOverlap: Dp = 16.dp
+private val BadgeClusterGap: Dp = 24.dp
 private const val COIN_MAX_VISIBLE: Int = 4
 
 @Composable
@@ -236,7 +237,8 @@ private fun BannerCardActionRow(
         }
 
         val badgeWidth = badgePlaceable?.width ?: 0
-        val widthForCoins = (maxWidthPx - badgeWidth).coerceAtLeast(0)
+        val gapPx = if (badgeWidth > 0) BadgeClusterGap.roundToPx() else 0
+        val widthForCoins = (maxWidthPx - badgeWidth - gapPx).coerceAtLeast(0)
         val maxCoinsThatFit = if (coinPx > overlapPx) {
             ((widthForCoins - overlapPx).coerceAtLeast(0)) / (coinPx - overlapPx)
         } else {
