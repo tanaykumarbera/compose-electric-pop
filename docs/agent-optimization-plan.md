@@ -32,8 +32,8 @@ gates; reduce per-task friction; remove sources of agent confusion.
 - [ ] `scripts/new-component.sh` — stamp component + tests + demo + catalog registration
 
 ### Phase 5 — Canonical verify path
-- [ ] `verifyChange` aggregate gradle task / documented one-liner mirroring CI order
-- [ ] Document in AGENTS.md
+- [x] `scripts/verify-change.sh` — single entry point mirroring CI order; verified green end-to-end
+- [x] Documented in AGENTS.md ("Verifying a Change")
 
 ### Phase 6 — Hygiene
 - [ ] Resolve dead ruflo/claude-flow guidance (`.claude-flow/`, global CLAUDE.md note)
@@ -56,7 +56,8 @@ gates; reduce per-task friction; remove sources of agent confusion.
 ## Pending manual settings.json change (Phase 3 wiring — needs user approval)
 
 Add to `.claude/settings.json`:
-- Under `permissions.allow`: `"Bash(./scripts/check-design-rules.sh *)"`, `"Bash(scripts/check-design-rules.sh *)"`
+- Under `permissions.allow`: `"Bash(./scripts/check-design-rules.sh *)"`,
+  `"Bash(scripts/check-design-rules.sh *)"`, `"Bash(./scripts/verify-change.sh)"`
 - A top-level `hooks` block:
 
 ```json

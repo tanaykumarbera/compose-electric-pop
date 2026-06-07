@@ -74,6 +74,25 @@ These exist because the initial build pipeline produced stdlib-only "tests" that
 - Reviewer's acid test: would the test still pass if the component file were deleted? If yes, the test is fake.
 - For purely visual components, a placeholder test documenting "validation via demo + Roborazzi" is acceptable.
 
+## Verifying a Change
+
+Before opening a PR, run the canonical gate — it mirrors CI order and fails fast:
+
+```
+./scripts/verify-change.sh
+```
+
+Covers Detekt + Spotless, the **design-rule gate** (`scripts/check-design-rules.sh`:
+no hardcoded hex colors, no inline `TextStyle()`, no `material-icons` imports),
+screenshot-KDoc drift, snapshot presence, demo-catalog registration, desktop unit
+tests, and Roborazzi verification. A green run here means CI is very likely green.
+
+The design-rule gate also runs automatically in CI and (once wired in
+`.claude/settings.json`) as a `PostToolUse` hook that flags violations in-session.
+Structural gates: `:library:checkScreenshotPresence` (every component has light +
+dark goldens) and `:demo:checkCatalogRegistration` (every component is in the
+catalog) — each has an allowlist file for intentional exceptions.
+
 ## Stitch Comparison
 
 Reviewer fetches Stitch screenshots at full resolution and compares against the rendered component. This is non-optional — a memory of past slips means we always do the visual diff.
