@@ -18,7 +18,7 @@ gates; reduce per-task friction; remove sources of agent confusion.
 - [ ] (optional later) promote to custom Detekt ruleset
 
 ### Phase 2 — Structural-completeness gates
-- [ ] `checkCatalogRegistration` — assert every public `Pop*` has a CatalogScreen entry
+- [x] `checkCatalogRegistration` — assert every public `Pop*` has a CatalogScreen entry (demo/build.gradle.kts + catalog-allowlist.txt + CI step)
 - [ ] Generated component manifest (`library/components.json`) + README count assertion
 
 ### Phase 3 — In-session Claude Code hooks

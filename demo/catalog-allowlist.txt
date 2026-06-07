@@ -1,0 +1,4 @@
+# Allowlist for :demo:checkCatalogRegistration.
+# One component name per line (e.g. PopFoo). Comments (#) and blank lines are
+# ignored. Add an entry here only when a library Pop* component legitimately has
+# no demo catalog entry. Empty by default.
