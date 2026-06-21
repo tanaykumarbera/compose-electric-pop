@@ -23,10 +23,8 @@ gates; reduce per-task friction; remove sources of agent confusion.
 
 ### Phase 3 — In-session Claude Code hooks
 - [x] `scripts/hooks/design-rule-posttooluse.sh` — wrapper, tested (exit 2 + feedback on library violations, skips demo/non-kt)
-- [ ] **BLOCKED (needs user approval):** wire the hook + script permissions into `.claude/settings.json`.
-      The harness classifies editing settings.json to add a PostToolUse hook as self-modification.
-      User must apply the snippet below (in plan doc "Pending manual settings.json change").
-- [ ] `Stop` hook → remind to run `:library:desktopTest` when library files changed
+- [x] Wired the PostToolUse hook + script permissions into `.claude/settings.json` (user-approved)
+- [ ] `Stop` hook → remind to run `:library:desktopTest` when library files changed (optional)
 
 ### Phase 4 — Scaffolding
 - [ ] `scripts/new-component.sh` — stamp component + tests + demo + catalog registration
@@ -36,15 +34,12 @@ gates; reduce per-task friction; remove sources of agent confusion.
 - [x] Documented in AGENTS.md ("Verifying a Change")
 
 ### Phase 6 — Hygiene
-- [~] **FLAG TO USER (can't fix here):** dead ruflo/claude-flow guidance lives in the *global*
-      `~/.claude/CLAUDE.md` (tells agents to ToolSearch for ruflo MCP tools that aren't present),
-      and `.claude-flow/` is gitignored scratch. Not this repo's tracked files → user's call to
-      remove the global note / delete the dir.
+- [x] Removed ruflo entirely: global `~/.claude/CLAUDE.md`, `.claude-flow/` dir, `.gitignore` entry,
+      the npm binary (`npm uninstall -g ruflo`), and both `mcpServers.ruflo` registrations in
+      `~/.claude.json`.
 - [x] PR-title / Conventional-Commit lint — `.github/workflows/pr-title-lint.yml` (regex-tested)
 - [x] PR template now points at `./scripts/verify-change.sh`
-- [ ] **BLOCKED (settings.json self-modification):** drop stale `.execution-history/` permission
-      entries (lines `Write(.execution-history/)` / `Edit(.execution-history/)`) — `.execution-history/`
-      is gitignored leftover. User to apply alongside the Phase 3 hook wiring.
+- [x] Dropped stale `.execution-history/` permission entries from `.claude/settings.json`
 
 ### Phase 7 — Observability (optional, last)
 - [ ] Lightweight per-run ledger via Stop hook
@@ -59,26 +54,9 @@ gates; reduce per-task friction; remove sources of agent confusion.
   applies repo-wide (library + demo).
 - Theme files (`theme/Color.kt`, `theme/Typography.kt`) are the definition sites → exempt.
 
-## Pending manual settings.json change (Phase 3 wiring — needs user approval)
-
-Add to `.claude/settings.json`:
-- Under `permissions.allow`: `"Bash(./scripts/check-design-rules.sh *)"`,
-  `"Bash(scripts/check-design-rules.sh *)"`, `"Bash(./scripts/verify-change.sh)"`
-- A top-level `hooks` block:
-
-```json
-"hooks": {
-  "PostToolUse": [
-    {
-      "matcher": "Edit|Write|MultiEdit",
-      "hooks": [
-        { "type": "command", "command": "$CLAUDE_PROJECT_DIR/scripts/hooks/design-rule-posttooluse.sh" }
-      ]
-    }
-  ]
-}
-```
-
 ## Commits on this branch
 - Phase 1: `scripts/check-design-rules.sh` + CI "Design-rule gate" step
-- Phase 3 (partial): `scripts/hooks/design-rule-posttooluse.sh` (wiring pending user approval)
+- Phase 2: `:demo:checkCatalogRegistration` gate + CI step
+- Phase 5: `scripts/verify-change.sh` + AGENTS.md
+- Phase 6: PR-title lint workflow + PR template update
+- Phase 3 + 6 (settings/ruflo): hook wiring, `.execution-history` cleanup, ruflo removal
