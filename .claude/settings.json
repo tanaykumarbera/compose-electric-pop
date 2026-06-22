@@ -7,11 +7,9 @@
       "Write(library/)",
       "Write(demo/)",
       "Write(docs/)",
-      "Write(.execution-history/)",
       "Edit(library/)",
       "Edit(demo/)",
       "Edit(docs/)",
-      "Edit(.execution-history/)",
       "Bash(./gradlew *)",
       "Bash(git add *)",
       "Bash(git commit *)",
@@ -31,11 +29,27 @@
       "Bash(jq *)",
       "Bash(./scripts/stitch-cache.sh *)",
       "Bash(scripts/stitch-cache.sh *)",
+      "Bash(./scripts/check-design-rules.sh *)",
+      "Bash(scripts/check-design-rules.sh *)",
+      "Bash(./scripts/verify-change.sh)",
       "mcp__stitch__list_screens",
       "mcp__stitch__get_screen",
       "mcp__plugin_github_github__*",
       "mcp__plugin_context7_context7__*",
       "WebSearch"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/scripts/hooks/design-rule-posttooluse.sh"
+          }
+        ]
+      }
     ]
   }
 }

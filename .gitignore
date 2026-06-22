@@ -23,9 +23,6 @@ local.properties
 # Project-local scratch (Stitch asset cache, etc.)
 /tmp/
 
-# Claude flow session data
-.claude-flow/
-
 # Claude Code session data
 .claude/projects/
 

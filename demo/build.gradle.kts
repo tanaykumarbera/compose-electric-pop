@@ -74,3 +74,91 @@ compose.desktop {
 tasks.matching { it.name.contains("lint", ignoreCase = true) }.configureEach {
     enabled = false
 }
+
+// ---------------------------------------------------------------------------
+// checkCatalogRegistration — guardrail asserting every library Pop component is
+// reachable from the demo catalog. Mirrors :library:checkScreenshotPresence:
+// a file PopXxx.kt counts iff it declares a top-level public `@Composable fun
+// PopXxx(`, and must then appear as `CatalogEntry("PopXxx", ...)` in
+// CatalogScreen.kt. Allowlist for intentional omissions:
+// demo/catalog-allowlist.txt.
+// ---------------------------------------------------------------------------
+
+fun declaresPublicComposable(source: String, name: String): Boolean {
+    val funPattern = Regex("""^fun ${Regex.escape(name)}\s*[(<]""")
+    val lines = source.lines()
+    val funIdx = lines.indexOfFirst { funPattern.containsMatchIn(it) }
+    if (funIdx < 0) return false
+    var i = funIdx - 1
+    while (i >= 0) {
+        val trimmed = lines[i].trim()
+        if (trimmed.isEmpty()) {
+            i--
+            continue
+        }
+        if (trimmed.startsWith("@Composable")) return true
+        if (trimmed.startsWith("@")) {
+            i--
+            continue
+        }
+        return false
+    }
+    return false
+}
+
+tasks.register("checkCatalogRegistration") {
+    group = "verification"
+    description = "Assert every library Pop component has a CatalogEntry in the demo catalog."
+
+    val componentRoot =
+        rootProject.layout.projectDirectory.dir("library/src/commonMain/kotlin/co/tanay/electricpop")
+    val catalogFile =
+        layout.projectDirectory.file("src/commonMain/kotlin/co/tanay/electricpop/demo/CatalogScreen.kt")
+    val allowlistFile = layout.projectDirectory.file("catalog-allowlist.txt")
+    val tiers = listOf("foundation", "composite", "chart")
+
+    tiers.forEach { tier ->
+        inputs.dir(componentRoot.dir(tier)).withPropertyName("components-$tier")
+    }
+    inputs.files(catalogFile).withPropertyName("catalog")
+    inputs.files(allowlistFile).withPropertyName("allowlist").optional(true)
+
+    doLast {
+        val allowlist = if (allowlistFile.asFile.exists()) {
+            allowlistFile.asFile.readLines()
+                .map { it.substringBefore('#').trim() }
+                .filter { it.isNotEmpty() }
+                .toSet()
+        } else {
+            emptySet()
+        }
+
+        val catalogText = catalogFile.asFile.readText()
+
+        val components = tiers
+            .flatMap { tier -> componentRoot.dir(tier).asFile.listFiles().orEmpty().toList() }
+            .filter { it.isFile && it.extension == "kt" && it.name.startsWith("Pop") }
+            .mapNotNull { file ->
+                val name = file.nameWithoutExtension
+                if (declaresPublicComposable(file.readText(), name)) name else null
+            }
+            .sorted()
+
+        val missing = components
+            .filter { it !in allowlist }
+            .filterNot { catalogText.contains("CatalogEntry(\"$it\"") }
+
+        if (missing.isNotEmpty()) {
+            throw GradleException(
+                "Components missing from the demo catalog (CatalogScreen.kt): " +
+                    "${missing.joinToString(", ")}. Add a CatalogEntry, or allowlist in " +
+                    "demo/catalog-allowlist.txt.",
+            )
+        }
+
+        logger.lifecycle(
+            "checkCatalogRegistration: ${components.size} components verified " +
+                "(${allowlist.size} allowlisted)",
+        )
+    }
+}

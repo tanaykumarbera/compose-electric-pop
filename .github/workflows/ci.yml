@@ -41,6 +41,9 @@ jobs:
       - name: Lint + format check (Detekt + Spotless)
         run: ./gradlew detekt spotlessCheck --stacktrace
 
+      - name: Design-rule gate (no hardcoded colors / TextStyle / material-icons)
+        run: ./scripts/check-design-rules.sh
+
       - name: Screenshot KDoc tables in sync
         run: |
           ./gradlew :library:syncScreenshotKdoc --stacktrace
@@ -51,6 +54,9 @@ jobs:
 
       - name: Every component has light + dark snapshots
         run: ./gradlew :library:checkScreenshotPresence --stacktrace
+
+      - name: Every component is registered in the demo catalog
+        run: ./gradlew :demo:checkCatalogRegistration --stacktrace
 
       - name: Compile desktop + Android
         run: ./gradlew :library:compileKotlinDesktop :library:assembleRelease :demo:compileKotlinDesktop --stacktrace
