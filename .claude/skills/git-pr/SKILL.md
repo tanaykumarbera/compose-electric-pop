@@ -3,6 +3,8 @@ name: git-pr
 description: Create a well-structured GitHub PR for Electric Pop components. Includes changes table, screenshot table (light/dark goldens), dependency callouts, and cons/gotchas. Use after a component or fix is approved and ready to push.
 allowed-tools: Bash, Read, Glob, Grep
 argument-hint: "[component name] [branch name]"
+metadata:
+  internal: true
 ---
 
 # Create a Well-Structured PR for Electric Pop

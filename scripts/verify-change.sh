@@ -29,6 +29,14 @@ if ! git diff --quiet -- library/src/commonMain; then
   exit 1
 fi
 
+step "Agent Skill manifest in sync"
+./gradlew :library:generateSkillManifest --console=plain
+if ! git diff --quiet -- skills/electric-pop/reference/components.md; then
+  echo "✗ Agent Skill component cheat-sheet is stale. Stage the regenerated manifest:" >&2
+  echo "    git add skills/electric-pop/reference/components.md" >&2
+  exit 1
+fi
+
 step "Snapshot presence + catalog registration"
 ./gradlew :library:checkScreenshotPresence :demo:checkCatalogRegistration --console=plain
 
