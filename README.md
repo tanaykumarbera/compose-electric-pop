@@ -65,6 +65,21 @@ ElectricPopTheme {
 }
 ```
 
+## Use with AI coding agents
+
+Building with an AI assistant? Install the Electric Pop **Agent Skill** so it generates UI
+that follows the design system instead of generic Material:
+
+```bash
+npx skills add tanaykumarbera/compose-electric-pop
+```
+
+This installs a portable [Agent Skill](https://agentskills.io) into your coding agent — Claude
+Code, Cursor, GitHub Copilot, Codex, Gemini CLI, and others. The agent then knows how to add
+the dependency, set up `ElectricPopTheme`, pick the right `Pop*` component, and honor the 7
+design rules. Its component cheat-sheet is generated from source, so it stays in sync with the
+published API docs. Source: [`skills/electric-pop/SKILL.md`](skills/electric-pop/SKILL.md).
+
 ## Theme Customization
 
 Electric Pop ships with an opinionated default theme but supports full customization:

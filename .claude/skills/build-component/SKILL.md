@@ -3,6 +3,8 @@ name: build-component
 description: Build an Electric Pop component end-to-end. Orchestrates pixy-planner, pixy-implementor, and pixy-reviewer subagents in sequence. Handles branching, Telegram notifications, and PR creation. Use when building any component from the Electric Pop design system.
 allowed-tools: Agent, Read, Grep, Glob, Bash, ToolSearch, "mcp__plugin_github_github__*", "mcp__stitch__*", "mcp__plugin_telegram_telegram__*"
 argument-hint: "<ComponentName> [tier] [variant details]"
+metadata:
+  internal: true
 ---
 
 # Build an Electric Pop Component

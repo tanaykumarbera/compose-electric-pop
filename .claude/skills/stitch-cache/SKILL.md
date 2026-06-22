@@ -3,6 +3,8 @@ name: stitch-cache
 description: Cache Stitch screenshot PNGs and HTML source files in a project-local gitignored folder so repeat runs (planner reading, then reviewer re-reading) don't redownload. Use whenever you need a Stitch asset for a component.
 allowed-tools: Bash, Read
 argument-hint: "[component name] [theme: light|dark] [ext: png|html]"
+metadata:
+  internal: true
 ---
 
 # Stitch Asset Cache
